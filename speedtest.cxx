@@ -12,6 +12,8 @@ int main(){
 uint32_t address;
 uint32_t count = 1;
 
+int uio = label2uio(argv[1]);
+
 char UIOFilename[] = "/dev/uioXXXXXXXXXX ";
   snprintf(UIOFilename,strlen(UIOFilename),
 	   "/dev/uio%d",uio);
@@ -19,7 +21,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX ";
   //Open UIO
   int fdUIO = open(UIOFilename,O_RDWR);
   if(fdUIO < 0){
-    fprintf(stderr,"Error opening %s\n",label.c_str());
+    fprintf(stderr,"Error");
     return 1;
   }
 
