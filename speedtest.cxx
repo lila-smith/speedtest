@@ -9,12 +9,29 @@
 #include <sys/mman.h>
 
 int main(){
-uint32_t address;
+uint32_t address= 0x000007F0;
 uint32_t count = 1;
 
-int uio = label2uio(argv[1]);
+// found using ls /dev/uio*
+std::string device_name  = "PL_MEM";
 
-char UIOFilename[] = "/dev/uioXXXXXXXXXX ";
+int uio = label2uio(device_name);
+
+
+if(uio < 0){
+  // try the old version
+  if (NULL != UIO_DEBUG) {
+    printf("simple UIO finder failed, trying legacy\n");
+  }
+  uio = label2uio_old(device_name);
+  if (uio < 0) {
+    // at this point, old version has failed.
+    fprintf(stderr,"%s not found\n",device_name);
+    return 1;
+  }
+  }
+
+char UIOFilename[] = "/dev/uioXXXXXXXXXX";
   snprintf(UIOFilename,strlen(UIOFilename),
 	   "/dev/uio%d",uio);
 
@@ -28,4 +45,11 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX ";
     uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count),
 				   PROT_READ|PROT_WRITE, MAP_SHARED,
 				   fdUIO,0x0);
+
+  // loop over this part
+  for(int i = 0;i<1000;i++){
+    ptr[address] = 1;
+    printf("ptr[address]: %d\n",ptr[address]);
+  }
+  return 0;
 }
