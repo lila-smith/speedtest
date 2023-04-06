@@ -8,6 +8,7 @@
 #include <chrono>
 #include <unistd.h>
 
+#include <ApolloSM/uioLabelFinder.hh>
 #include <sys/mman.h>
 
 int main(){
@@ -25,6 +26,7 @@ if(uio < 0){
   if (NULL != UIO_DEBUG) {
     printf("simple UIO finder failed, trying legacy\n");
   }
+
   uio = label2uio_old(device_name);
   if (uio < 0) {
     // at this point, old version has failed.
