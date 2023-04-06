@@ -47,9 +47,16 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
 				   fdUIO,0x0);
 
   // loop over this part
+  auto start = high_resolution_clock::now();
+
   for(int i = 0;i<1000;i++){
     ptr[address] = 1;
     printf("ptr[address]: %d\n",ptr[address]);
   }
+
+   auto stop = high_resolution_clock::now();
+   auto duration = duration_cast<microseconds>(stop - start);
+   std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
+
   return 0;
 }
