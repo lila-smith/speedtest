@@ -51,7 +51,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
 				   PROT_READ|PROT_WRITE, MAP_SHARED,
 				   fdUIO,0x0);
   
-  int length = 1000;
+  uint32_t length = 1000;
   auto start = std::chrono::high_resolution_clock::now();
   int error = 0;
   for(uint32_t i = 0;i<length;i++){
