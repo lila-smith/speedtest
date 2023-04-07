@@ -8,7 +8,7 @@
 #include <chrono>
 #include <unistd.h>
 
-#include <uioLabelFinder.hh>
+#include "uioLabelFinder.hh"
 #include <sys/mman.h>
 
 int main(){
