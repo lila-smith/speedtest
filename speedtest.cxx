@@ -67,8 +67,12 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
   
   std::cout << "Errors: " << error << std::endl;
   //printf("Errors: %d",error);
+  uint32_t time_ms = (uint32_t) duration/1000;
+  // writing a single word so 4 bytes
+  uint32_t bytes = length*4;
+  uint32_t bps =  bytes / time_ms;
 
-  std::cout << "Bytes per ms: " << length*sizeof(uint32_t)/(duration.count()*1000) << std::endl;
+  std::cout << "Bytes per ms: " << bps << std::endl;
 
   delete ptr;
   return 0;
