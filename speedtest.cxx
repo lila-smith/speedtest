@@ -60,12 +60,13 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
     }
   }
   
-   auto stop = high_resolution_clock::now();
-   auto duration = duration_cast<microseconds>(stop - start);
+   auto stop = std::chrono::high_resolution_clock::now();
+   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
    std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
   
   printf("Errors: %d",error);
-  printf("Bytes per ms: %d",length*sizeof(uint32_t)/(duration*10^3))
-
+  printf("Bytes per ms: %d",length*sizeof(uint32_t)/(duration.count()*1000));
+  
+  delete ptr
   return 0;
 }
