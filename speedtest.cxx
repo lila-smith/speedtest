@@ -14,6 +14,7 @@
 int main(){
 uint32_t address= 0x000007F0;
 uint32_t count = 1;
+char* UIO_DEBUG = getenv("UIO_DEBUG");
 
 // found using ls /dev/uio*
 std::string device_name  = "PL_MEM";
