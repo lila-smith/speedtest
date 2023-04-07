@@ -30,7 +30,7 @@ if(uio < 0){
   uio = label2uio_old(device_name);
   if (uio < 0) {
     // at this point, old version has failed.
-    fprintf(stderr,"%s not found\n",device_name);
+    fprintf(stderr,"Device not found\n",");
     return 1;
   }
   }
