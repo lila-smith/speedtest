@@ -62,12 +62,12 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
   }
   
   auto stop = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-  std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+  std::cout << "Time taken by loop: " << duration.count() << " milliseconds" << std::endl;
   
   std::cout << "Errors: " << error << std::endl;
   //printf("Errors: %d",error);
-  double time_ms = std::chrono::duration<double>(duration).count() / 1000;
+  double time_ms = std::chrono::duration<double>(duration).count();
   // writing a single word so 4 bytes
   double bytes =  (double) length*4;
   double bps =  bytes / time_ms;
