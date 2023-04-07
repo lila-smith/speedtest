@@ -54,7 +54,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
   int length = 1000;
   auto start = std::chrono::high_resolution_clock::now();
   int error = 0;
-  for(int i = 0;i<length;i++){
+  for(uint32_t i = 0;i<length;i++){
     ptr[address] = i;
     if(ptr[address] != i){
       error++;
@@ -66,7 +66,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
    std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
   
   printf("Errors: %d",error);
-  printf("Bytes per ms: %d",length*sizeof(uint32_t)/(duration.count()*1000));
+  printf("Bytes per ms: %lu",length*sizeof(uint32_t)/(duration.count()*1000));
 
   delete ptr;
   return 0;
