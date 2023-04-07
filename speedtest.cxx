@@ -51,7 +51,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
 				   fdUIO,0x0);
   
   int length = 1000;
-  auto start = high_resolution_clock::now();
+  auto start = std::chrono::high_resolution_clock::now();
   int error = 0;
   for(int i = 0;i<length;i++){
     ptr[address] = i;
@@ -66,7 +66,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
   
   printf("Errors: %d",error);
   printf("Bytes per ms: %d",length*sizeof(uint32_t)/(duration.count()*1000));
-  
-  delete ptr
+
+  delete ptr;
   return 0;
 }
