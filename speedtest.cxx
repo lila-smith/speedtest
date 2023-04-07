@@ -47,9 +47,9 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
     return 1;
   }
 
-    uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count),
-				   PROT_READ|PROT_WRITE, MAP_SHARED,
-				   fdUIO,0x0);
+  uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count),
+				  PROT_READ|PROT_WRITE, MAP_SHARED,
+				  fdUIO,0x0);
   
   uint32_t length = 1000000;
   auto start = std::chrono::high_resolution_clock::now();
