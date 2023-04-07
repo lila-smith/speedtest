@@ -10,7 +10,7 @@
 
 #include "uioLabelFinder.hh"
 #include <sys/mman.h>
-
+//g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem -lpthread speedtest.cxx -o speedtest
 int main(){
 uint32_t address= 0x000007F0;
 uint32_t count = 1;
@@ -74,6 +74,6 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
 
   std::cout << "Bytes per ms: " << bps << std::endl;
 
-  delete ptr;
+  
   return 0;
 }
