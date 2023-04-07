@@ -49,11 +49,11 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
     uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count),
 				   PROT_READ|PROT_WRITE, MAP_SHARED,
 				   fdUIO,0x0);
-
-  // loop over this part
+  
+  int length = 1000;
   auto start = high_resolution_clock::now();
   int error = 0;
-  for(int i = 0;i<1000;i++){
+  for(int i = 0;i<length;i++){
     ptr[address] = i;
     if(ptr[address] != i){
       error++;
@@ -65,6 +65,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
    std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
   
   printf("Errors: %d",error);
+  printf("Bytes per ms: %d",length*8/(duration*10^3))
 
   return 0;
 }
