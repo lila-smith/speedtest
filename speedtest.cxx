@@ -8,7 +8,7 @@
 #include <chrono>
 #include <unistd.h>
 
-#include <ApolloSM/uioLabelFinder.hh>
+#include <uioLabelFinder.hh>
 #include <sys/mman.h>
 
 int main(){
@@ -65,7 +65,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
    std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
   
   printf("Errors: %d",error);
-  printf("Bytes per ms: %d",length*8/(duration*10^3))
+  printf("Bytes per ms: %d",length*sizeof(uint32_t)/(duration*10^3))
 
   return 0;
 }
