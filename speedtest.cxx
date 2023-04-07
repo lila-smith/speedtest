@@ -61,12 +61,14 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
     }
   }
   
-   auto stop = std::chrono::high_resolution_clock::now();
-   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-   std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
+  auto stop = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+  std::cout << "Time taken by loop: " << duration.count() << " microseconds" << std::endl;
   
-  printf("Errors: %d",error);
-  printf("Bytes per ms: %lu",length*sizeof(uint32_t)/(duration.count()*1000));
+  std::cout << "Errors: " << error << std::endl;
+  //printf("Errors: %d",error);
+
+  std::cout << "Bytes per ms: " << length*sizeof(uint32_t)/(duration.count()*1000) << std::endl;
 
   delete ptr;
   return 0;
