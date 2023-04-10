@@ -70,7 +70,7 @@ char UIOFilename[] = "/dev/uioXXXXXXXXXX";
   double time_ms = std::chrono::duration<double>(duration).count();
   // writing a single word so 4 bytes
   double bytes =  (double) length*4;
-  double bps =  bytes / (time_ms/1000000);
+  double bps =  bytes / (time_ms);
   std::cout << "Duration: " << time_ms << std::endl;
   std::cout << "Bytes per second: " << bps << std::endl;
 
