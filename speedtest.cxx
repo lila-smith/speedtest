@@ -50,7 +50,7 @@ int main(){
 	uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
 	
 	//length of loop
-	uint32_t length = 1000000;
+	uint32_t length = 100000000;
 	auto start = std::chrono::high_resolution_clock::now();
 
 	//error counter
@@ -67,7 +67,7 @@ int main(){
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 	std::cout << "Time taken by loop: " << duration.count() << " milliseconds" << std::endl;
-	
+	std::cout << "Number of words: " << length << std::endl;
 	std::cout << "Errors: " << error << std::endl;
 	double time_ms = std::chrono::duration<double>(duration).count();
 	// writing a single word so 4 bytes
