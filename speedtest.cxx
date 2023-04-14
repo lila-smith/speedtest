@@ -11,7 +11,7 @@ void output_test(double time_ms, uint32_t length){
   // Prints tests to cmd  
 	// writing a single word so 4 bytes
 	double bytes =  (double) length*WORD;
-	std::cout << "Number of words: " << length << "(%d)" <<bytes <<std::endl;
+	std::cout << "Number of words: " << length << "(" <<bytes << " B) " <<std::endl;
 	double bps =  bytes / (time_ms);
 	std::cout << "Duration: " << time_ms << std::endl;
 	std::cout << "Bytes per second: " << bps << "\n" <<std::endl;
@@ -19,7 +19,7 @@ void output_test(double time_ms, uint32_t length){
 
 void read_test(uint32_t length,uint32_t address, uint32_t * ptr){
   	// variable to assign read output
-  	std::cout << "Running read test";
+  	std::cout << "Running read test" << std::endl;
   	uint32_t read = 0;
   	auto start = std::chrono::high_resolution_clock::now();
 
@@ -37,7 +37,7 @@ void read_test(uint32_t length,uint32_t address, uint32_t * ptr){
 
 void write_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
-  std::cout << "Running write test";
+  std::cout << "Running write test" << std::endl;
   auto start = std::chrono::high_resolution_clock::now();
 
 	//Speed test loop
@@ -54,7 +54,7 @@ void write_test(uint32_t length, uint32_t address, uint32_t * ptr){
 
 void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
-  std::cout << "Running write test";
+  std::cout << "Running write test" << std::endl;
   uint32_t read = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -73,7 +73,7 @@ void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr){
 
 void write_read_error_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
-  std::cout << "Running write test";
+  std::cout << "Running write test" << std::endl;
   uint32_t read = 0;
   //error counter
   int error = 0;
