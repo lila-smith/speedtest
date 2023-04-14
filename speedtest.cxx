@@ -14,7 +14,8 @@ void output_test(double time_ms, uint32_t length){
 	std::cout << "Number of words: " << length << "(" <<bytes << " B) " <<std::endl;
 	double bps =  bytes / (time_ms);
 	std::cout << "Duration: " << time_ms << std::endl;
-	std::cout << "Bytes per second: " << bps << "\n" <<std::endl;
+	std::cout << "Bytes per second: " << bps <<std::endl;
+	std::cout << "Mbps: " << 8*bps/(exp(6)) << "\n" <<std::endl;
 }
 
 void read_test(uint32_t length,uint32_t address, uint32_t * ptr){
@@ -54,7 +55,7 @@ void write_test(uint32_t length, uint32_t address, uint32_t * ptr){
 
 void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
-  std::cout << "Running write test" << std::endl;
+  std::cout << "Running write/read test" << std::endl;
   uint32_t read = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -73,7 +74,7 @@ void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr){
 
 void write_read_error_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
-  std::cout << "Running write test" << std::endl;
+  std::cout << "Running write/read/error test" << std::endl;
   uint32_t read = 0;
   //error counter
   int error = 0;
