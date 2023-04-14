@@ -20,7 +20,7 @@ void output_test(auto duration, uint32_t length){
 	std::cout << "Bytes per second: " << bps << "\n" <<std::endl;
 }
 
-void read_test(uint32_t length,uint32_t address, uint32_t ptr){
+void read_test(uint32_t length,uint32_t address, uint32_t * ptr){
   // variable to assign read output
   std::cout << "Running read test";
   uint32_t read = 0;
@@ -35,7 +35,7 @@ void read_test(uint32_t length,uint32_t address, uint32_t ptr){
   output_test(std::chrono::duration_cast<std::chrono::milliseconds>(stop - start),length);
 }
 
-void write_test(uint32_t length, uint32_t address, uint32_t ptr){
+void write_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
   std::cout << "Running write test";
   auto start = std::chrono::high_resolution_clock::now();
@@ -50,7 +50,7 @@ void write_test(uint32_t length, uint32_t address, uint32_t ptr){
   output_test(std::chrono::duration_cast<std::chrono::milliseconds>(stop - start),length);
 }
 
-void write_read_test(uint32_t length, uint32_t address, uint32_t ptr){
+void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr){
   // variable to assign read output
   std::cout << "Running write test";
   uint32_t read = 0;

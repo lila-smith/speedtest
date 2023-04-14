@@ -17,13 +17,13 @@
 
 void output_test(auto duration, uint32_t length);
 
-void read_test(uint32_t length, uint32_t address, uint32_t ptr);
+void read_test(uint32_t length, uint32_t address, uint32_t * ptr);
 
-void write_test(uint32_t length, uint32_t address, uint32_t ptr);
+void write_test(uint32_t length, uint32_t address, uint32_t * ptr);
 
-void write_read_test(uint32_t length, uint32_t address, uint32_t ptr);
+void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr);
 
-void write_read_error_test(uint32_t length, uint32_t address, uint32_t ptr);
+void write_read_error_test(uint32_t length, uint32_t address, uint32_t * ptr);
 
 
 
