@@ -15,7 +15,7 @@ void output_test(double time_ms, uint32_t length){
 	double bps =  bytes / (time_ms);
 	std::cout << "Duration: " << time_ms << std::endl;
 	std::cout << "Bytes per second: " << bps <<std::endl;
-	std::cout << "Mbps: " << 8*bps/(exp(6)) << "\n" <<std::endl;
+	std::cout << "Mbps: " << 8*bps/(pow(10,6)) << "\n" <<std::endl;
 }
 
 void read_test(uint32_t length,uint32_t address, uint32_t * ptr){
