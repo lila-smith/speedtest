@@ -1,17 +1,9 @@
-#include <string>
-#include <stdint.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <chrono>
-#include <unistd.h>
 
 #include "uioLabelFinder.hh"
-#include <sys/mman.h>
+#include "speedtest.hh"
 
-#define WORD 4 
+
+
 
 //g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem speedtest.cxx -o speedtest
 int main(){
