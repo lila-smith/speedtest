@@ -80,11 +80,11 @@ UHAL_LIBRARY_FLAGS = ${UHAL_LIBRARY_PATH}
 
 
 
-uhal_speedtest : $(OBJFILES)
+test_stand : $(OBJFILES)
 	${CXX} ${LINK_EXE_FLAGS} ${UHAL_LIBRARY_FLAGS} ${UHAL_LIBRARIES} -lBUTool_ApolloSM -lboost_system -lpugixml -	 ${LIBRARIES}  -o $@ $^
 
 clean:
-	rm -f uhal_speedtest 
+	rm -f test_stand 
 	rm -f $(OBJFILES)
 
 $(OBJPATH)/%.o : %.cxx UHAL_TEST.hh 
