@@ -23,7 +23,7 @@ class UHAL_TEST
 
   ApolloSM * SM;
 
-  int uhal_speedtest(string node, uint32_t loops);
+  int uhalspeedtest(string node, uint32_t loops);
   //int MCU_I2C_loop_back_test(uint32_t loops);
 
 };

@@ -2,7 +2,7 @@
 #include <chrono>
 #include <random>
 
-int UHAL_TEST::uhal_speedtest(string node, uint32_t loops)
+int UHAL_TEST::uhalspeedtest(string node, uint32_t loops)
 {
   uint32_t write_mem;
   uint32_t read_mem;

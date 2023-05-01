@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
   switch(cmd) {
   case 1:
     loops = 1000000;
-    t->uhal_speedtest(node,loops);
+    t->uhalspeedtest(node,loops);
     break;
   default:
     cout << "Invalid command = " << cmd << ", try again" << endl;
