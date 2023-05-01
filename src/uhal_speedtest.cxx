@@ -1,4 +1,4 @@
-#include "UHAL_TEST.hh"
+#include "uhalspeedtest.hh"
 #include <chrono>
 #include <random>
 
