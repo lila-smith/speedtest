@@ -135,7 +135,7 @@ int main(){
 	uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
 	
 	//length of loop
-	uint32_t length = 100000000;
+	uint32_t length = x;
 
   read_test(length,address,ptr);
   write_test(length,address,ptr);
