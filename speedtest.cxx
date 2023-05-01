@@ -2,10 +2,14 @@
 #include "uioLabelFinder.hh"
 #include "speedtest.hh"
 
+/*
 
+Compile using 
+g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem speedtest.cxx -o speedtest
+Only tested on SM208
 
+*/
 
-//g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem speedtest.cxx -o speedtest
 
 void output_test(double time_ms, uint32_t length){
   // Prints tests to cmd  
@@ -137,10 +141,10 @@ int main(){
 	//length of loop
 	uint32_t length = x;
 
-  read_test(length,address,ptr);
-  write_test(length,address,ptr);
-  write_read_test(length,address,ptr);
-  write_read_error_test(length,address,ptr);
+  	read_test(length,address,ptr);
+  	write_test(length,address,ptr);
+  	write_read_test(length,address,ptr);
+  	write_read_error_test(length,address,ptr);
 	
 	return 0;
 }
