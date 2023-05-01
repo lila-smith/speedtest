@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
   if (vm.count("list_commands")) {
     cout << "Syntax: ./test_stand -c cmd" << endl;    
-    cout << "   cmd = 1 run I2C read test on MCU" << endl;
+    cout << "   cmd = 1 uhal speedtest" << endl;
     return 1;
   }
 
