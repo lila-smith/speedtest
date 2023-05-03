@@ -87,7 +87,7 @@ clean:
 	rm -f test_stand 
 	rm -f $(OBJFILES)
 
-$(OBJPATH)/%.o : %.cxx UHAL_TEST.hh 
+$(OBJPATH)/%.o : %.cxx uhalspeedtest.hh 
 	${CXX} ${CXX_FLAGS} ${UHAL_CXX_FLAGHS} -c $< -o $@
 
 -include $(LIBRARY_OBJECT_FILES:.o=.d)
