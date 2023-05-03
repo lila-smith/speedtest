@@ -90,5 +90,5 @@ clean:
 $(OBJPATH)/%.o : %.cxx uhalspeedtest.hh 
 	${CXX} ${CXX_FLAGS} ${UHAL_CXX_FLAGHS} -c $< -o $@
 
--include $(LIBRARY_OBJECT_FILES:.o=.d)
+#-include $(LIBRARY_OBJECT_FILES:.o=.d)
 
