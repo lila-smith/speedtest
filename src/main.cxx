@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
   if (vm.count("list_commands")) {
     cout << "Syntax: ./test_stand -c cmd" << endl;    
     cout << "   cmd = 1 uhal speedtest" << endl;
+    cout << "   cmd = 2 run AXI C2C read/write test" << endl;   
     return 1;
   }
 
@@ -55,6 +56,9 @@ int main(int argc, char* argv[])
     loops = 1000000;
     t->uhalspeedtest(node,loops);
     break;
+  case 2:
+    loops = 1000000;
+    t->AXI_C2C_loop_back_test(node,loops);
   default:
     cout << "Invalid command = " << cmd << ", try again" << endl;
     cout << "Enter './uhal_speedtest -l' for a list of commands" << endl;

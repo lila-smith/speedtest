@@ -23,7 +23,12 @@ class UHAL_TEST
 
   ApolloSM * SM;
 
+  //my own test using getNode for faster sppeds
   int uhalspeedtest(string node, uint32_t loops);
+
+  //From Butler's code, should be no different
+  int AXI_C2C_loop_back_test(string node, uint32_t loops);
+
   //int MCU_I2C_loop_back_test(uint32_t loops);
 
 };
