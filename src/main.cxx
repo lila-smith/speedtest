@@ -59,9 +59,10 @@ int main(int argc, char* argv[])
   case 2:
     loops = 1000000;
     t->AXI_C2C_loop_back_test(node,loops);
+    break;
   default:
     cout << "Invalid command = " << cmd << ", try again" << endl;
-    cout << "Enter './uhal_speedtest -l' for a list of commands" << endl;
+    cout << "Enter './test_stand -l' for a list of commands" << endl;
     return -1;
   }
 
