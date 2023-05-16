@@ -2,11 +2,11 @@
 #include <chrono>
 #include <random>
 
-int UHAL_TEST::uhalspeedtest(string node, uint32_t loops)
+int UHAL_TEST::uhalspeedtest(string reg, uint32_t loops)
 {
   uint32_t write_mem;
   uint32_t read_mem;
-  uhal::Node const & addr;
+  uhal::Node const & node;
   double speed;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -18,18 +18,18 @@ int UHAL_TEST::uhalspeedtest(string node, uint32_t loops)
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
     
   cout << endl << "Loop test of uhal integrity and speed" << endl 
-       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << node 
+       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
 	    << endl << endl; 
   //uhal::Node const & GetNode            (std::string const & reg);
-  addr = SM->GetNode(node);
+  node = SM->getNode(reg);
 
   for(uint32_t i = 0; i < loops; ++i) {
     //  uint32_t ReadNode                     (uhal::Node const & node);
     
     
     write_mem = distrib(gen);
-    SM->WriteNode(addr,write_mem);
-    read_mem = SM->ReadNode(addr);
+    SM->WriteNode(node,write_mem);
+    read_mem = SM->ReadNode(node);
 
     if (write_mem != read_mem) {
       cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
