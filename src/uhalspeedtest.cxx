@@ -6,7 +6,7 @@ int UHAL_TEST::uhalspeedtest(string reg, uint32_t loops)
 {
   uint32_t write_mem;
   uint32_t read_mem;
-  uhal::Node const * node;
+  uhal::Node const node;
   double speed;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
