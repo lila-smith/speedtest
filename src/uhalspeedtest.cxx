@@ -6,7 +6,7 @@ int UHAL_TEST::uhalspeedtest(string node, uint32_t loops)
 {
   uint32_t write_mem;
   uint32_t read_mem;
-
+  uint32_t addr;
   double speed;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -21,15 +21,15 @@ int UHAL_TEST::uhalspeedtest(string node, uint32_t loops)
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << node 
 	    << endl << endl; 
   //uhal::Node const & GetNode            (std::string const & reg);
-
+  addr = SM->GetNode(node);
 
   for(uint32_t i = 0; i < loops; ++i) {
     //  uint32_t ReadNode                     (uhal::Node const & node);
-
-
+    
+    
     write_mem = distrib(gen);
-    SM->WriteRegister(node,write_mem);
-    read_mem = SM->ReadRegister(node);
+    SM->WriteNode(addr,write_mem);
+    read_mem = SM->ReadNode(addr);
 
     if (write_mem != read_mem) {
       cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
