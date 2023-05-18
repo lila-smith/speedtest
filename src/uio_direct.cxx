@@ -2,7 +2,7 @@
 #include "uioLabelFinder.hh"
 #include <random>
 
-int UHAL_TEST::uhalspeedtest(string reg, uint32_t loops)
+int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
 {
     uint32_t write_mem;
     uint32_t read_mem;
@@ -84,7 +84,7 @@ int UHAL_TEST::uhalspeedtest(string reg, uint32_t loops)
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
-    cout << endl << "Speed test: " << std::dec << loops << " write-reads of " << node << endl;
+    cout << endl << "Speed test: " << std::dec << loops << " write-reads of " << reg << endl;
     cout << duration << " us total, average : " << duration / loops << " us." << endl;
 
     speed = 2.*32.*loops/duration;
