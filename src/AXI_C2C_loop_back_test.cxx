@@ -46,7 +46,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
     }
   }else{
   // infinite loop to end by sigint
-    uint32_t i = 0
+    uint32_t i = 0;
     while(running){
       
         write_mem = distrib(gen);
@@ -70,7 +70,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
           cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
         }
         i++;
-      }
+      };
     }
   }
    

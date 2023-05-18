@@ -302,7 +302,7 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
 
       }
     }else{
-      uint32_t i = 0
+      uint32_t i = 0;
       // infinite loop to end by sigint
       while(running){
         write_mem = distrib(gen);
