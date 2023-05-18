@@ -6,7 +6,7 @@
 namespace po = boost::program_options;
 
 void sig_handler(int signum){
-	UNUSED(signum)
+	UNUSED(signum);
 	running = false;
 }
 
