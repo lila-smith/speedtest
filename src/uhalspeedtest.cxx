@@ -19,37 +19,58 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
   cout << endl << "uhal speed test (getNode)" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
 	    << endl << endl; 
-  //uhal::Node const & GetNode            (std::string const & reg);
-
   uhal::Node const & node = SM->GetNode(reg);
 
-  for(uint32_t i = 0; i < loops; ++i) {
-    //  uint32_t ReadNode                     (uhal::Node const & node);
-    
-    
-    write_mem = distrib(gen);
-    SM->WriteNode(node,write_mem);
-    read_mem = SM->ReadNode(node);
+  if(loops != 0){
+      for(uint32_t i = 0; i < loops; ++i) {
 
-    if (write_mem != read_mem) {
-      cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-		<< ", read_mem = " << read_mem << endl << endl;
-      return -1;
-    }
+      write_mem = distrib(gen);
+      SM->WriteNode(node,write_mem);
+      read_mem = SM->ReadNode(node);
 
-    if (i < 10) {
-      cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
-    }
-       
-    if (i%100000 == 0 && i != 0) {
-      end = std::chrono::high_resolution_clock::now();
-      duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-      speed = 2.*32.*i/duration;
-      cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
-    }
+      if (write_mem != read_mem) {
+        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+      << ", read_mem = " << read_mem << endl << endl;
+        return -1;
+      }
 
+      if (i < 10) {
+        cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+      }
+        
+      if (i%100000 == 0 && i != 0) {
+        end = std::chrono::high_resolution_clock::now();
+        duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
+        speed = 2.*32.*i/duration;
+        cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+      }
+
+    }
+  }else{
+  // infinite loop to end by sigint
+    while(running){
+      write_mem = distrib(gen);
+      SM->WriteNode(node,write_mem);
+      read_mem = SM->ReadNode(node);
+
+      if (write_mem != read_mem) {
+        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+      << ", read_mem = " << read_mem << endl << endl;
+        return -1;
+      }
+
+      if (i < 10) {
+        cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+      }
+        
+      if (i%100000 == 0 && i != 0) {
+        end = std::chrono::high_resolution_clock::now();
+        duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
+        speed = 2.*32.*i/duration;
+        cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+      }
+    }
   }
-   
   end = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 

@@ -276,33 +276,57 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
     cout << endl << "UIO Direct Speedtest" << endl 
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
-    
-    for(uint32_t i = 0; i < loops; ++i) {        
-        
+    if(loops != 0){
+      for(uint32_t i = 0; i < loops; ++i) {        
+          
         write_mem = distrib(gen);
-		ptr[address] = write_mem;
-		read_mem = ptr[address];
-        
-        
+        ptr[address] = write_mem;
+        read_mem = ptr[address];
+            
         if (write_mem != read_mem) {
-        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-            << ", read_mem = " << read_mem << endl << endl;
-        return -1;
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+              << ", read_mem = " << read_mem << endl << endl;
+          return -1;
         }
         
         if (i < 10) {
-        cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+          cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
         }
         
         if (i%100000 == 0 && i != 0) {
-        end = std::chrono::high_resolution_clock::now();
-        duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-        speed = 2.*32.*i/duration;
-        cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+          end = std::chrono::high_resolution_clock::now();
+          duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
+          speed = 2.*32.*i/duration;
+          cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
         }
 
-    }
-    
+      }
+    }else{
+        // infinite loop to end by sigint
+        while(running){
+          write_mem = distrib(gen);
+          ptr[address] = write_mem;
+          read_mem = ptr[address];
+          
+          if (write_mem != read_mem) {
+            cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+                << ", read_mem = " << read_mem << endl << endl;
+            return -1;
+          }
+          
+          if (i < 10) {
+            cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+          }
+          
+          if (i%100000 == 0 && i != 0) {
+            end = std::chrono::high_resolution_clock::now();
+            duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
+            speed = 2.*32.*i/duration;
+            cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+          }
+
+        }
+      }
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
