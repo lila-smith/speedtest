@@ -273,7 +273,7 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
         
-    cout << endl << "UIO Speedtest" << endl 
+    cout << endl << "UIO Direct Speedtest" << endl 
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
     
