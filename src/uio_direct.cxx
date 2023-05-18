@@ -302,31 +302,32 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
 
       }
     }else{
-        // infinite loop to end by sigint
-        while(running){
-          write_mem = distrib(gen);
-          ptr[address] = write_mem;
-          read_mem = ptr[address];
-          
-          if (write_mem != read_mem) {
-            cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-                << ", read_mem = " << read_mem << endl << endl;
-            return -1;
-          }
-          
-          if (i < 10) {
-            cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
-          }
-          
-          if (i%100000 == 0 && i != 0) {
-            end = std::chrono::high_resolution_clock::now();
-            duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-            speed = 2.*32.*i/duration;
-            cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
-          }
-
+      uint32_t i = 0
+      // infinite loop to end by sigint
+      while(running){
+        write_mem = distrib(gen);
+        ptr[address] = write_mem;
+        read_mem = ptr[address];
+        
+        if (write_mem != read_mem) {
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+              << ", read_mem = " << read_mem << endl << endl;
+          return -1;
         }
+        
+        if (i < 10) {
+          cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+        }
+        
+        if (i%100000 == 0 && i != 0) {
+          end = std::chrono::high_resolution_clock::now();
+          duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
+          speed = 2.*32.*i/duration;
+          cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+        }
+        i++;
       }
+    }
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 

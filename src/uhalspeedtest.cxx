@@ -48,6 +48,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
     }
   }else{
   // infinite loop to end by sigint
+    uint32_t i = 0;
     while(running){
       write_mem = distrib(gen);
       SM->WriteNode(node,write_mem);
@@ -69,6 +70,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
         speed = 2.*32.*i/duration;
         cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
       }
+      i++;
     }
   }
   end = std::chrono::high_resolution_clock::now();
