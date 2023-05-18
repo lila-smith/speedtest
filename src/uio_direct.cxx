@@ -11,11 +11,6 @@
 #include <sys/mman.h>
 #include <random>
 
-#include <stdio.h>
-#include <stdint.h>
-#include <iostream>
-#include <string.h>
-
 #include <boost/filesystem.hpp>
 
 using namespace boost::filesystem;
@@ -228,7 +223,7 @@ int label2uio(std::string ilabel)
   return uionumber;
 }
 
-int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
+int SPEED_TEST::uio_direct(string reg, uint32_t loops)
 {
     uint32_t write_mem;
     uint32_t read_mem;
