@@ -13,11 +13,11 @@ using std::cout;
 using std::endl;
 #include <fstream>
 
-class UHAL_TEST
+class SPEED_TEST
 {
  public:
   
-  UHAL_TEST(){
+  SPEED_TEST(){
     //    cout << "In the constructor" << endl;
   };
 
@@ -29,7 +29,8 @@ class UHAL_TEST
   //From Butler's code, should be no different
   int AXI_C2C_loop_back_test(string node, uint32_t loops);
 
-  //int MCU_I2C_loop_back_test(uint32_t loops);
+  //Fastest speeds by using UIO
+  int uio_direct(string node, uint32_t loops);
 
 };
 

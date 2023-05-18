@@ -30,7 +30,8 @@ int main(int argc, char* argv[])
   if (vm.count("list_commands")) {
     cout << "Syntax: ./test_stand -c cmd" << endl;    
     cout << "   cmd = 1 uhal speedtest" << endl;
-    cout << "   cmd = 2 run AXI C2C read/write test" << endl;   
+    cout << "   cmd = 2 run AXI C2C read/write test" << endl;
+    cout << "   cmd = 3 UIO Direct speedtest" << endl; 
     return 1;
   }
 
@@ -46,7 +47,7 @@ int main(int argc, char* argv[])
     printf("Created new ApolloSM\n");      
   }
 
-  UHAL_TEST* t = new UHAL_TEST();
+  SPEED_TEST* t = new SPEED_TEST();
   t->SM = sm;
   
   uint32_t loops;
@@ -59,6 +60,10 @@ int main(int argc, char* argv[])
   case 2:
     loops = 1000000;
     t->AXI_C2C_loop_back_test(node,loops);
+    break;
+  case 3:
+    loops = 1000000;
+    t->uio_direct(node,loops);
     break;
   default:
     cout << "Invalid command = " << cmd << ", try again" << endl;

@@ -16,7 +16,7 @@ int UHAL_TEST::uhalspeedtest(string reg, uint32_t loops)
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
     
-  cout << endl << "Loop test of uhal integrity and speed" << endl 
+  cout << endl << "uhal speed test (getNode)" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
 	    << endl << endl; 
   //uhal::Node const & GetNode            (std::string const & reg);

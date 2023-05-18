@@ -17,7 +17,7 @@ int UHAL_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
     
-  cout << endl << "Loop test of AXI C2C data integrity and speed" << endl 
+  cout << endl << "uhal speedtest" << endl 
        << std::dec << loops << " loops doing write-read of random 32-bit words to " << node 
 	    << endl << endl; 
 
