@@ -7,7 +7,7 @@ namespace po = boost::program_options;
 
 void sig_handler(int signum){
 	UNUSED(signum);
-	running = false;
+	GlobalVars::running = false;
 }
 
 int main(int argc, char* argv[])
