@@ -280,8 +280,9 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
     for(uint32_t i = 0; i < loops; ++i) {        
         
         write_mem = distrib(gen);
-		ptr[address] = distrib(gen);
+		ptr[address] = write_mem;
 		read_mem = ptr[address];
+        
         /*
         if (write_mem != read_mem) {
         cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
