@@ -13,7 +13,10 @@ using std::cout;
 using std::endl;
 #include <fstream>
 
-volatile bool running = true;
+namespace GlobalVars {
+  volatile bool running = true;
+}
+
 
 class SPEED_TEST
 {

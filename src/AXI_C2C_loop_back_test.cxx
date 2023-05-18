@@ -47,7 +47,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
   }else{
   // infinite loop to end by sigint
     uint32_t i = 0;
-    while(running){
+    while(GlobalVars::running){
       
         write_mem = distrib(gen);
         SM->WriteRegister(node,write_mem);

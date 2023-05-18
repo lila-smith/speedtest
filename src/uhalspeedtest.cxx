@@ -49,7 +49,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
   }else{
   // infinite loop to end by sigint
     uint32_t i = 0;
-    while(running){
+    while(GlobalVars::running){
       write_mem = distrib(gen);
       SM->WriteNode(node,write_mem);
       read_mem = SM->ReadNode(node);
