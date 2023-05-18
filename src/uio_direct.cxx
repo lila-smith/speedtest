@@ -1,5 +1,4 @@
 #include "uhalspeedtest.hh"
-#include "uioLabelFinder.hh"
 #include <random>
 
 int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)

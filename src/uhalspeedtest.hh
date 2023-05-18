@@ -3,6 +3,7 @@
 
 #include <ApolloSM/ApolloSM.hh>
 #include <ApolloSM/ApolloSM_Exceptions.hh>
+#include "uioLabelFinder.hh"
 
 #include <vector>
 using std::vector;
@@ -30,7 +31,7 @@ class SPEED_TEST
   int AXI_C2C_loop_back_test(string node, uint32_t loops);
 
   //Fastest speeds by using UIO
-  int uio_direct(string node, uint32_t loops);
+  int uio_direct(string reg, uint32_t loops);
 
 };
 
