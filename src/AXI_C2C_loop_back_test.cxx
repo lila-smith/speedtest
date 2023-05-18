@@ -70,9 +70,9 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
           cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
         }
         i++;
-      };
+      }
     }
-  }
+  
    
   end = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
