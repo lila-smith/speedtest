@@ -1,4 +1,14 @@
 #include "uhalspeedtest.hh"
+#include <string>
+#include <stdint.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <chrono>
+#include <unistd.h>
+#include <sys/mman.h>
 #include <random>
 
 int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
