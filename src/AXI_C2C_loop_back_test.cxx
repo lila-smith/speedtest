@@ -71,7 +71,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
         }
         i++;
       }
-      loops = i*100000;
+      loops = i;
     }
   
    

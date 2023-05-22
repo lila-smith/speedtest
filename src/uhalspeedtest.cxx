@@ -72,7 +72,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
       }
       i++;
     }
-    loops = i*100000;
+    loops = i;
   }
   end = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
