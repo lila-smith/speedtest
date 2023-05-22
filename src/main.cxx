@@ -6,7 +6,7 @@
 namespace po = boost::program_options;
 
 namespace GlobalVars {
-  volatile bool running = true;
+  bool running = true;
 }
 
 void sig_handler(int signum){
