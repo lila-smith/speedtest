@@ -1,10 +1,16 @@
 # Apollo SM write/read speed tests
-Speed testing the apollo service module by reading and writing to scratch
-
+Speed testing the apollo service module by reading and writing to scratch.
+The teststand test SM speed using getNode, readRegister, and UIO direct respectively.
+The other speedtest uses UIO direct to test read and write/read.
 ## Build/Installation
+To build the teststand, use:
 ```
 git clone git@github.com:ablaizot/speedtest.git
 make
+```
+The other speedtest compiles using 
+```
+g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem speedtest.cxx -o speedtest
 ```
 ## Running
 ```
