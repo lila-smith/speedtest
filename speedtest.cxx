@@ -5,8 +5,8 @@
 //g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem speedtest.cxx -o speedtest
 
 int main(){
-	uint32_t address= 0x000007F0;
-	uint32_t count = 1;
+	uint64_t address= 0x000007F0;
+	uint64_t count = 1;
 	char* UIO_DEBUG = getenv("UIO_DEBUG");
 
 	// found using ls /dev/uio*
@@ -40,10 +40,10 @@ int main(){
 		return 1;
 	}
 
-	uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
+	uint64_t * ptr = (uint64_t *) mmap(NULL,sizeof(uint64_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
 	
 	//length of loop
-	uint32_t length = 100000000;
+	uint64_t length = 100000000;
 
   read_test(length,address,ptr);
   write_test(length,address,ptr);
@@ -53,7 +53,7 @@ int main(){
 	return 0;
 }
 
-void output_test(auto duration, uint32_t length){
+void output_test(auto duration, uint64_t length){
   // Prints tests to cmd
   std::cout << "Time taken by loop: " << duration.count() << " milliseconds" << std::endl;
 	
@@ -66,14 +66,14 @@ void output_test(auto duration, uint32_t length){
 	std::cout << "Bytes per second: " << bps << "\n" <<std::endl;
 }
 
-void read_test(uint32_t length,uint32_t address, uint32_t ptr){
+void read_test(uint64_t length,uint64_t address, uint64_t ptr){
   // variable to assign read output
   std::cout << "Running read test";
-  uint32_t read = 0;
+  uint64_t read = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
 	//Speed test loop
-	for(uint32_t i = 0;i<length;i++){ 
+	for(uint64_t i = 0;i<length;i++){ 
 		read = ptr[address];
 	}
 
@@ -81,13 +81,13 @@ void read_test(uint32_t length,uint32_t address, uint32_t ptr){
   output_test(std::chrono::duration_cast<std::chrono::milliseconds>(stop - start),length);
 }
 
-void write_test(uint32_t length, uint32_t address, uint32_t ptr){
+void write_test(uint64_t length, uint64_t address, uint64_t ptr){
   // variable to assign read output
   std::cout << "Running write test";
   auto start = std::chrono::high_resolution_clock::now();
 
 	//Speed test loop
-	for(uint32_t i = 0;i<length;i++){
+	for(uint64_t i = 0;i<length;i++){
 		ptr[address] = i;
 	}
   
@@ -96,14 +96,14 @@ void write_test(uint32_t length, uint32_t address, uint32_t ptr){
   output_test(std::chrono::duration_cast<std::chrono::milliseconds>(stop - start),length);
 }
 
-void write_read_test(uint32_t length, uint32_t address, uint32_t ptr){
+void write_read_test(uint64_t length, uint64_t address, uint64_t ptr){
   // variable to assign read output
   std::cout << "Running write test";
-  uint32_t read = 0;
+  uint64_t read = 0;
   auto start = std::chrono::high_resolution_clock::now();
 
 	//Speed test loop
-	for(uint32_t i = 0;i<length;i++){
+	for(uint64_t i = 0;i<length;i++){
 		ptr[address] = i;
 		read = ptr[address];
 	}
@@ -113,17 +113,17 @@ void write_read_test(uint32_t length, uint32_t address, uint32_t ptr){
   output_test(std::chrono::duration_cast<std::chrono::milliseconds>(stop - start),length);
 }
 
-void write_read_error_test(uint32_t length, uint32_t address, uint32_t ptr){
+void write_read_error_test(uint64_t length, uint64_t address, uint64_t ptr){
   // variable to assign read output
   std::cout << "Running write test";
-  uint32_t read = 0;
+  uint64_t read = 0;
   //error counter
   int error = 0;
 
   auto start = std::chrono::high_resolution_clock::now();
 
 	//Speed test loop
-	for(uint32_t i = 0;i<length;i++){
+	for(uint64_t i = 0;i<length;i++){
 		ptr[address] = i;
 		if(ptr[address] != i){
 			error++;

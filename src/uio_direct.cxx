@@ -223,14 +223,14 @@ int label2uio(std::string ilabel)
   return uionumber;
 }
 
-int SPEED_TEST::uio_direct(string reg, uint32_t loops)
+int SPEED_TEST::uio_direct(string reg, uint64_t loops)
 {
-    uint32_t write_mem;
-    uint32_t read_mem;
+    uint64_t write_mem;
+    uint64_t read_mem;
     double speed;
 
-    uint32_t address= 0x000007F0;
-    uint32_t count = 1;
+    uint64_t address= 0x000007F0;
+    uint64_t count = 1;
     char* UIO_DEBUG = getenv("UIO_DEBUG");
 
     size_t delim = reg.find('.');
@@ -263,7 +263,7 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
         return 1;
     }
 
-    uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
+    uint64_t * ptr = (uint64_t *) mmap(NULL,sizeof(uint64_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -277,7 +277,7 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
     if(loops != 0){
-      for(uint32_t i = 0; i < loops; ++i) {        
+      for(uint64_t i = 0; i < loops; ++i) {        
           
         write_mem = distrib(gen);
         ptr[address] = write_mem;
@@ -302,7 +302,7 @@ int SPEED_TEST::uio_direct(string reg, uint32_t loops)
 
       }
     }else{
-      uint32_t i = 0;
+      uint64_t i = 0;
       // infinite loop to end by sigint
       while(GlobalVars::running){
         write_mem = distrib(gen);
