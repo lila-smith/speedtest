@@ -14,7 +14,7 @@ using std::endl;
 #include <fstream>
 
 namespace GlobalVars {
-  volatile bool running = true;
+    extern bool running;
 }
 
 

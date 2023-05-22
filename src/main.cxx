@@ -5,6 +5,10 @@
 #define UNUSED(signum) (void)(signum)
 namespace po = boost::program_options;
 
+namespace GlobalVars {
+  volatile bool running = true;
+}
+
 void sig_handler(int signum){
 	UNUSED(signum);
 	GlobalVars::running = false;
