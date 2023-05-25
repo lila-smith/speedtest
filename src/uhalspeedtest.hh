@@ -38,7 +38,7 @@ class SPEED_TEST
   int uio_direct(string reg, uint32_t loops);
 
   //Same as uio but performs mock map search to simulate uhalspeedtest
-  int uio_direct_mock_map(string reg, uint32_t loops);
+  int uio_direct_mock_map(string reg, uint64_t loops);
 
 };
 
