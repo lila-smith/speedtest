@@ -1,4 +1,3 @@
-#include "uhalspeedtest.hh"
 #include <string>
 #include <stdint.h>
 #include <sys/stat.h>
@@ -10,6 +9,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <random>
+#include "uhalspeedtest.hh"
 
 int SPEED_TEST::uio_direct(string reg, uint64_t loops)
 {
