@@ -35,7 +35,7 @@ class SPEED_TEST
   int AXI_C2C_loop_back_test(string node, uint64_t loops);
 
   //Fastest speeds by using UIO
-  int uio_direct(string reg, uint32_t loops);
+  int uio_direct(string reg, uint64_t loops);
 
   //Same as uio but performs mock map search to simulate uhalspeedtest
   int uio_direct_mock_map(string reg, uint64_t loops);

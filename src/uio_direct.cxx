@@ -263,7 +263,7 @@ int SPEED_TEST::uio_direct(string reg, uint64_t loops)
         return 1;
     }
 
-    uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint64_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
+    uint32_t * ptr = (uint32_t *) mmap(NULL,sizeof(uint32_t)*(address+count), PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
