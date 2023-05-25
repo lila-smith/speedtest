@@ -15,15 +15,15 @@
 #define WORD 4 
 
 
-void output_test(double time_ms, uint32_t length);
+void output_test(double time_ms, uint64_t length);
 
-void read_test(uint32_t length, uint32_t address, uint32_t * ptr);
+void read_test(uint64_t length, uint64_t address, uint64_t * ptr);
 
-void write_test(uint32_t length, uint32_t address, uint32_t * ptr);
+void write_test(uint64_t length, uint64_t address, uint64_t * ptr);
 
-void write_read_test(uint32_t length, uint32_t address, uint32_t * ptr);
+void write_read_test(uint64_t length, uint64_t address, uint64_t * ptr);
 
-void write_read_error_test(uint32_t length, uint32_t address, uint32_t * ptr);
+void write_read_error_test(uint64_t length, uint64_t address, uint64_t * ptr);
 
 
 

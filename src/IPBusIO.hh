@@ -29,16 +29,16 @@ public:
   virtual std::vector<std::string> GetRegsRegex(std::string regex);
 
   //reads
-  virtual uint32_t    ReadAddress       (uint32_t addr);
-  virtual uint32_t    ReadRegister      (std::string const & reg);
+  virtual uint64_t    ReadAddress       (uint64_t addr);
+  virtual uint64_t    ReadRegister      (std::string const & reg);
   virtual std::string ReadString        (std::string const & reg);
-  uint32_t ReadNode                     (uhal::Node const & node);
+  uint64_t ReadNode                     (uhal::Node const & node);
 
   
   //Misc markups
-  virtual uint32_t    GetRegAddress     (std::string const & reg);
-  virtual uint32_t    GetRegMask        (std::string const & reg);
-  virtual uint32_t    GetRegSize        (std::string const & reg);
+  virtual uint64_t    GetRegAddress     (std::string const & reg);
+  virtual uint64_t    GetRegMask        (std::string const & reg);
+  virtual uint64_t    GetRegSize        (std::string const & reg);
   virtual std::string GetRegMode        (std::string const & reg);
   virtual std::string GetRegPermissions (std::string const & reg);
   virtual std::string GetRegDescription (std::string const & reg);
@@ -49,10 +49,10 @@ public:
 
   
   //numeric, named register, action, and node writes
-  virtual void WriteAddress             (uint32_t addr, uint32_t data);
-  virtual void WriteRegister            (std::string const & reg, uint32_t data);
+  virtual void WriteAddress             (uint64_t addr, uint64_t data);
+  virtual void WriteRegister            (std::string const & reg, uint64_t data);
   virtual void WriteAction              (std::string const & reg);
-  virtual void WriteNode                (uhal::Node const & node, uint32_t data);
+  virtual void WriteNode                (uhal::Node const & node, uint64_t data);
 			                
   uhal::Node const & GetNode            (std::string const & reg);
 

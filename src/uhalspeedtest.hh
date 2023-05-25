@@ -14,7 +14,7 @@ using std::endl;
 #include <fstream>
 
 namespace GlobalVars {
-  volatile bool running = true;
+    extern bool running;
 }
 
 
@@ -29,11 +29,11 @@ class SPEED_TEST
   ApolloSM * SM;
 
   //my own test using getNode for faster sppeds
-  int uhalspeedtest(string reg, uint32_t loops);
+  int uhalspeedtest(string reg, uint64_t loops);
 
   //From Butler's code, should be no different
-  int AXI_C2C_loop_back_test(string node, uint32_t loops);
-  
+  int AXI_C2C_loop_back_test(string node, uint64_t loops);
+
   //Fastest speeds by using UIO
   int uio_direct(string reg, uint32_t loops);
 

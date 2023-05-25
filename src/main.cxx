@@ -5,6 +5,10 @@
 #define UNUSED(signum) (void)(signum)
 namespace po = boost::program_options;
 
+namespace GlobalVars {
+  bool running = true;
+}
+
 void sig_handler(int signum){
 	UNUSED(signum);
 	GlobalVars::running = false;
@@ -62,7 +66,7 @@ int main(int argc, char* argv[])
 	SPEED_TEST* t = new SPEED_TEST();
 	t->SM = sm;
 
-	uint32_t loops = 0;
+	uint64_t loops = 0;
 
 	if(stop){
 		loops = 1000000;

@@ -2,10 +2,10 @@
 #include <chrono>
 #include <random>
 
-int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
+int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
 {
-  uint32_t write_mem;
-  uint32_t read_mem;
+  uint64_t write_mem;
+  uint64_t read_mem;
   double speed;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -22,7 +22,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
   uhal::Node const & node = SM->GetNode(reg);
 
   if(loops != 0){
-      for(uint32_t i = 0; i < loops; ++i) {
+      for(uint64_t i = 0; i < loops; ++i) {
 
       write_mem = distrib(gen);
       SM->WriteNode(node,write_mem);
@@ -48,7 +48,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
     }
   }else{
   // infinite loop to end by sigint
-    uint32_t i = 0;
+    uint64_t i = 0;
     while(GlobalVars::running){
       write_mem = distrib(gen);
       SM->WriteNode(node,write_mem);
@@ -72,6 +72,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint32_t loops)
       }
       i++;
     }
+    loops = i;
   }
   end = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();

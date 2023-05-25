@@ -2,10 +2,10 @@
 #include <chrono>
 #include <random>
 
-int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
+int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint64_t loops)
 {
-  uint32_t write_mem;
-  uint32_t read_mem;
+  uint64_t write_mem;
+  uint64_t read_mem;
 
   double speed;
 
@@ -21,7 +21,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
        << std::dec << loops << " loops doing write-read of random 32-bit words to " << node 
 	    << endl << endl; 
   if(loops != 0){
-    for(uint32_t i = 0; i < loops; ++i) {
+    for(uint64_t i = 0; i < loops; ++i) {
 
       write_mem = distrib(gen);
       SM->WriteRegister(node,write_mem);
@@ -46,7 +46,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
     }
   }else{
   // infinite loop to end by sigint
-    uint32_t i = 0;
+    uint64_t i = 0;
     while(GlobalVars::running){
       
         write_mem = distrib(gen);
@@ -71,6 +71,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint32_t loops)
         }
         i++;
       }
+      loops = i;
     }
   
    
