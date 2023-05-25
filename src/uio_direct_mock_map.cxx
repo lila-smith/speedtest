@@ -223,7 +223,7 @@ int label2uio(std::string ilabel)
   return uionumber;
 }
 
-int SPEED_TEST::uio_direct_mock_map(string reg, uint32_t loops)
+int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
 {
     uint32_t write_mem;
     uint32_t read_mem;
@@ -332,7 +332,7 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint32_t loops)
 
       }
     }else{
-      uint32_t i = 0;
+      uint64_t i = 0;
       // infinite loop to end by sigint
       while(GlobalVars::running){
         write_mem = distrib(gen);
@@ -357,6 +357,7 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint32_t loops)
         }
         i++;
       }
+      loops = i;
     }
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
