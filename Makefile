@@ -5,7 +5,7 @@ CACTUS_ROOT?=/opt/cactus
 IPBUS_REG_HELER_PATH=/opt/BUTool/include/IPBusIO
 
 UHAL_VER_MAJOR ?= 2
-UHAL_VER_MINOR ?= 7
+UHAL_VER_MINOR ?= 8
 
 SRCPATH=src
 OBJPATH=obj
