@@ -3,6 +3,7 @@
 
 #include <ApolloSM/ApolloSM.hh>
 #include <ApolloSM/ApolloSM_Exceptions.hh>
+#include <ApolloSM/uioLabelFinder.hh>
 
 #include <vector>
 using std::vector;

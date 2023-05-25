@@ -10,7 +10,6 @@
 #include <sys/mman.h>
 #include <random>
 #include "uhalspeedtest.hh"
-#include <ApolloSM/uioLabelFinder.hh>
 
 int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
 {
