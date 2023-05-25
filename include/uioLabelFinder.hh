@@ -1,51 +1,11 @@
-#ifndef __UHAL_TEST_HH
-#define __UHAL_TEST_HH
-
-#include <ApolloSM/ApolloSM.hh>
-#include <ApolloSM/ApolloSM_Exceptions.hh>
-
-#include <vector>
-using std::vector;
-#include <string>
-using std::string;
-#include <iostream>
-using std::cout;
-using std::endl;
-#include <fstream>
-
+#ifndef __UIO_LABEL_FINDER_HH__
+#define __UIO_LABEL_FINDER_HH__
 #include <stdio.h>
 #include <stdint.h>
+#include <iostream>
 #include <string.h>
 
 #include <boost/filesystem.hpp>
-
-namespace GlobalVars {
-    extern bool running;
-}
-
-class SPEED_TEST
-{
- public:
-  
-  SPEED_TEST(){
-    //    cout << "In the constructor" << endl;
-  };
-
-  ApolloSM * SM;
-
-  //my own test using getNode for faster sppeds
-  int uhalspeedtest(string reg, uint64_t loops);
-
-  //From Butler's code, should be no different
-  int AXI_C2C_loop_back_test(string node, uint64_t loops);
-
-  //Fastest speeds by using UIO
-  int uio_direct(string reg, uint64_t loops);
-
-  //Same as uio but performs mock map search to simulate uhalspeedtest
-  int uio_direct_mock_map(string reg, uint64_t loops);
-
-};
 
 using namespace boost::filesystem;
 
@@ -103,6 +63,7 @@ uint64_t SearchDeviceTree(std::string const & dvtPath,std::string const & name){
   }
   return address;
 }
+
 
 
 // A function that takes a uio label and returns the uio number
@@ -260,6 +221,3 @@ int label2uio(std::string ilabel)
 }
 
 #endif
-
-#endif
-
