@@ -261,5 +261,3 @@ int label2uio(std::string ilabel)
 
 #endif
 
-#endif
-
