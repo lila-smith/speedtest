@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 1 uhal speedtest" << endl;
 		cout << "   cmd = 2 run AXI C2C read/write test" << endl;
 		cout << "   cmd = 3 UIO Direct speedtest" << endl; 
+		cout << "   cmd = 4 UIO Direct mock map speedtest" << endl;
 		return 1;
 	}
 
@@ -76,6 +77,9 @@ int main(int argc, char* argv[])
 		break;
 	case 3:
 		t->uio_direct(node,loops);
+		break;
+	case 4:
+		t->uio_direct_mock_map(node,loops);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;
