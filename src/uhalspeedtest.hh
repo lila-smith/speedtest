@@ -47,13 +47,14 @@ class SPEED_TEST
 
 };
 
-size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
 
 uint64_t aSearchDeviceTree(std::string const & dvtPath,std::string const & name);
 
 int alabel2uio_old(std::string ilabel);
 
 int alabel2uio(std::string ilabel);
+
+static size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
 
 #endif
 
