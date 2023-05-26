@@ -93,11 +93,11 @@ int alabel2uio_old(std::string ilabel)
 
     //path has a file named label in it.
     //open file and read its contents into buffer;
-    if(!ReadFileToBuffer(itDir->path().native()+"/label",buffer,bufferSize)){
+    if(!aReadFileToBuffer(itDir->path().native()+"/label",buffer,bufferSize)){
       //bad read
       continue;
     }else{
-      dtEntryAddr=SearchDeviceTree(itDir->path().string(),ilabel);
+      dtEntryAddr=aSearchDeviceTree(itDir->path().string(),ilabel);
       if(dtEntryAddr != 0){
 	//we found the correct entry
 	break;
@@ -127,7 +127,7 @@ int alabel2uio_old(std::string ilabel)
     }
 
     //process address of UIO entry
-    if(!ReadFileToBuffer((itDir->path()/"maps/map0/addr").native(),buffer,bufferSize)){
+    if(!aReadFileToBuffer((itDir->path()/"maps/map0/addr").native(),buffer,bufferSize)){
       //bad read
       continue;
     }
@@ -135,7 +135,7 @@ int alabel2uio_old(std::string ilabel)
 
     // see if the UIO address matches the device tree address
     if (dtEntryAddr == uioEntryAddr){
-      if(!ReadFileToBuffer((itDir->path().native()+"/maps/map0/size"),buffer,bufferSize)){
+      if(!aReadFileToBuffer((itDir->path().native()+"/maps/map0/size"),buffer,bufferSize)){
 	//bad read
 	continue;
       }
