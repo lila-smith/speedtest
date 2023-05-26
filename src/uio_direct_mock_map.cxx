@@ -106,7 +106,8 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
         }
         
         if (i < 10) {
-          cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+          
+          cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << ", mock = " << mock << endl;
         }
         
         if (i%100000 == 0 && i != 0) {
@@ -121,7 +122,7 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
       uint64_t i = 0;
       // infinite loop to end by sigint
       while(GlobalVars::running){
-        
+
         uint32_t const & mock = (--(mock_map.upper_bound(20)))->second;
 
         write_mem = distrib(gen) + mock;
