@@ -3,7 +3,6 @@
 
 #include <ApolloSM/ApolloSM.hh>
 #include <ApolloSM/ApolloSM_Exceptions.hh>
-#include <ApolloSM/uioLabelFinder.hh>
 
 #include <vector>
 using std::vector;
@@ -47,6 +46,14 @@ class SPEED_TEST
   int uio_direct_mock_map(string reg, uint64_t loops);
 
 };
+
+static size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
+
+uint64_t aSearchDeviceTree(std::string const & dvtPath,std::string const & name);
+
+int alabel2uio_old(std::string ilabel);
+
+int alabel2uio(std::string ilabel);
 
 #endif
 

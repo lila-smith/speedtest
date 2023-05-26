@@ -24,7 +24,7 @@ int SPEED_TEST::uio_direct(string reg, uint64_t loops)
     size_t delim = reg.find('.');
     std::string device_name = reg.substr(0, delim);
 
-    int uio = label2uio(device_name);
+    int uio = alabel2uio(device_name);
 
     if(uio < 0){
         // try the old version
@@ -32,7 +32,7 @@ int SPEED_TEST::uio_direct(string reg, uint64_t loops)
             printf("simple UIO finder failed, trying legacy\n");
         }
 
-        uio = label2uio_old(device_name);
+        uio = alabel2uio_old(device_name);
         if (uio < 0) {
             // at this point, old version has failed.
             fprintf(stderr,"Device not found\n");
