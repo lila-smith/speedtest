@@ -2,7 +2,7 @@
 
 using namespace boost::filesystem;
 
-static size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize){
+size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize){
   //open the file
   FILE * inFile = fopen(fileName.c_str(),"r");
   if(NULL == inFile){
