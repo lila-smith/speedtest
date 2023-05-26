@@ -85,11 +85,9 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
     
     auto begin = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-    
-    
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();    
 
-    cout << endl << "UIO Direct Speedtest" << endl 
+    cout << endl << "UIO Direct Mock Map Speedtest" << endl 
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
     if(loops != 0){
@@ -123,7 +121,10 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
       uint64_t i = 0;
       // infinite loop to end by sigint
       while(GlobalVars::running){
-        write_mem = distrib(gen);
+        
+        uint32_t const & mock = (--(mock_map.upper_bound(20)))->second;
+
+        write_mem = distrib(gen) + mock;
         ptr[address] = write_mem;
         read_mem = ptr[address];
         
