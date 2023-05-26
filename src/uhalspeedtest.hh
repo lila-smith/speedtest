@@ -47,7 +47,7 @@ class SPEED_TEST
 
 };
 
-static size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
+size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
 
 uint64_t aSearchDeviceTree(std::string const & dvtPath,std::string const & name);
 
