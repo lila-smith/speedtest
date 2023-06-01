@@ -91,7 +91,9 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
     auto begin = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-        
+
+    uhal_mock::UIO::SetupSignalHandler();
+
     cout << endl << "UIO Direct Speedtest" << endl 
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
@@ -148,6 +150,7 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
       }
       loops = i;
     }
+    uhal_mock::UIO::RemoveSignalHandler();
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
