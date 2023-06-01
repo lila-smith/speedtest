@@ -99,8 +99,8 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
       for(uint32_t i = 0; i < loops; ++i) {        
           
         write_mem = distrib(gen);
-        ptr[address] = write_mem;
-        read_mem = ptr[address];
+        BUS_ERROR_PROTECTION(ptr[address] = write_mem);
+        BUS_ERROR_PROTECTION(read_mem = ptr[address]);
             
         if (write_mem != read_mem) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
