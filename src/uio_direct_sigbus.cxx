@@ -15,7 +15,7 @@
 
 #define BUS_ERROR_PROTECTION(ACCESS) \
   if(SIGBUS == sigsetjmp(env,1)){						\
-    uhal::exception::UIOBusError * e = new uhal::exception::UIOBusError();\
+    uhal_mock::exception::UIOBusError * e = new uhal_mock::exception::UIOBusError();\
     throw *e;\
   }else{ \
     ACCESS;					\
