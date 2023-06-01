@@ -16,6 +16,7 @@ using std::endl;
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <signal.h>
 #include <boost/filesystem.hpp>
 
 namespace GlobalVars {
