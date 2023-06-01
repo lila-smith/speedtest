@@ -22,6 +22,7 @@ using std::endl;
 namespace GlobalVars {
     extern bool running;
 }
+
 namespace uhal_mock {
   namespace exception
   {
@@ -39,7 +40,7 @@ namespace uhal_mock {
      void RemoveSignalHandler();
      struct sigaction saBusError;
      struct sigaction saBusError_old;
-  }
+  };
 }
 
 class SPEED_TEST
