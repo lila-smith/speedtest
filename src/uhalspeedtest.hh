@@ -34,7 +34,6 @@ namespace uhal_mock {
       UIO(){
         //cout << "In the constructor" << endl;
       };
-      virtual ~UIO ();
       void SetupSignalHandler();
       void RemoveSignalHandler();
       struct sigaction saBusError;
