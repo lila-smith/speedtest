@@ -9,36 +9,15 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <random>
-#include <signal.h>
 #include "uhalspeedtest.hh"
 
 #define BUS_ERROR_PROTECTION(ACCESS) \
   if(SIGBUS == sigsetjmp(env,1)){						\
-    uhal_mock::exception::UIOBusError * e = new uhal_mock::exception::UIOBusError();\
+    uhal::exception::UIOBusError * e = new uhal::exception::UIOBusError();\
     throw *e;\
   }else{ \
     ACCESS;					\
   }
-
-sigjmp_buf static env;
-void static signal_handler(int sig){
-  if(SIGBUS == sig){
-    siglongjmp(env,sig);    
-  }
-}
-
-void uhal_mock::UIO::SetupSignalHandler(){
-    //this is here so the signal_handler can stay static
-    memset(&saBusError,0,sizeof(saBusError)); //Clear struct
-    saBusError.sa_handler = signal_handler; //assign signal handler
-    sigemptyset(&saBusError.sa_mask);
-    sigaction(SIGBUS, &saBusError,&saBusError_old);  //install new signal handler (save the old one)
-}
-
-void uhal_mock::UIO::RemoveSignalHandler(){    
-    sigaction(SIGBUS,&saBusError_old,NULL); //restore the signal handler from before creation for SIGBUS
-}
-
 
 
 int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
