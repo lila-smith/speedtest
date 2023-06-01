@@ -16,11 +16,30 @@ using std::endl;
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-
+#include <signal.h>
 #include <boost/filesystem.hpp>
 
 namespace GlobalVars {
     extern bool running;
+}
+namespace uhal_mock {
+  namespace exception
+  {
+    UHAL_DEFINE_EXCEPTION_CLASS ( UIOBusError , "Exception class for when an axi transaction causes a BUS_ERROR." )
+  }
+  class UIO
+  {
+    public:
+      UIO(){
+        //cout << "In the constructor" << endl;
+      };
+      virtual ~UIO ();
+    private:
+     void SetupSignalHandler();
+     void RemoveSignalHandler();
+     struct sigaction saBusError;
+     struct sigaction saBusError_old;
+  }
 }
 
 class SPEED_TEST
@@ -49,7 +68,6 @@ class SPEED_TEST
   int uio_direct_sigbus(string reg, uint64_t loops);
 
 };
-
 
 uint64_t aSearchDeviceTree(std::string const & dvtPath,std::string const & name);
 
