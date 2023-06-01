@@ -35,11 +35,10 @@ namespace uhal_mock {
         //cout << "In the constructor" << endl;
       };
       virtual ~UIO ();
-    private:
-     void SetupSignalHandler();
-     void RemoveSignalHandler();
-     struct sigaction saBusError;
-     struct sigaction saBusError_old;
+      void SetupSignalHandler();
+      void RemoveSignalHandler();
+      struct sigaction saBusError;
+      struct sigaction saBusError_old;
   };
 }
 
