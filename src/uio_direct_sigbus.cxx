@@ -130,7 +130,7 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
     cout << endl << "Speed test: " << std::dec << loops << " write-reads of " << reg << endl;
-    cout << duration << " us total, average : " << duration / loops (double) << " us." << endl;
+    cout << duration << " us total, average : " << (double) duration / loops  << " us." << endl;
 
     speed = 2.*32.*loops/duration;
     cout << "Speed = " << speed << " Mbps" << endl;
