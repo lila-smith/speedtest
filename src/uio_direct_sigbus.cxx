@@ -10,6 +10,7 @@
 #include <sys/mman.h>
 #include <random>
 #include <signal.h>
+#include <setjmp.h>
 #include "uhalspeedtest.hh"
 
 #define BUS_ERROR_PROTECTION(ACCESS) \
