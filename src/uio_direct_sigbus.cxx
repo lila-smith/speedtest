@@ -40,8 +40,6 @@ void uhal_mock::UIO::RemoveSignalHandler(){
     sigaction(SIGBUS,&saBusError_old,NULL); //restore the signal handler from before creation for SIGBUS
 }
 
-
-
 int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
 {
     uint32_t write_mem;
@@ -94,7 +92,7 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
     uhal_mock::UIO* mock_uio = new uhal_mock::UIO();
     mock_uio->SetupSignalHandler();
     
-    cout << endl << "UIO Direct Speedtest" << endl 
+    cout << endl << "UIO Direct SIGBUS Speedtest" << endl 
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
     if(loops != 0){
@@ -126,9 +124,10 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
       uint32_t i = 0;
       // infinite loop to end by sigint
       while(GlobalVars::running){
+        
         write_mem = distrib(gen);
-        ptr[address] = write_mem;
-        read_mem = ptr[address];
+        BUS_ERROR_PROTECTION(ptr[address] = write_mem);
+        BUS_ERROR_PROTECTION(read_mem = ptr[address]);
         
         if (write_mem != read_mem) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
