@@ -44,10 +44,11 @@ int main(int argc, char* argv[])
 
 	if (vm.count("list_commands")) {
 		cout << "Syntax: ./test_stand -c cmd" << endl;    
-		cout << "   cmd = 1 uhal speedtest" << endl;
-		cout << "   cmd = 2 run AXI C2C read/write test" << endl;
+		cout << "   cmd = 1 uhal (getNode) speedtest" << endl;
+		cout << "   cmd = 2 run AXI C2C (getRegister) speedtest" << endl;
 		cout << "   cmd = 3 UIO Direct speedtest" << endl; 
 		cout << "   cmd = 4 UIO Direct mock map speedtest" << endl;
+		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;
 		return 1;
 	}
 
@@ -84,6 +85,9 @@ int main(int argc, char* argv[])
 		break;
 	case 4:
 		t->uio_direct_mock_map(node,loops);
+		break;
+	case 5:
+		t->uio_direct_sigbus(node,loops);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;

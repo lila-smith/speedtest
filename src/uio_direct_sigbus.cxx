@@ -11,7 +11,16 @@
 #include <random>
 #include "uhalspeedtest.hh"
 
-int SPEED_TEST::uio_direct(string reg, uint64_t loops)
+#define BUS_ERROR_PROTECTION(ACCESS) \
+  if(SIGBUS == sigsetjmp(env,1)){						\
+    uhal::exception::UIOBusError * e = new uhal::exception::UIOBusError();\
+    throw *e;\
+  }else{ \
+    ACCESS;					\
+  }
+
+
+int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
 {
     uint32_t write_mem;
     uint32_t read_mem;
