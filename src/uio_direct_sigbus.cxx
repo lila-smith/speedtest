@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <random>
+#include <signal.h>
+#include <setjmp.h>
 #include "uhalspeedtest.hh"
 
 #define BUS_ERROR_PROTECTION(ACCESS) \
@@ -19,6 +21,24 @@
     ACCESS;					\
   }
 
+sigjmp_buf static env;
+void static signal_handler(int sig){
+  if(SIGBUS == sig){
+    siglongjmp(env,sig);    
+  }
+}
+
+void uhal_mock::UIO::SetupSignalHandler(){
+    //this is here so the signal_handler can stay static
+    memset(&saBusError,0,sizeof(saBusError)); //Clear struct
+    saBusError.sa_handler = signal_handler; //assign signal handler
+    sigemptyset(&saBusError.sa_mask);
+    sigaction(SIGBUS, &saBusError,&saBusError_old);  //install new signal handler (save the old one)
+}
+
+void uhal_mock::UIO::RemoveSignalHandler(){    
+    sigaction(SIGBUS,&saBusError_old,NULL); //restore the signal handler from before creation for SIGBUS
+}
 
 int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
 {
@@ -69,16 +89,18 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
     auto begin = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-        
-    cout << endl << "UIO Direct Speedtest" << endl 
+    uhal_mock::UIO* mock_uio = new uhal_mock::UIO();
+    mock_uio->SetupSignalHandler();
+    
+    cout << endl << "UIO Direct SIGBUS Speedtest" << endl 
         << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
             << endl << endl; 
     if(loops != 0){
       for(uint32_t i = 0; i < loops; ++i) {        
           
         write_mem = distrib(gen);
-        ptr[address] = write_mem;
-        read_mem = ptr[address];
+        BUS_ERROR_PROTECTION(ptr[address] = write_mem);
+        BUS_ERROR_PROTECTION(read_mem = ptr[address]);
             
         if (write_mem != read_mem) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
@@ -102,9 +124,10 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
       uint32_t i = 0;
       // infinite loop to end by sigint
       while(GlobalVars::running){
+        
         write_mem = distrib(gen);
-        ptr[address] = write_mem;
-        read_mem = ptr[address];
+        BUS_ERROR_PROTECTION(ptr[address] = write_mem);
+        BUS_ERROR_PROTECTION(read_mem = ptr[address]);
         
         if (write_mem != read_mem) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
@@ -126,6 +149,7 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
       }
       loops = i;
     }
+    mock_uio->RemoveSignalHandler();
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 

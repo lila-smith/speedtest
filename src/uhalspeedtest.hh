@@ -23,6 +23,24 @@ namespace GlobalVars {
     extern bool running;
 }
 
+namespace uhal_mock {
+  namespace exception
+  {
+    UHAL_DEFINE_EXCEPTION_CLASS ( UIOBusError , "Exception class for when an axi transaction causes a BUS_ERROR." )
+  }
+  class UIO
+  {
+    public:
+      UIO(){
+        //cout << "In the constructor" << endl;
+      };
+      void SetupSignalHandler();
+      void RemoveSignalHandler();
+      struct sigaction saBusError;
+      struct sigaction saBusError_old;
+  };
+}
+
 class SPEED_TEST
 {
  public:
