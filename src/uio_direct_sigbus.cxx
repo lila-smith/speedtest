@@ -69,7 +69,7 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
         }
     }
 
-    char UIOFilename[] = "/dev/uioXXXXXXXXXX";
+    char UIOFilename[] = "/dev/uioXXXXXXXXXXXXXX";
     snprintf(UIOFilename,strlen(UIOFilename),
         "/dev/uio%d",uio);
 
