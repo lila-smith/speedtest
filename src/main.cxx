@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 		printf("Created new ApolloSM\n");      
 	}
 
-	emp::SPEED_TEST* t = new SPEED_TEST();
+	emp::SPEED_TEST* t = new emp::SPEED_TEST();
 	t->SM = sm;
 
 	uint64_t loops = 0;
