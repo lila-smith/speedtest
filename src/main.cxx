@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 3 UIO Direct speedtest" << endl; 
 		cout << "   cmd = 4 UIO Direct mock map speedtest" << endl;
 		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;
+		cout << "   cmd = 6 EMP (ICRead/write) speedtest" << endl;
 		return 1;
 	}
 
