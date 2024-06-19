@@ -1,6 +1,7 @@
 #include "uhalspeedtest.hh"
 #include <chrono>
 #include <random>
+namespace emp {
 
 int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
 {
@@ -85,4 +86,4 @@ int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
 
   return 0;
 }
-
+}

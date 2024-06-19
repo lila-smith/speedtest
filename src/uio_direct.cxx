@@ -11,6 +11,8 @@
 #include <random>
 #include "uhalspeedtest.hh"
 
+namespace emp {
+
 int SPEED_TEST::uio_direct(string reg, uint64_t loops)
 {
     uint32_t write_mem;
@@ -128,4 +130,4 @@ int SPEED_TEST::uio_direct(string reg, uint64_t loops)
 
     return 0;
 }
-
+}

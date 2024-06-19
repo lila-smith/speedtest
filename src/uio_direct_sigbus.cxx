@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <setjmp.h>
 #include "uhalspeedtest.hh"
+namespace emp {
 
 #define BUS_ERROR_PROTECTION(ACCESS) \
   if(SIGBUS == sigsetjmp(env,1)){						\
@@ -161,4 +162,4 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops)
 
     return 0;
 }
-
+}
