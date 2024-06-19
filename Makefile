@@ -46,11 +46,11 @@ Includes = \
 INCLUDE_PATH += $(addprefix -I,$(Includes))
 
 RPATH = \
-	$(BUTOOL_PATH)/lib \
-	$(EMP_ROOT)/logger/lib \
-	$(EMP_ROOT)/core/lib 
+	-Wl, -rpath=$(BUTOOL_PATH)/lib \
+	-Wl, -rpath=$(EMP_ROOT)/logger/lib \
+	-Wl, -rpath=$(EMP_ROOT)/core/lib 
 
-LIBRARIES =     -Wl, -rpath= $(RPATH) \
+LIBRARIES = $(RPATH) \
 		-lToolException	\
 		-lBUTool_IPBusIO \
 		-lBUTool_IPBusRegHelpers \
