@@ -64,6 +64,10 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
       // empNode.icWrite(0,write_mem,0);
       // read_mem = empNode.icRead(0,0);
 
+      write_mem = distrib(gen);
+      SM->WriteNode(node,write_mem);
+      read_mem = SM->ReadNode(node);
+
       if (write_mem != read_mem) {
         cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
       << ", read_mem = " << read_mem << endl << endl;
