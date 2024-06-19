@@ -18,20 +18,25 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
   auto begin = std::chrono::high_resolution_clock::now();
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-    
+  reg = "ttc.master.common.ctrl";
+
   cout << endl << "empSpeedTest" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
 	    << endl << endl; 
   uhal::Node const & node = SM->GetNode(reg);
 
-  SCCICNode empNode = SCCICNode(node);
+  //SCCICNode empNode = SCCICNode(node);
 
   if(loops != 0){
       for(uint64_t i = 0; i < loops; ++i) {
-
+      
       write_mem = distrib(gen);
-      empNode.icWrite(0,write_mem,0);
-      read_mem = empNode.icRead(0,0);
+      SM->WriteNode(node,write_mem);
+      read_mem = SM->ReadNode(node);
+
+      // write_mem = distrib(gen);
+      // empNode.icWrite(0,write_mem,0);
+      // read_mem = empNode.icRead(0,0);
 
       if (write_mem != read_mem) {
         cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
