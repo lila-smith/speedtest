@@ -24,8 +24,6 @@ INCLUDE_PATH += \
 							-I$(BUTOOL_PATH)/include 
 LIBRARY_PATH += \
 							-L$(BUTOOL_PATH)/lib \
-							-L$(EMP_ROOT)/logger/lib \
-							-L$(EMP_ROOT)/core/lib \
 							-L$(CACTUS_ROOT)/lib
 
 ifdef BOOST_INC
@@ -45,10 +43,8 @@ Includes = \
 
 INCLUDE_PATH += $(addprefix -I,$(Includes))
 
-RPATH = \
-	-Wl, -rpath=$(BUTOOL_PATH)/lib \
-	-Wl, -rpath=$(EMP_ROOT)/logger/lib \
-	-Wl, -rpath=$(EMP_ROOT)/core/lib 
+RPATH = -Wl, -rpath=$(BUTOOL_PATH)/lib 
+
 
 LIBRARIES = $(RPATH) \
 		-lToolException	\
@@ -59,8 +55,6 @@ LIBRARIES = $(RPATH) \
 		-lboost_regex \
 		-lboost_filesystem \
 		-lboost_program_options \
-		-lcactus_emp_logger \
-		-lcactus_emp
 
 
 CXX_FLAGS = -std=c++11 -g -O3 -rdynamic -Wall -MMD -MP -fPIC ${INCLUDE_PATH} -Werror -Wno-literal-suffix -Wno-error=clobbered
@@ -98,11 +92,21 @@ UHAL_CXX_FLAGHS = ${UHAL_INCLUDE_PATH}
 
 UHAL_LIBRARY_FLAGS = ${UHAL_LIBRARY_PATH}
 
-
-
+# ------------------------
+# EMP stuff
+# ------------------------
+				
+EMP_LIBRARY = -L$(EMP_ROOT)/logger/lib \
+				-Wl, -rpath=$(EMP_ROOT)/logger/lib \
+				-lcactus_emp_logger \
+				-Wl, -rpath=$(EMP_ROOT)/core/lib \
+				-L$(EMP_ROOT)/core/lib \
+				-lcactus_emp
+		
+		
 
 test_stand : $(OBJFILES)
-	${CXX} ${LINK_EXE_FLAGS} ${UHAL_LIBRARY_FLAGS} ${UHAL_LIBRARIES} -lBUTool_ApolloSM -lboost_system -lpugixml ${LIBRARIES}  -o $@ $^
+	${CXX} ${LINK_EXE_FLAGS} ${UHAL_LIBRARY_FLAGS} ${UHAL_LIBRARIES} -lBUTool_ApolloSM -lboost_system -lpugixml ${LIBRARIES} ${EMP_LIBRARY}  -o $@ $^
 
 clean:
 	rm -f test_stand 
