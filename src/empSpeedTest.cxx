@@ -1,7 +1,5 @@
 #include "uhalspeedtest.hh"
-#include <emp/SCCECNode.hpp>
 #include <emp/SCCICNode.hpp>
-#include <emp/SCCNode.hpp>
 #include <chrono>
 #include <random>
 

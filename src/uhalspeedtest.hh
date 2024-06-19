@@ -40,7 +40,7 @@ namespace uhal_mock {
       struct sigaction saBusError_old;
   };
 }
-
+namespace emp {
 class SPEED_TEST
 {
  public:
@@ -69,7 +69,7 @@ class SPEED_TEST
   //using emp to write through IPBUS to the CM
   int empSpeedTest(string reg, uint64_t loops);
 };
-
+}
 
 uint64_t aSearchDeviceTree(std::string const & dvtPath,std::string const & name);
 
