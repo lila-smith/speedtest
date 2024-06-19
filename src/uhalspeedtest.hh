@@ -66,6 +66,8 @@ class SPEED_TEST
   //Same as uio but sets up BUS_ERROR_PROTECTION
   int uio_direct_sigbus(string reg, uint64_t loops);
 
+  //using emp to write through IPBUS to the CM
+  int empSpeedTest(string reg, uint64_t loops);
 };
 
 

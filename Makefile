@@ -2,6 +2,7 @@ SHELL = bash
 
 BUTOOL_PATH?=/opt/BUTool
 CACTUS_ROOT?=/opt/cactus
+EMP_ROOT?=/opt/emp-toolbox
 IPBUS_REG_HELER_PATH=/opt/BUTool/include/IPBusIO
 
 UHAL_VER_MAJOR ?= 2
@@ -30,6 +31,24 @@ endif
 ifdef BOOST_LIB
 LIBRARY_PATH +=-L$(BOOST_LIB)
 endif
+
+Includes = \
+	include \
+	pybind11/include \
+	$(PYTHON_INCLUDE_PREFIX) \
+	$(EMP_ROOT)/logger/include \
+	$(EMP_ROOT)/core/include \
+	$(CACTUS_ROOT)/include
+
+Libraries = \
+	cactus_emp_logger \
+	cactus_emp
+
+LibraryPaths = \
+	$(EMP_ROOT)/logger/lib \
+	$(EMP_ROOT)/core/lib \
+	$(CACTUS_ROOT)/lib
+
 
 LIBRARIES =     -Wl,-rpath=$(BUTOOL_PATH)/lib \
 		-lToolException	\

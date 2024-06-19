@@ -89,6 +89,9 @@ int main(int argc, char* argv[])
 	case 5:
 		t->uio_direct_sigbus(node,loops);
 		break;
+	case 6:
+		t->empSpeedTest(node,loops);
+		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;
 		cout << "Enter './test_stand -l' for a list of commands" << endl;
