@@ -47,7 +47,7 @@ INCLUDE_PATH += $(addprefix -I,$(Includes))
 
 RPATH = $(BUTOOL_PATH)/lib \ 
 	$(EMP_ROOT)/logger/lib \
-	$(EMP_ROOT)/core/lib \
+	$(EMP_ROOT)/core/lib 
 
 LIBRARIES =     -Wl,\
 		-rpath= $(RPATH)
