@@ -24,9 +24,9 @@ INCLUDE_PATH += \
 							-I$(BUTOOL_PATH)/include 
 LIBRARY_PATH += \
 							-L$(BUTOOL_PATH)/lib \
-							$(EMP_ROOT)/logger/lib \
-							$(EMP_ROOT)/core/lib \
-							$(CACTUS_ROOT)/lib
+							-L$(EMP_ROOT)/logger/lib \
+							-L$(EMP_ROOT)/core/lib \
+							-L$(CACTUS_ROOT)/lib
 
 ifdef BOOST_INC
 INCLUDE_PATH +=-I$(BOOST_INC)
