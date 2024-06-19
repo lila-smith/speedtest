@@ -43,6 +43,8 @@ Includes = \
 	$(EMP_ROOT)/core/include \
 	$(CACTUS_ROOT)/include
 
+INCLUDE_PATH += $(addprefix -I,$(Includes))
+
 LIBRARIES =     -Wl,-rpath=$(BUTOOL_PATH)/lib \
 		-lToolException	\
 		-lBUTool_IPBusIO \
