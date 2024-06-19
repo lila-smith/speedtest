@@ -40,7 +40,7 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops)
         }
     }
 
-    char UIOFilename[] = "/dev/uioXXXXXXXXXX";
+    char UIOFilename[] = "/dev/uioXXXXXXXXXXXX";
     snprintf(UIOFilename,strlen(UIOFilename),
         "/dev/uio%d",uio);
 
