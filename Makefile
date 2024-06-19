@@ -23,7 +23,10 @@ CXX?=g++
 INCLUDE_PATH += \
 							-I$(BUTOOL_PATH)/include 
 LIBRARY_PATH += \
-							-L$(BUTOOL_PATH)/lib 
+							-L$(BUTOOL_PATH)/lib \
+							$(EMP_ROOT)/logger/lib \
+							$(EMP_ROOT)/core/lib \
+							$(CACTUS_ROOT)/lib
 
 ifdef BOOST_INC
 INCLUDE_PATH +=-I$(BOOST_INC)
@@ -40,16 +43,6 @@ Includes = \
 	$(EMP_ROOT)/core/include \
 	$(CACTUS_ROOT)/include
 
-Libraries = \
-	cactus_emp_logger \
-	cactus_emp
-
-LibraryPaths = \
-	$(EMP_ROOT)/logger/lib \
-	$(EMP_ROOT)/core/lib \
-	$(CACTUS_ROOT)/lib
-
-
 LIBRARIES =     -Wl,-rpath=$(BUTOOL_PATH)/lib \
 		-lToolException	\
 		-lBUTool_IPBusIO \
@@ -58,7 +51,9 @@ LIBRARIES =     -Wl,-rpath=$(BUTOOL_PATH)/lib \
 		-lBUTool_BUTextIO \
 		-lboost_regex \
 		-lboost_filesystem \
-		-lboost_program_options
+		-lboost_program_options \
+		-cactus_emp_logger \
+		-cactus_emp
 
 
 CXX_FLAGS = -std=c++11 -g -O3 -rdynamic -Wall -MMD -MP -fPIC ${INCLUDE_PATH} -Werror -Wno-literal-suffix -Wno-error=clobbered
