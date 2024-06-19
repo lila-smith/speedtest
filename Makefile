@@ -54,8 +54,8 @@ LIBRARIES =     -Wl,-rpath=$(BUTOOL_PATH)/lib \
 		-lboost_regex \
 		-lboost_filesystem \
 		-lboost_program_options \
-		-cactus_emp_logger \
-		-cactus_emp
+		-lcactus_emp_logger \
+		-lcactus_emp
 
 
 CXX_FLAGS = -std=c++11 -g -O3 -rdynamic -Wall -MMD -MP -fPIC ${INCLUDE_PATH} -Werror -Wno-literal-suffix -Wno-error=clobbered
