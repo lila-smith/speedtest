@@ -43,7 +43,7 @@ Includes = \
 
 INCLUDE_PATH += $(addprefix -I,$(Includes))
 
-RPATH = -Wl, -rpath=$(BUTOOL_PATH)/lib 
+RPATH = -Wl,-rpath=$(BUTOOL_PATH)/lib 
 
 
 LIBRARIES = $(RPATH) \
@@ -97,9 +97,9 @@ UHAL_LIBRARY_FLAGS = ${UHAL_LIBRARY_PATH}
 # ------------------------
 				
 EMP_LIBRARY = -L$(EMP_ROOT)/logger/lib \
-				-Wl, -rpath=$(EMP_ROOT)/logger/lib \
+				-Wl,-rpath=$(EMP_ROOT)/logger/lib \
 				-lcactus_emp_logger \
-				-Wl, -rpath=$(EMP_ROOT)/core/lib \
+				-Wl,-rpath=$(EMP_ROOT)/core/lib \
 				-L$(EMP_ROOT)/core/lib \
 				-lcactus_emp
 		
