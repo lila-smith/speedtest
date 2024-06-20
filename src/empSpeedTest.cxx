@@ -1,9 +1,24 @@
 #include "uhalspeedtest.hh"
-#include <emp/SCCICNode.hpp>
 #include <chrono>
 #include <random>
 
 namespace emp {
+
+UHAL_REGISTER_DERIVED_NODE(TestNode);
+
+void TestNode::write(string reg, unsigned aData) const
+{
+  getNode(reg).write(aData);
+  getClient().dispatch();
+}
+
+unsigned TestNode::read(string reg) const
+{
+  unsigned aData = getNode(reg).read();
+  getClient().dispatch();
+  return aData;
+}
+
 
 int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
 {
@@ -23,7 +38,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
   cout << endl << "empSpeedTest" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
 	    << endl << endl; 
-  uhal::Node const & node = SM->GetNode(reg);
+  //uhal::Node const & node = SM->GetNode(reg);
 
   //SCCICNode empNode = SCCICNode(node);
 
@@ -31,8 +46,12 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
       for(uint64_t i = 0; i < loops; ++i) {
       
       write_mem = distrib(gen);
-      SM->WriteNode(node,write_mem);
-      read_mem = SM->ReadNode(node);
+      TestNode::write(reg, write_mem);
+      read_mem = TestNode::read(reg);
+
+      // write_mem = distrib(gen);
+      // SM->WriteNode(node,write_mem);
+      // read_mem = SM->ReadNode(node);
 
       // write_mem = distrib(gen);
       // empNode.icWrite(0,write_mem,0);
@@ -60,13 +79,14 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
   // infinite loop to end by sigint
     uint64_t i = 0;
     while(GlobalVars::running){
-      // write_mem = distrib(gen);
-      // empNode.icWrite(0,write_mem,0);
-      // read_mem = empNode.icRead(0,0);
 
       write_mem = distrib(gen);
-      SM->WriteNode(node,write_mem);
-      read_mem = SM->ReadNode(node);
+      TestNode::write(reg, write_mem);
+      read_mem = TestNode::read(reg);
+
+      // write_mem = distrib(gen);
+      // SM->WriteNode(node,write_mem);
+      // read_mem = SM->ReadNode(node);
 
       if (write_mem != read_mem) {
         cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 

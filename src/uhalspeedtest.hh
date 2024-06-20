@@ -3,6 +3,7 @@
 
 #include <ApolloSM/ApolloSM.hh>
 #include <ApolloSM/ApolloSM_Exceptions.hh>
+#include "uhal/DerivedNode.hpp"
 
 #include <vector>
 using std::vector;
@@ -40,7 +41,15 @@ namespace uhal_mock {
       struct sigaction saBusError_old;
   };
 }
-
+class TestNode : public uhal::Node {
+  UHAL_DERIVEDNODE(TestNode)
+  public:
+  TestNode(const uhal::Node& aNode) :
+    uhal::Node(aNode) { }
+  virtual ~TestNode() { }
+  void write(string reg, unsigned aData) const;
+  unsigned read(string reg) const;
+};
 class SPEED_TEST
 {
  public:
