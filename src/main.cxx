@@ -20,8 +20,7 @@ int main(int argc, char* argv[])
 	
 	int cmd;
 	bool stop = true;
-	string apollo_connections_file;
-	string emp_connections_file;
+	string connections_file;
 	string node;
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
@@ -30,8 +29,7 @@ int main(int argc, char* argv[])
 		("command,c", po::value<int>(&cmd), "select command to run")
 		("stop,s", po::value<bool>(&stop), "set to false to let it run until SIGINT")
 		("list_commands,l", "list available commands")
-		("apollo_connections_file,a", po::value<string>(&apollo_connections_file)->default_value("/opt/address_table/connections.xml"), "full path to apollo connections file")
-		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to emp connections file")
+		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
 		;
 	
@@ -55,22 +53,20 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	emp::SPEED_TEST* t = new emp::SPEED_TEST();
-
-	if(cmd == 1 || cmd  == 2){
-		ApolloSM * sm = NULL;
-		vector<std::string> arg;
-		arg.push_back(apollo_connections_file);
-		sm = new ApolloSM(arg);
-		if(NULL == sm) {
-			printf("Failed to create new ApolloSM\n");
-			return -1;
-		}
-		else{
-			printf("Created new ApolloSM\n");      
-		}
-		t->SM = sm;
+	ApolloSM * sm = NULL;  
+	vector<std::string> arg;
+	arg.push_back(connections_file);
+	sm = new ApolloSM(arg);
+	if(NULL == sm) {
+		printf("Failed to create new ApolloSM\n");
+		return -1;
 	}
+	else{
+		printf("Created new ApolloSM\n");      
+	}
+
+	emp::SPEED_TEST* t = new emp::SPEED_TEST();
+	t->SM = sm;
 
 	uint64_t loops = 0;
 
@@ -95,7 +91,7 @@ int main(int argc, char* argv[])
 		t->uio_direct_sigbus(node,loops);
 		break;
 	case 6:
-		t->empSpeedTest(node,loops,emp_connections_file);
+		t->empSpeedTest(node,loops);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;

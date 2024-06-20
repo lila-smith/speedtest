@@ -76,7 +76,7 @@ class SPEED_TEST
   int uio_direct_sigbus(string reg, uint64_t loops);
 
   //using emp to write through IPBUS to the CM
-  int empSpeedTest(string reg, uint64_t loops, string emp_connections_file);
+  int empSpeedTest(string reg, uint64_t loops);
 };
 }
 
