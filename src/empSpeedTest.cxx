@@ -30,7 +30,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
-  const std::string lConnectionFilePath = emp_connections_file;
+  const std::string lConnectionFilePath = "/opt/address_table/emp_connections.xml";
   const std::string lDeviceId = "F1_IPBUS";
   const std::string lRegisterName = reg;
 
