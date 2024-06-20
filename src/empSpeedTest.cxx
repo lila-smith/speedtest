@@ -39,7 +39,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
   cout << endl << "empSpeedTest" << endl 
-       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << emp_connections_file 
+       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
 	    << endl << endl;
 
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
