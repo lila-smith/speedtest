@@ -13,13 +13,13 @@
 
 namespace emp {
 
-int SPEED_TEST::uio_direct(string reg, uint64_t loops)
+int SPEED_TEST::uio_direct(string reg, uint64_t loops , uint32_t uio_address)
 {
     uint32_t write_mem;
     uint32_t read_mem;
     double speed;
 
-    uint32_t address= 0x000007F0;
+    uint32_t address= uio_address;
     uint32_t count = 1;
     char* UIO_DEBUG = getenv("UIO_DEBUG");
 

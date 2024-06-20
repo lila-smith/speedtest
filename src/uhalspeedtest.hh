@@ -67,13 +67,13 @@ class SPEED_TEST
   int AXI_C2C_loop_back_test(string node, uint64_t loops);
 
   //Fastest speeds by using UIO
-  int uio_direct(string reg, uint64_t loops);
+  int uio_direct(string reg, uint64_t loops, uint32_t uio_address);
 
   //Same as uio but performs mock map search to simulate uhalspeedtest
-  int uio_direct_mock_map(string reg, uint64_t loops);
+  int uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_address);
 
   //Same as uio but sets up BUS_ERROR_PROTECTION
-  int uio_direct_sigbus(string reg, uint64_t loops);
+  int uio_direct_sigbus(string reg, uint64_t loops, uint32_t uio_address);
 
   //using emp to write through IPBUS to the CM
   int empSpeedTest(string reg, uint64_t loops, string emp_connections_file);

@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
 	
 	int cmd;
 	bool stop = true;
+	uint32_t uio_address;
 	string connections_file;
 	string emp_connections_file;
 	string node;
@@ -32,6 +33,7 @@ int main(int argc, char* argv[])
 		("list_commands,l", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
+		("uio_address,u", po::value<uint32_t>(&uio_address)->default_value(0x000007F0), "uio address from top node")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
 		;
 	
@@ -84,13 +86,13 @@ int main(int argc, char* argv[])
 		t->AXI_C2C_loop_back_test(node,loops);
 		break;
 	case 3:
-		t->uio_direct(node,loops);
+		t->uio_direct(node,loops,uio_address);
 		break;
 	case 4:
-		t->uio_direct_mock_map(node,loops);
+		t->uio_direct_mock_map(node,loops,uio_address);
 		break;
 	case 5:
-		t->uio_direct_sigbus(node,loops);
+		t->uio_direct_sigbus(node,loops,uio_address);
 		break;
 	case 6:
 		t->empSpeedTest(node,loops, emp_connections_file);
