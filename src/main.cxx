@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
 	
 	int cmd;
 	bool stop = true;
+	string uio_address_str;
 	uint32_t uio_address;
 	string connections_file;
 	string emp_connections_file;
@@ -33,7 +34,7 @@ int main(int argc, char* argv[])
 		("list_commands,l", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
-		("uio_address,u", po::value<uint32_t>(&uio_address)->default_value(0x000007F0), "uio address from top node")
+		("uio_address_str,u", po::value<string>(&uio_address_str)->default_value("0x000007F0"), "uio address from top node")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
 		;
 	
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 6 EMP (ICRead/write) speedtest" << endl;
 		return 1;
 	}
-
+	uio_address = std::stoul(uio_address_str, nullptr, 16);
 	ApolloSM * sm = NULL;  
 	vector<std::string> arg;
 	arg.push_back(connections_file);
