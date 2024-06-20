@@ -6,15 +6,6 @@ namespace emp {
 
 UHAL_REGISTER_DERIVED_NODE(TestNode);
 
-TestNode::TestNode(const uhal::Node& aNode) :
-  uhal::Node(aNode)
-{
-}
-
-TestNode::~TestNode()
-{
-}
-
 void TestNode::write(string reg, unsigned aData) const
 {
   getNode(reg).write(aData);
@@ -91,8 +82,8 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops)
     while(GlobalVars::running){
 
       write_mem = distrib(gen);
-      TestNode::write(reg, write_mem);
-      read_mem = TestNode::read(reg);
+      testNode.write(reg, write_mem);
+      read_mem = testNode.read(reg);
 
       // write_mem = distrib(gen);
       // SM->WriteNode(node,write_mem);
