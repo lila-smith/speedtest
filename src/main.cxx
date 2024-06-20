@@ -55,22 +55,20 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	emp::SPEED_TEST* t = new emp::SPEED_TEST();
-
-	if(cmd == 1 || cmd  == 2){
-		ApolloSM * sm = NULL;
-		vector<std::string> arg;
-		arg.push_back(apollo_connections_file);
-		sm = new ApolloSM(arg);
-		if(NULL == sm) {
-			printf("Failed to create new ApolloSM\n");
-			return -1;
-		}
-		else{
-			printf("Created new ApolloSM\n");      
-		}
-		t->SM = sm;
+	ApolloSM * sm = NULL;  
+	vector<std::string> arg;
+	arg.push_back(connections_file);
+	sm = new ApolloSM(arg);
+	if(NULL == sm) {
+		printf("Failed to create new ApolloSM\n");
+		return -1;
 	}
+	else{
+		printf("Created new ApolloSM\n");      
+	}
+
+	emp::SPEED_TEST* t = new emp::SPEED_TEST();
+	t->SM = sm;
 
 	uint64_t loops = 0;
 
