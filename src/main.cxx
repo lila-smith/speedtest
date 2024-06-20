@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 	int cmd;
 	bool stop = true;
 	string connections_file;
+	string emp_connections_file;
 	string node;
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
@@ -30,6 +31,7 @@ int main(int argc, char* argv[])
 		("stop,s", po::value<bool>(&stop), "set to false to let it run until SIGINT")
 		("list_commands,l", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
+		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
 		;
 	
@@ -91,7 +93,7 @@ int main(int argc, char* argv[])
 		t->uio_direct_sigbus(node,loops);
 		break;
 	case 6:
-		t->empSpeedTest(node,loops);
+		t->empSpeedTest(node,loops, emp_connections_file);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;
