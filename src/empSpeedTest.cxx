@@ -54,9 +54,9 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
 
       write_mem = distrib(gen);
       lNode.write(write_mem);
-      lHW.dispatch();
+      //lHW.dispatch();
       read_mem = lNode.read();
-      lHW.dispatch();
+      //lHW.dispatch();
 
       // write_mem = distrib(gen);
       // testNode.write(reg, write_mem);
@@ -70,6 +70,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       // empNode.icWrite(0,write_mem,0);
       // read_mem = empNode.icRead(0,0);
 
+
       if (write_mem != read_mem.value()) {
         cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
       << ", read_mem = " << read_mem << endl << endl;
@@ -79,7 +80,11 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       if (i < 10) {
         cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;
       }
-        
+      
+      if(i%10 == 0 && i != 0){
+        lHW.dispatch();
+      }
+
       if (i%100000 == 0 && i != 0) {
         end = std::chrono::high_resolution_clock::now();
         duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
