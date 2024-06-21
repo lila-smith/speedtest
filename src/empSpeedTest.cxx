@@ -35,8 +35,8 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       lNode.write(write_mem);
       //lHW.dispatch();
       read_mem = lNode.read();
-			
-			if(i%2 == 0 && i != 0)
+
+			if(i%2 == 0)
       	lHW.dispatch();
 
       if (write_mem != read_mem.value()) {
