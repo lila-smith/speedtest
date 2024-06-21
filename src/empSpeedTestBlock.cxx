@@ -4,7 +4,7 @@
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_file)
+int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file)
 {
   std::vector<uint32_t> write_mem;
   uhal::ValVector< uint32_t > read_mem;
