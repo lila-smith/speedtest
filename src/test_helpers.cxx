@@ -1,13 +1,13 @@
 #include "uhalspeedtest.hh"
 
-void test_print(auto begin, uint64_t loops){
+void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops){
 	auto end = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 	double speed = 2.*32.*loops/duration;
 	cout << std::dec << loops << " reads done, speed = " << speed <<  " Mbps" << endl;
 }
 
-void test_summary(auto begin, uint64_t loops, string reg){
+void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, string reg){
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
