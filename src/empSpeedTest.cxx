@@ -33,7 +33,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   const std::string lDeviceId = "F1_IPBUS";
   const std::string lRegisterName = reg;
 
-  auto begin = std::chrono::high_resolution_clock::now();
+  std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
 
   cout << endl << "empSpeedTest" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
