@@ -88,5 +88,10 @@ int alabel2uio(std::string ilabel);
 
 size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
 
+void test_summary(auto begin, uint64_t loops);
+
+void test_print(auto begin, uint64_t loops);
+
+
 #endif
 
