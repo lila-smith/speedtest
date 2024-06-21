@@ -7,7 +7,7 @@ void test_print(auto begin, uint64_t loops){
 	cout << std::dec << loops << " reads done, speed = " << speed <<  " Mbps" << endl;
 }
 
-void test_summary(auto begin, uint64_t loops){
+void test_summary(auto begin, uint64_t loops, string reg){
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 

@@ -96,7 +96,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
     loops = i;
   }
 
-  test_summary(begin, loops);
+  test_summary(begin, loops, reg);
   return 0;
 }
 }

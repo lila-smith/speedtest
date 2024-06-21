@@ -90,7 +90,7 @@ size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t buffe
 
 void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops);
 
-void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops);
+void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, string reg);
 
 
 #endif
