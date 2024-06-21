@@ -22,7 +22,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   cout << endl << "empSpeedTest" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
 	    << endl << endl;
-			
+
 	// https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
@@ -33,7 +33,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
 
       write_mem = distrib(gen);
       lNode.write(write_mem);
-      lHW.dispatch();
+      //lHW.dispatch();
       read_mem = lNode.read();
       lHW.dispatch();
 
