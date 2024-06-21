@@ -39,15 +39,17 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       lNode.writeBlock(write_mem);
       read_mem = lNode.readBlock(N);
       lHW.dispatch();
-      for (size_t i=0; i!= N; ++i)
-        if (write_mem[i] != read_mem[i].value()) {
-          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-        << ", read_mem = " << read_mem << endl << endl;
+      for (size_t j=0; j < N; ++j)
+        if (write_mem[j] != read_mem[j].value()) {
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
+        << ", read_mem = " << read_mem[j].value() << endl << endl;
           return -1;
         }
 
-      if (i < 10) {
-        cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;
+      if (i < 1) {
+        for (size_t j=0; j < 10; ++j) {
+          cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j].value() << endl;
+        }
       }
         
       if (i%100000 == 0 && i != 0) {
