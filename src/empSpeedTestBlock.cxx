@@ -40,15 +40,15 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       read_mem = lNode.readBlock(N);
       lHW.dispatch();
       for (size_t j=0; j < N; ++j)
-        if (write_mem[j] != read_mem[j].value()) {
+        if (write_mem[j] != read_mem[j]) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
-        << ", read_mem = " << read_mem[j].value() << endl << endl;
+        << ", read_mem = " << read_mem[j] << endl << endl;
           return -1;
         }
 
       if (i < 1) {
         for (size_t j=0; j < 10; ++j) {
-          cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j].value() << endl;
+          cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
       }
         
@@ -70,15 +70,15 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       read_mem = lNode.readBlock(N);
       lHW.dispatch();
       for (size_t j=0; j < N; ++j)
-        if (write_mem[j] != read_mem[j].value()) {
+        if (write_mem[j] != read_mem[j]) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
-        << ", read_mem = " << read_mem[j].value() << endl << endl;
+        << ", read_mem = " << read_mem[j] << endl << endl;
           return -1;
         }
 
       if (i < 1) {
         for (size_t j=0; j < 10; ++j) {
-          cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j].value() << endl;
+          cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
       }
         
