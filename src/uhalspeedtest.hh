@@ -82,7 +82,7 @@ class SPEED_TEST
   int empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file);
 };
 };
-}
+
 
 uint64_t aSearchDeviceTree(std::string const & dvtPath,std::string const & name);
 
