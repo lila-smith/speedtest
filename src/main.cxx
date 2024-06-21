@@ -54,7 +54,8 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 3 UIO Direct speedtest" << endl; 
 		cout << "   cmd = 4 UIO Direct mock map speedtest" << endl;
 		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;
-		cout << "   cmd = 6 EMP (ICRead/write) speedtest" << endl;
+		cout << "   cmd = 6 EMP (Single Read/write) speedtest" << endl;
+		cout << "   cmd = 7 EMP (Block Read/write) speedtest" << endl;
 		return 1;
 	}
 	uio_address = std::stoul(uio_address_str, nullptr, 16);
@@ -97,6 +98,9 @@ int main(int argc, char* argv[])
 		break;
 	case 6:
 		t->empSpeedTest(node,loops, emp_connections_file);
+		break;
+	case 7:
+		t->empSpeedTestBlock(node,loops,emp_connections_file);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;

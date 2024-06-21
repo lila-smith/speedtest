@@ -6,8 +6,8 @@ namespace emp {
 
 int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_file)
 {
-  uint32_t write_mem;
-  uhal::ValWord<uint32_t> read_mem;
+  std::vector<uint32_t> write_mem;
+  uhal::ValVector< uint32_t > read_mem;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -22,26 +22,29 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   cout << endl << "empSpeedTest" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
 	    << endl << endl;
-			
-	// https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
+
+  // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode = lHW.getNode(lRegisterName);
+  const size_t N=100;
 
   if(loops != 0){
-      for(uint64_t i = 0; i < loops; ++i) {
-
-      write_mem = distrib(gen);
-      lNode.write(write_mem);
+      for(uint64_t i = 0; i < loops/N; ++i) {
+      
+        for(size_t j=0; j!= N; ++j){
+          write_mem.push_back(distrib(gen));
+        }
+      
+      lNode.writeBlock(write_mem);
+      read_mem = lNode.readBlock(N);
       lHW.dispatch();
-      read_mem = lNode.read();
-      lHW.dispatch();
-
-      if (write_mem != read_mem.value()) {
-        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-      << ", read_mem = " << read_mem << endl << endl;
-        return -1;
-      }
+      for (size_t i=0; i!= N; ++i)
+        if (write_mem[i] != read_mem[i].value()) {
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+        << ", read_mem = " << read_mem << endl << endl;
+          return -1;
+        }
 
       if (i < 10) {
         cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;
@@ -57,17 +60,19 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
     uint64_t i = 0;
     while(GlobalVars::running){
 
-      write_mem = distrib(gen);
-      lNode.write(write_mem);
+      for(size_t j=0; j!= N; ++j){
+          write_mem.push_back(distrib(gen));
+        }
+      
+      lNode.writeBlock(write_mem);
+      read_mem = lNode.readBlock(N);
       lHW.dispatch();
-      read_mem = lNode.read();
-      lHW.dispatch();
-
-      if (write_mem != read_mem.value()) {
-        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-      << ", read_mem = " << read_mem << endl << endl;
-        return -1;
-      }
+      for (size_t i=0; i!= N; ++i)
+        if (write_mem[i] != read_mem[i].value()) {
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+        << ", read_mem = " << read_mem << endl << endl;
+          return -1;
+        }
 
       if (i < 10) {
         cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;
