@@ -35,9 +35,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       lNode.write(write_mem);
       //lHW.dispatch();
       read_mem = lNode.read();
-
-			if(i%2 == 0)
-      	lHW.dispatch();
+      lHW.dispatch();
 
       if (write_mem != read_mem.value()) {
         cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
