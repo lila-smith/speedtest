@@ -6,7 +6,6 @@ namespace emp {
 
 int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file)
 {
-  std::vector<uint32_t> write_mem;
   uhal::ValVector< uint32_t > read_mem;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -31,6 +30,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
 
   if(loops != 0){
       for(uint64_t i = 0; i < loops/N; ++i) {
+        std::vector<uint32_t> write_mem;
       
         for(size_t j=0; j!= N; ++j){
           write_mem.push_back(distrib(gen));
@@ -61,6 +61,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   // infinite loop to end by sigint
     uint64_t i = 0;
     while(GlobalVars::running){
+      std::vector<uint32_t> write_mem;
 
       for(size_t j=0; j!= N; ++j){
           write_mem.push_back(distrib(gen));
