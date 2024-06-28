@@ -26,10 +26,10 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode = lHW.getNode(lRegisterName);
-  const size_t N=10;
+  const size_t N=100;
 
   if(loops != 0){
-      for(uint64_t i = 0; i < loops/N; ++i) {
+      for(uint64_t i = 0; i < loops; ++i) {
         std::vector<uint32_t> write_mem;
       
         for(size_t j=0; j!= N; ++j){
@@ -53,7 +53,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i);
+        test_print(begin, i, N);
       }
 
     }
@@ -84,14 +84,14 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i);
+        test_print(begin, i, N);
       }
       i++;
     }
     loops = i;
   }
 
-  test_summary(begin, loops, reg);
+  test_summary(begin, loops, reg, N);
   return 0;
 }
 }

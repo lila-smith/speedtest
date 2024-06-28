@@ -92,9 +92,13 @@ int alabel2uio(std::string ilabel);
 
 size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
 
-void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, string reg);
+void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, std::string reg);
+
+void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, std::string reg, uint32_t block_size);
 
 void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops);
+
+void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, uint32_t block_size);
 
 
 #endif
