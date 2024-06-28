@@ -40,10 +40,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
       }
         
       if (i%100000 == 0 && i != 0) {
-        end = std::chrono::high_resolution_clock::now();
-        duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-        speed = 2.*32.*i/duration;
-        cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+        test_print(begin, i);
       }
 
     }
@@ -75,14 +72,7 @@ int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
     }
     loops = i;
   }
-  end = std::chrono::high_resolution_clock::now();
-  duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-
-  cout << endl << "Speed test: " << std::dec << loops << " write-reads of " << reg << endl;
-  cout << duration << " us total, average : " << duration / loops << " us." << endl;
-
-  speed = 2.*32.*loops/duration;
-  cout << "Speed = " << speed << " Mbps" << endl;
+  test_summary(begin, loops, reg);
 
   return 0;
 }

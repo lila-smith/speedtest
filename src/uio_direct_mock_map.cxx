@@ -112,10 +112,7 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_add
         }
         
         if (i%100000 == 0 && i != 0) {
-          end = std::chrono::high_resolution_clock::now();
-          duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-          speed = 2.*32.*i/duration;
-          cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+          test_print(begin, i);
         }
 
       }
@@ -141,24 +138,13 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_add
         }
         
         if (i%100000 == 0 && i != 0) {
-          end = std::chrono::high_resolution_clock::now();
-          duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-          speed = 2.*32.*i/duration;
-          cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+          test_print(begin, i);
         }
         i++;
       }
       loops = i;
     }
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-
-    cout << endl << "Speed test: " << std::dec << loops << " write-reads of " << reg << endl;
-    cout << duration << " us total, average : " << (double) duration / loops << " us." << endl;
-
-    speed = 2.*32.*loops/duration;
-    cout << "Speed = " << speed << " Mbps" << endl;
-
+    test_summary(begin, loops, reg);
     return 0;
 }
 }
