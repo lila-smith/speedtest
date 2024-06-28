@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
 	string emp_connections_file;
 	string node;
 	size_t block_size;
+	uint64_t loops = 0;
 
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
@@ -37,6 +38,7 @@ int main(int argc, char* argv[])
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
 		("block_size,s", po::value<size_t>(&block_size)->default_value(100), "block size for block read/write speedtest")
+		("loops,l", po::value<uint64_t>(&loops)->default_value(1000000), "number of loops for speedtest")
 		("uio_address_str,u", po::value<string>(&uio_address_str)->default_value("0x000007F0"), "uio address from top node")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
 		;
@@ -77,10 +79,8 @@ int main(int argc, char* argv[])
 	emp::SPEED_TEST* t = new emp::SPEED_TEST();
 	t->SM = sm;
 
-	uint64_t loops = 0;
-
-	if(stop){
-		loops = 1000000;
+	if(!stop){
+		loops = 0;
 	}
 
 	switch(cmd) {
