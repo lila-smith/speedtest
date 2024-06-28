@@ -59,7 +59,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
 
       write_mem = distrib(gen);
       lNode.write(write_mem);
-      lHW.dispatch();
+      //lHW.dispatch();
       read_mem = lNode.read();
       lHW.dispatch();
 
