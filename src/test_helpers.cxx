@@ -29,9 +29,10 @@ void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> be
 
   double speed = 32.*loops*1e6/ (duration * 1048576.);
   double size = 4.*loops / 1048576.;
+  double size_bits = size * 8;
   double time = duration / 1e6;
   cout << "Speed = " << speed << " Mbps" << endl;
-  cout << "Total Size of transfer = " << size << " MB (" << (size * 8) " Mb ) over a period of " << time << endl;
+  cout << "Total Size of transfer = " << size << " MB (" << size_bits <<  " Mb ) over a period of " << time << endl;
 
 }
 
@@ -44,8 +45,9 @@ void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> be
 
   double speed = (32. * loops * block_size * 1e6) / (duration * 1048576.) ;
   double size = 4. * loops * block_size / 1048576.;
+  double size_bits = size * 8;
   double time = duration / 1e6;
 
   cout << "Speed = " << speed << " Mbps" << endl;
-  cout << "Total Size of transfer = " << size << " MB (" << (size * 8) " Mb ) over a period of " << time  << endl;
+  cout << "Total Size of transfer = " << size << " MB (" << size_bits << " Mb ) over a period of " << time  << endl;
 }
