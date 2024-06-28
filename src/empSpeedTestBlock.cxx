@@ -27,7 +27,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode = lHW.getNode(lRegisterName);
-  const size_t N=100;
+  const size_t N=10;
 
   if(loops != 0){
       for(uint64_t i = 0; i < loops/N; ++i) {
