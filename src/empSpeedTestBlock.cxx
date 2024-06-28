@@ -4,7 +4,7 @@
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file)
+int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size)
 {
   uhal::ValVector< uint32_t > read_mem;
 
@@ -18,7 +18,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
 
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
 
-  cout << endl << "empSpeedTest" << endl 
+  cout << endl << "empSpeedTestBlock" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
 	    << endl << endl;
 
@@ -26,20 +26,19 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode = lHW.getNode(lRegisterName);
-  const size_t N=100;
 
   if(loops != 0){
       for(uint64_t i = 0; i < loops; ++i) {
         std::vector<uint32_t> write_mem;
       
-        for(size_t j=0; j!= N; ++j){
+        for(size_t j=0; j!= block_size; ++j){
           write_mem.push_back(distrib(gen));
         }
       
       lNode.writeBlock(write_mem);
-      read_mem = lNode.readBlock(N);
+      read_mem = lNode.readBlock(block_size);
       lHW.dispatch();
-      for (size_t j=0; j < N; ++j)
+      for (size_t j=0; j < block_size; ++j)
         if (write_mem[j] != read_mem[j]) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
         << ", read_mem = " << read_mem[j] << endl << endl;
@@ -53,7 +52,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i, N);
+        test_print(begin, i, block_size);
       }
 
     }
@@ -63,14 +62,14 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
     while(GlobalVars::running){
       std::vector<uint32_t> write_mem;
 
-      for(size_t j=0; j!= N; ++j){
+      for(size_t j=0; j!= block_size; ++j){
           write_mem.push_back(distrib(gen));
         }
       
       lNode.writeBlock(write_mem);
-      read_mem = lNode.readBlock(N);
+      read_mem = lNode.readBlock(block_size);
       lHW.dispatch();
-      for (size_t j=0; j < N; ++j)
+      for (size_t j=0; j < block_size; ++j)
         if (write_mem[j] != read_mem[j]) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
         << ", read_mem = " << read_mem[j] << endl << endl;
@@ -84,14 +83,14 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i, N);
+        test_print(begin, i, block_size);
       }
       i++;
     }
     loops = i;
   }
 
-  test_summary(begin, loops, reg, N);
+  test_summary(begin, loops, reg, block_size);
   return 0;
 }
 }

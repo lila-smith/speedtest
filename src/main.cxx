@@ -25,6 +25,8 @@ int main(int argc, char* argv[])
 	string connections_file;
 	string emp_connections_file;
 	string node;
+	size_t block_size;
+
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
 	desc.add_options()
@@ -34,6 +36,7 @@ int main(int argc, char* argv[])
 		("list_commands,l", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
+		("block_size,s", po::value<size_t>(&block_size)->default_value(100), "block size for block read/write speedtest")
 		("uio_address_str,u", po::value<string>(&uio_address_str)->default_value("0x000007F0"), "uio address from top node")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
 		;
@@ -100,7 +103,7 @@ int main(int argc, char* argv[])
 		t->empSpeedTest(node,loops, emp_connections_file);
 		break;
 	case 7:
-		t->empSpeedTestBlock(node,loops,emp_connections_file);
+		t->empSpeedTestBlock(node,loops,emp_connections_file, block_size);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;

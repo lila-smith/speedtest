@@ -79,7 +79,7 @@ class SPEED_TEST
   int empSpeedTest(string reg, uint64_t loops, string emp_connections_file);
 
   //using emp to write through IPBUS to the CM with Block Read/Write
-  int empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file);
+  int empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size);
 };
 };
 
