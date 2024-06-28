@@ -45,7 +45,6 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops , uint32_t uio_addr
 {
     uint32_t write_mem;
     uint32_t read_mem;
-    double speed;
 
     uint32_t address= uio_address;
     uint32_t count = 1;
@@ -88,8 +87,7 @@ int SPEED_TEST::uio_direct_sigbus(string reg, uint64_t loops , uint32_t uio_addr
     std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
     auto begin = std::chrono::high_resolution_clock::now();
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
+
     uhal_mock::UIO* mock_uio = new uhal_mock::UIO();
     mock_uio->SetupSignalHandler();
     

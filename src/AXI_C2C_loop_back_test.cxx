@@ -8,15 +8,12 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint64_t loops)
   uint32_t write_mem;
   uint32_t read_mem;
 
-  double speed;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
   auto begin = std::chrono::high_resolution_clock::now();
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
     
   cout << endl << "uhal speedtest" << endl 
        << std::dec << loops << " loops doing write-read of random 32-bit words to " << node 
@@ -70,7 +67,7 @@ int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint64_t loops)
     }
   
    
-  test_summary(begin, loops, reg);
+  test_summary(begin, loops, node);
 
   return 0;
 }

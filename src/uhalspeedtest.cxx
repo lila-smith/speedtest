@@ -7,15 +7,12 @@ int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
 {
   uint64_t write_mem;
   uint64_t read_mem;
-  double speed;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
   auto begin = std::chrono::high_resolution_clock::now();
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
     
   cout << endl << "uhal speed test (getNode)" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
@@ -63,10 +60,8 @@ int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
       }
         
       if (i%100000 == 0 && i != 0) {
-        end = std::chrono::high_resolution_clock::now();
-        duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-        speed = 2.*32.*i/duration;
-        cout << std::dec << i << " reads done, speed = " << speed <<  " Mbps" << endl;
+       test_print(begin, i);
+
       }
       i++;
     }
