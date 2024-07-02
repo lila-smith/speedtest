@@ -4,17 +4,22 @@
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_file)
+int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_file, int fpga)
 {
   uint32_t write_mem;
   uhal::ValWord<uint32_t> read_mem;
+	auto write_duration;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
   const std::string lConnectionFilePath = emp_connections_file;
-  const std::string lDeviceId = "F1_IPBUS";
+  if (fpga == 2) {
+    const std::string lDeviceId = "F2_IPBUS";
+  } else {
+    const std::string lDeviceId = "F1_IPBUS";
+  }
   const std::string lRegisterName = reg;
 
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
@@ -31,9 +36,13 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   if(loops != 0){
       for(uint64_t i = 0; i < loops; ++i) {
 
+      
       write_mem = distrib(gen);
+      std::chrono::time_point<std::chrono::high_resolution_clock> write_begin = std::chrono::high_resolution_clock::now();
+
       lNode.write(write_mem);
-      //lHW.dispatch();
+      lHW.dispatch();
+      std::chrono::time_point<std::chrono::high_resolution_clock> write_end = std::chrono::high_resolution_clock::now();
       read_mem = lNode.read();
       lHW.dispatch();
 
@@ -42,6 +51,9 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       << ", read_mem = " << read_mem << endl << endl;
         return -1;
       }
+
+      write_duration std::chrono::duration_cast<std::chrono::nanoseconds>(write_end-write_begin).count();
+
 
       if (i < 10) {
         cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;

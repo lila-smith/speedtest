@@ -76,10 +76,10 @@ class SPEED_TEST
   int uio_direct_sigbus(string reg, uint64_t loops, uint32_t uio_address);
 
   //using emp to write through IPBUS to the CM
-  int empSpeedTest(string reg, uint64_t loops, string emp_connections_file);
+  int empSpeedTest(string reg, uint64_t loops, string emp_connections_file, int fpga);
 
   //using emp to write through IPBUS to the CM with Block Read/Write
-  int empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size);
+  int empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size, int fpga);
 };
 };
 
