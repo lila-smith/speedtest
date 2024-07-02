@@ -8,7 +8,6 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
 {
   uint32_t write_mem;
   uhal::ValWord<uint32_t> read_mem;
-	auto write_duration;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -34,11 +33,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
 
       
       write_mem = distrib(gen);
-      std::chrono::time_point<std::chrono::high_resolution_clock> write_begin = std::chrono::high_resolution_clock::now();
-
       lNode.write(write_mem);
-      lHW.dispatch();
-      std::chrono::time_point<std::chrono::high_resolution_clock> write_end = std::chrono::high_resolution_clock::now();
       read_mem = lNode.read();
       lHW.dispatch();
 
@@ -47,10 +42,6 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
       << ", read_mem = " << read_mem << endl << endl;
         return -1;
       }
-
-      write_duration std::chrono::duration_cast<std::chrono::nanoseconds>(write_end-write_begin).count();
-
-
       if (i < 10) {
         cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;
       }
