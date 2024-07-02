@@ -15,7 +15,7 @@ int SPEED_TEST::empSpeedTest(string reg, uint64_t loops, string emp_connections_
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
   const std::string lConnectionFilePath = emp_connections_file;
-  const std::string lDeviceId = DeviceId
+  const std::string lDeviceId = DeviceId;
   const std::string lRegisterName = reg;
 
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
