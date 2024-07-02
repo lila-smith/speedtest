@@ -70,6 +70,7 @@ int main(int argc, char* argv[])
 	vector<std::string> arg;
 	arg.push_back(connections_file);
 	sm = new ApolloSM(arg);
+
 	if(NULL == sm) {
 		printf("Failed to create new ApolloSM\n");
 		return -1;
@@ -80,6 +81,11 @@ int main(int argc, char* argv[])
 
 	emp::SPEED_TEST* t = new emp::SPEED_TEST();
 	t->SM = sm;
+	
+	std::string DeviceId = "F1_IPBUS";
+	if(fpga == 2){
+		DeviceId = "F2_IPBUS";
+	}
 
 	if(!stop){
 		loops = 0;
@@ -102,10 +108,10 @@ int main(int argc, char* argv[])
 		t->uio_direct_sigbus(node,loops,uio_address);
 		break;
 	case 6:
-		t->empSpeedTest(node,loops, emp_connections_file, fpga);
+		t->empSpeedTest(node,loops, emp_connections_file, DeviceId);
 		break;
 	case 7:
-		t->empSpeedTestBlock(node,loops,emp_connections_file, block_size, fpga);
+		t->empSpeedTestBlock(node,loops,emp_connections_file, block_size, DeviceId);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;

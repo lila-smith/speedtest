@@ -4,7 +4,7 @@
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size, int fpga)
+int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size, string DeviceId)
 {
   uhal::ValVector< uint32_t > read_mem;
 
@@ -13,11 +13,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
   const std::string lConnectionFilePath = emp_connections_file;
-  if (fpga == 2) {
-    const std::string lDeviceId = "F2_IPBUS";
-  } else {
-    const std::string lDeviceId = "F1_IPBUS";
-  }
+  const std::string lDeviceId = DeviceId
   const std::string lRegisterName = reg;
 
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
