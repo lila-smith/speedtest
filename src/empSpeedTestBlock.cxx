@@ -20,7 +20,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
 
   cout << endl << "empSpeedTestBlock" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
-	    << endl << endl;
+	    << endl;
 
   // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
@@ -29,7 +29,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
 
   uint32_t depth = lNode.getSize();
 
-  cout << endl << "Depth of Block RAM: " << depth << "32 bit words" << endl << endl;
+  cout << endl << "Depth of Block RAM: " << depth << " 32 bit words" << endl << endl;
  
   if(loops != 0){
       uint64_t intervals = loops / 10;
