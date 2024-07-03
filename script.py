@@ -16,7 +16,7 @@ def main():
             for block_size in block_sizes:
                 command = f"./test_stand -c 7 -n payload.block_ram.MEM --block_size {block_size} -l {loop_numbers[block_size]} -f {fpga} > log/output_f{fpga}_{block_size}.txt"
                 subprocess.run(command, shell=True)
-                f = open(f"output_{fpga}_{block_size}.txt", "r")
+                f = open(f"log/output_f{fpga}_{block_size}.txt", "r")
                 output = f.readlines()
                 f.close()
                 #parse output to extract Speed = value
