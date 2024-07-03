@@ -97,8 +97,6 @@ int main(int argc, char* argv[])
 	tm *ltm = localtime(&now);
 	std::string date = std::to_string(1 + ltm->tm_mon) + "_" + std::to_string(ltm->tm_mday) + "_" + std::to_string(1900 + ltm->tm_year);
 
-	GlobalVars::logFileName = "test_log_" + date + ".txt";
-
 	switch(cmd) {
 	case 1:
 		GlobalVars::logFileName = "uhalWriteNode" + date + ".log";

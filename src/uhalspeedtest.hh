@@ -22,8 +22,7 @@ using std::endl;
 
 namespace GlobalVars {
     extern bool running;
-    FILE * testLog;
-    string logFileName;
+    extern string logFileName;
 }
 namespace emp {
 namespace uhal_mock {
