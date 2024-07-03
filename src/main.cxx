@@ -7,7 +7,7 @@ namespace po = boost::program_options;
 
 namespace GlobalVars {
   bool running = true;
-  std:string logFileName = "Invalid.log"
+  std:string logFileName = "Invalid.log";
 }
 
 void sig_handler(int signum){
