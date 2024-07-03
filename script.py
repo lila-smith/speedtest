@@ -23,19 +23,16 @@ def main():
                 speed = 0
                 for line in output:
                     if "Average Speed = " in line:
-                        speed = line.split()[-1]
+                        speed = line.split()[3] + " Mpbs"
                         break  
                 for line in output:
                     if "Total Size of transfer = " in line:
-                        transfer_size = (line.split()[-1]).split("B")[0]
+                        transfer_size = line.split()[5] + " MB"
                         break 
                 f.write(f"{block_size}, {speed}, {loop_numbers[block_size]}, {transfer_size}\n")
                 f.flush()
             f.close()
 
             
-        
-
-
 if __name__ == '__main__':   
     main()
