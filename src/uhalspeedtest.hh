@@ -22,6 +22,8 @@ using std::endl;
 
 namespace GlobalVars {
     extern bool running;
+    FILE * testLog;
+    string logFileName;
 }
 namespace emp {
 namespace uhal_mock {
@@ -41,15 +43,6 @@ namespace uhal_mock {
       struct sigaction saBusError_old;
   };
 }
-// class TestNode : public uhal::Node {
-//   UHAL_DERIVEDNODE(TestNode)
-//   public:
-//   TestNode(const uhal::Node& aNode) :
-//     uhal::Node(aNode) { }
-//   virtual ~TestNode() { }
-//   void write(string reg, unsigned aData) const;
-//   unsigned read(string reg) const;
-// };
 class SPEED_TEST
 {
  public:
@@ -57,14 +50,13 @@ class SPEED_TEST
   SPEED_TEST(){
     //    cout << "In the constructor" << endl;
   };
-
   ApolloSM * SM;
-
+  
   //my own test using getNode for faster sppeds
-  int uhalspeedtest(string reg, uint64_t loops);
+  int uhalWriteNode(string reg, uint64_t loops);
 
   //From Butler's code, should be no different
-  int AXI_C2C_loop_back_test(string node, uint64_t loops);
+  int uhalWriteRegister(string node, uint64_t loops);
 
   //Fastest speeds by using UIO
   int uio_direct(string reg, uint64_t loops, uint32_t uio_address);

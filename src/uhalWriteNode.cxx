@@ -3,7 +3,7 @@
 #include <random>
 namespace emp {
 
-int SPEED_TEST::uhalspeedtest(string reg, uint64_t loops)
+int SPEED_TEST::uhalWriteNode(string reg, uint64_t loops)
 {
   uint64_t write_mem;
   uint64_t read_mem;

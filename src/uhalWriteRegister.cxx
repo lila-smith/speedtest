@@ -3,7 +3,7 @@
 #include <random>
 namespace emp {
 
-int SPEED_TEST::AXI_C2C_loop_back_test(string node, uint64_t loops)
+int SPEED_TEST::uhalWriteRegister(string node, uint64_t loops)
 {
   uint32_t write_mem;
   uint32_t read_mem;

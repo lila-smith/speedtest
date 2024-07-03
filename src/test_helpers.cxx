@@ -1,8 +1,8 @@
 #include "uhalspeedtest.hh"
 /*
 1048576 is the number of bytes in a megabyte
-32 is the number of bits in a word
-4 is the number of bytes in a word
+32 is the number of bits in a word. Speed is in Mbps
+4 is the number of bytes in a word. Size in in MB
 1e6 is the number of microseconds in a second
 */
 

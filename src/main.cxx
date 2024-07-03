@@ -91,26 +91,41 @@ int main(int argc, char* argv[])
 		loops = 0;
 	}
 
+	//Create file for logging with type of test and date
+	// get date
+	time_t now = time(0);
+	tm *ltm = localtime(&now);
+	std::string date = std::to_string(1 + ltm->tm_mon) + "_" + std::to_string(ltm->tm_mday) + "_" + std::to_string(1900 + ltm->tm_year);
+
+	GlobalVars::logFileName = "test_log_" + date + ".txt";
+
 	switch(cmd) {
 	case 1:
-		t->uhalspeedtest(node,loops);
+		GlobalVars::logFileName = "uhalWriteNode" + date + ".log";
+		t->uhalWriteNode(node,loops);
 		break;
 	case 2:
-		t->AXI_C2C_loop_back_test(node,loops);
+		GlobalVars::logFileName = "uhalWriteRegister" + date + ".log";
+		t->uhalWriteRegister(node,loops);
 		break;
 	case 3:
+		GlobalVars::logFileName = "uio_direct" + date + ".log";
 		t->uio_direct(node,loops,uio_address);
 		break;
 	case 4:
+		GlobalVars::logFileName = "uio_direct_mock_map" + date + ".log";
 		t->uio_direct_mock_map(node,loops,uio_address);
 		break;
 	case 5:
+		GlobalVars::logFileName = "uio_direct_sigbus" + date + ".log";
 		t->uio_direct_sigbus(node,loops,uio_address);
 		break;
 	case 6:
+		GlobalVars::logFileName = "empSpeedTest" + date + ".log";
 		t->empSpeedTest(node,loops, emp_connections_file, DeviceId);
 		break;
 	case 7:
+		GlobalVars::logFileName = "empSpeedTestBlock" + date + ".log";
 		t->empSpeedTestBlock(node,loops,emp_connections_file, block_size, DeviceId);
 		break;
 	default:
@@ -118,6 +133,5 @@ int main(int argc, char* argv[])
 		cout << "Enter './test_stand -l' for a list of commands" << endl;
 		return -1;
 	}
-
 	return 0;
 }
