@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	signal(SIGINT,sig_handler);
 	
 	int cmd;
-	bool stop = true;
+	bool stop;
 	bool write_only;
 	int fpga;
 	string uio_address_str;
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 	desc.add_options()
 		("help,h", "produce help message")
 		("command,c", po::value<int>(&cmd), "select command to run")
-		("stop,s", po::value<bool>(&stop)->default_value(), "set to false to let it run until SIGINT")
+		("stop,s", po::value<bool>(&stop)->default_value(true), "set to false to let it run until SIGINT")
 		("list_commands,i", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
