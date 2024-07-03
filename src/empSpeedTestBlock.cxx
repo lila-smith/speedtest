@@ -27,6 +27,9 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode = lHW.getNode(lRegisterName);
 
+  uint32_t depth = lNode.getSize();
+
+  cout << endl << "Depth of Block RAM: " << depth << "32 bit words" << endl << endl;
  
   if(loops != 0){
       uint64_t intervals = loops / 10;
