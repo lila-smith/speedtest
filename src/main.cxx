@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 		("loops,l", po::value<uint64_t>(&loops)->default_value(1000000), "number of loops for speedtest")
 		("uio_address_str,u", po::value<string>(&uio_address_str)->default_value("0x000007F0"), "uio address from top node")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
-		("write_only,w", po::value<bool>(&write_only)->default_valye(false), "set to true to only write to node")
+		("write_only,w", po::value<bool>(&write_only)->default_value(false), "set to true to only write to node")
 		;
 	
 	po::variables_map vm;
