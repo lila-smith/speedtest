@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 	
 	int cmd;
 	bool stop = true;
+	bool write_only;
 	int fpga;
 	string uio_address_str;
 	uint32_t uio_address;
@@ -35,7 +36,7 @@ int main(int argc, char* argv[])
 	desc.add_options()
 		("help,h", "produce help message")
 		("command,c", po::value<int>(&cmd), "select command to run")
-		("stop,s", po::value<bool>(&stop), "set to false to let it run until SIGINT")
+		("stop,s", po::value<bool>(&stop)->default_value(), "set to false to let it run until SIGINT")
 		("list_commands,i", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
 		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
@@ -44,6 +45,7 @@ int main(int argc, char* argv[])
 		("loops,l", po::value<uint64_t>(&loops)->default_value(1000000), "number of loops for speedtest")
 		("uio_address_str,u", po::value<string>(&uio_address_str)->default_value("0x000007F0"), "uio address from top node")
 		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
+		("write_only,w", po::value<bool>(&write_only)->default_valye(false), "set to true to only write to node")
 		;
 	
 	po::variables_map vm;
@@ -93,7 +95,6 @@ int main(int argc, char* argv[])
 	}
 
 	//Create file for logging with type of test and date
-	// get date
 	time_t now = time(0);
 	tm *ltm = localtime(&now);
 	std::string date = std::to_string(1 + ltm->tm_mon) + "_" + std::to_string(ltm->tm_mday) + "_" + std::to_string(1900 + ltm->tm_year);
