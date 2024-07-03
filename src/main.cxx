@@ -7,6 +7,7 @@ namespace po = boost::program_options;
 
 namespace GlobalVars {
   bool running = true;
+  std:string logFileName = "Invalid.log"
 }
 
 void sig_handler(int signum){
@@ -96,6 +97,7 @@ int main(int argc, char* argv[])
 	time_t now = time(0);
 	tm *ltm = localtime(&now);
 	std::string date = std::to_string(1 + ltm->tm_mon) + "_" + std::to_string(ltm->tm_mday) + "_" + std::to_string(1900 + ltm->tm_year);
+	GlobalVars::logFileName = "Invalid" + date + ".log";
 
 	switch(cmd) {
 	case 1:
