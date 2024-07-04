@@ -25,8 +25,8 @@ void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> be
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
 
-  cout << endl << "Speed test: " << std::dec << loops << " write-reads of " << reg << endl;
-  cout << duration << " us total, average : " << duration / loops << " us." << endl;
+  cout << endl << "Speed test: " << std::dec << testInfo.loops << " write-reads of " << testInfo.reg << endl;
+  cout << duration << " us total, average : " << duration / testInfo.loops << " us." << endl;
 
   double speed = 32.*testInfo.loops*1e6/ (duration * 1048576.);
   double size = 4.*testInfo.loops / 1048576.;
@@ -46,7 +46,7 @@ void test_summary_b(std::chrono::time_point<std::chrono::high_resolution_clock> 
   cout << duration << " us total, average : " << duration / testInfo.loops << " us." << endl;
 
   double speed = (32. * testInfo.loops * testInfo.block_size * 1e6) / (duration * 1048576.) ;
-  double size = 4. * testInfo.loops * testInfoblock_size / 1048576.;
+  double size = 4. * testInfo.loops * testInfo.block_size / 1048576.;
   double size_bits = size * 8;
   double time = duration / 1e6;
 
