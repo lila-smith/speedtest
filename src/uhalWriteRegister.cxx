@@ -8,6 +8,7 @@ int SPEED_TEST::uhalWriteRegister(TestInfo testInfo)
   uint32_t write_mem;
   uint32_t read_mem;
 
+  uint64_t loops = testInfo.loops;
   const string node = testInfo.reg;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
