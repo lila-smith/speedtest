@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
 	bool stop;
 	int fpga;
 	string uio_address_str;
+	string connections_file;
 
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
