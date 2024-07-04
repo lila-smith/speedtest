@@ -23,7 +23,7 @@ using std::endl;
 struct TestInfo {
   std::string reg;
   uint64_t loops;
-  uint32_t block_size;
+  size_t block_size;
   uint32_t uio_address;
   bool write_only;
   std::string emp_connections_file;
