@@ -9,7 +9,7 @@
 void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, TestInfo testInfo){
 	auto end = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
-	double speed = 32.*testInfo.loops*1e6 / (testInfo.duration * 1048576.);
+	double speed = 32.*testInfo.loops*1e6 / (duration * 1048576.);
 	cout << std::dec << testInfo.loops << " reads done, speed = " << speed <<  " Mbps" << endl;
 }
 
