@@ -49,7 +49,8 @@ int SPEED_TEST::empSpeedTest(TestInfo testInfo)
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i);
+        testInfo.loops = i;
+        test_print(begin, testInfo);
       }
 
     }
