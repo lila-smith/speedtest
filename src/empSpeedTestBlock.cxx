@@ -48,12 +48,16 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         read_mem = lNode.readBlock(block_size);
       }
       lHW.dispatch();
-      for (size_t j=0; j < block_size; ++j)
-        if (write_mem[j] != read_mem[j]) {
-          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
-        << ", read_mem = " << read_mem[j] << endl << endl;
-          return -1;
+      
+      if(i<1 || testInfo.write_only == false) {
+        for (size_t j=0; j < block_size; ++j) {
+          if (write_mem[j] != read_mem[j]) {
+            cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
+          << ", read_mem = " << read_mem[j] << endl << endl;
+            return -1;
+          }
         }
+      }
 
       if (i < 1) {
         for (size_t j=0; j < 10; ++j) {
@@ -62,6 +66,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
       }
         
       if (i%intervals == 0 && i != 0) {
+        testInfo.loops = i;
         test_print_b(begin, testInfo);
       }
 

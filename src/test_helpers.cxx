@@ -18,7 +18,7 @@ void test_print_b(std::chrono::time_point<std::chrono::high_resolution_clock> be
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-begin).count();
   double speed = (32. * testInfo.loops * testInfo.block_size * 1e6) / (duration * 1048576.) ;
   std::string test_type = testInfo.write_only ? "writes" : "reads";
-	cout << std::dec << testInfo.loops << test_type + " done, speed = " << speed <<  " Mbps" << endl;
+	cout << std::dec << testInfo.loops << " " + test_type + " done, speed = " << speed <<  " Mbps" << endl;
 }
 
 void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, TestInfo testInfo){
