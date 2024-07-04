@@ -3,7 +3,7 @@
 #include <random>
 namespace emp {
 
-int SPEED_TEST::uhalWriteRegister(stestInfo testInfo)
+int SPEED_TEST::uhalWriteRegister(TestInfo testInfo)
 {
   uint32_t write_mem;
   uint32_t read_mem;

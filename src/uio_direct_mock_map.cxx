@@ -12,7 +12,7 @@
 #include "uhalspeedtest.hh"
 namespace emp {
 
-int SPEED_TEST::uio_direct_mock_map(testInfo testInfo)
+int SPEED_TEST::uio_direct_mock_map(TestInfo testInfo)
 {
     uint32_t write_mem;
     uint32_t read_mem;

@@ -4,7 +4,7 @@
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTestBlock(testInfo testInfo)
+int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
 {
   uhal::ValVector< uint32_t > read_mem;
 
