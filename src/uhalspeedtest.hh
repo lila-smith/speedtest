@@ -20,6 +20,16 @@ using std::endl;
 #include <signal.h>
 #include <boost/filesystem.hpp>
 
+struct TestInfo {
+  std::string reg;
+  uint64_t loops;
+  uint32_t block_size;
+  uint32_t uio_address;
+  bool write_only;
+  std::string emp_connections_file;
+  std::string DeviceId;
+}; 
+
 namespace GlobalVars {
     extern bool running;
     extern string logFileName;
@@ -52,25 +62,25 @@ class SPEED_TEST
   ApolloSM * SM;
   
   //my own test using getNode for faster sppeds
-  int uhalWriteNode(string reg, uint64_t loops);
+  int uhalWriteNode(TestInfo testInfo);
 
   //From Butler's code, should be no different
-  int uhalWriteRegister(string node, uint64_t loops);
+  int uhalWriteRegister(TestInfo testInfo);
 
   //Fastest speeds by using UIO
-  int uio_direct(string reg, uint64_t loops, uint32_t uio_address);
+  int uio_direct(TestInfo testInfo);
 
   //Same as uio but performs mock map search to simulate uhalspeedtest
-  int uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_address);
+  int uio_direct_mock_map(TestInfo testInfo);
 
   //Same as uio but sets up BUS_ERROR_PROTECTION
-  int uio_direct_sigbus(string reg, uint64_t loops, uint32_t uio_address);
+  int uio_direct_sigbus(TestInfo testInfo);
 
   //using emp to write through IPBUS to the CM
-  int empSpeedTest(string reg, uint64_t loops, string emp_connections_file, string DeviceId);
+  int empSpeedTest(TestInfo testInfo);
 
   //using emp to write through IPBUS to the CM with Block Read/Write
-  int empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size, string DeviceId);
+  int empSpeedTestBlock(TestInfo testInfo);
 };
 };
 
@@ -83,13 +93,13 @@ int alabel2uio(std::string ilabel);
 
 size_t aReadFileToBuffer(std::string const & fileName,char * buffer,size_t bufferSize);
 
-void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, std::string reg);
+void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, TestInfo testInfo);
 
-void test_summary(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, std::string reg, uint32_t block_size);
+void test_summary_b(std::chrono::time_point<std::chrono::high_resolution_clock> begin, TestInfo testInfo);
 
-void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops);
+void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, TestInfo testInfo);
 
-void test_print(std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t loops, uint32_t block_size);
+void test_print_b(std::chrono::time_point<std::chrono::high_resolution_clock> begin, TestInfo testInfo);
 
 
 #endif

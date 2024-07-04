@@ -3,10 +3,12 @@
 #include <random>
 namespace emp {
 
-int SPEED_TEST::uhalWriteNode(string reg, uint64_t loops)
+int SPEED_TEST::uhalWriteNode(TestInfo testInfo)
 {
   uint64_t write_mem;
   uint64_t read_mem;
+
+  uint64_t loops = testInfo.loops;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -15,9 +17,9 @@ int SPEED_TEST::uhalWriteNode(string reg, uint64_t loops)
   auto begin = std::chrono::high_resolution_clock::now();
     
   cout << endl << "uhal speed test (getNode)" << endl 
-       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
+       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << testInfo.reg 
 	    << endl << endl; 
-  uhal::Node const & node = SM->GetNode(reg);
+  uhal::Node const & node = SM->GetNode(testInfo.reg);
 
   if(loops != 0){
       for(uint64_t i = 0; i < loops; ++i) {
@@ -37,7 +39,8 @@ int SPEED_TEST::uhalWriteNode(string reg, uint64_t loops)
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i);
+        testInfo.loops = i;
+        test_print(begin, testInfo);
       }
 
     }
@@ -60,14 +63,14 @@ int SPEED_TEST::uhalWriteNode(string reg, uint64_t loops)
       }
         
       if (i%100000 == 0 && i != 0) {
-       test_print(begin, i);
-
+        testInfo.loops = i;
+        test_print(begin, testInfo);
       }
       i++;
     }
-    loops = i;
+    testInfo.loops = i;
   }
-  test_summary(begin, loops, reg);
+  test_summary(begin, testInfo);
 
   return 0;
 }

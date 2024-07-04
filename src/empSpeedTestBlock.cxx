@@ -4,7 +4,7 @@
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connections_file, size_t block_size, string DeviceId)
+int SPEED_TEST::empSpeedTestBlock(testInfo testInfo)
 {
   uhal::ValVector< uint32_t > read_mem;
 
@@ -12,9 +12,11 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
-  const std::string lConnectionFilePath = emp_connections_file;
-  const std::string lDeviceId = DeviceId;
-  const std::string lRegisterName = reg;
+  uint64_t loops = testInfo.loops;
+
+  const std::string lConnectionFilePath = testInfo.emp_connections_file;
+  const std::string lDeviceId = testInfo.DeviceId;
+  const std::string lRegisterName = testInfo.reg;
 
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
 
@@ -41,7 +43,9 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
         }
       
       lNode.writeBlock(write_mem);
-      read_mem = lNode.readBlock(block_size);
+      if(i<1 || testInfo.write_only == false){
+        read_mem = lNode.readBlock(block_size);
+      }
       lHW.dispatch();
       for (size_t j=0; j < block_size; ++j)
         if (write_mem[j] != read_mem[j]) {
@@ -57,7 +61,7 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
       }
         
       if (i%intervals == 0 && i != 0) {
-        test_print(begin, i, block_size);
+        test_print_b(begin, testInfo);
       }
 
     }
@@ -72,13 +76,17 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
         }
       
       lNode.writeBlock(write_mem);
-      read_mem = lNode.readBlock(block_size);
+      if(i<1 || testInfo.write_only == false){
+        read_mem = lNode.readBlock(block_size);
+      }
       lHW.dispatch();
-      for (size_t j=0; j < block_size; ++j)
-        if (write_mem[j] != read_mem[j]) {
-          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
-        << ", read_mem = " << read_mem[j] << endl << endl;
-          return -1;
+
+      if (i < 1 || testInfo.write_only == false) {
+        for (size_t j=0; j < block_size; ++j)
+          if (write_mem[j] != read_mem[j]) {
+            cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] << ", read_mem = " << read_mem[j] << endl << endl;
+            return -1;
+          }
         }
 
       if (i < 1) {
@@ -88,14 +96,15 @@ int SPEED_TEST::empSpeedTestBlock(string reg, uint64_t loops, string emp_connect
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i, block_size);
+        testInfo.loops = i;
+        test_print_b(begin, testInfo);
       }
       i++;
     }
-    loops = i;
+    testInfo.loops = i;
   }
 
-  test_summary(begin, loops, reg, block_size);
+  test_summary_b(begin, testInfo);
   return 0;
 }
 }

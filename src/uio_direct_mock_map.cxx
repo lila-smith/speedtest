@@ -12,17 +12,19 @@
 #include "uhalspeedtest.hh"
 namespace emp {
 
-int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_address)
+int SPEED_TEST::uio_direct_mock_map(testInfo testInfo)
 {
     uint32_t write_mem;
     uint32_t read_mem;
 
-    uint32_t address= uio_address;
+    uint64_t loops = testInfo.loops;
+
+    uint32_t address= testInfo.uio_address;
     uint32_t count = 1;
     char* UIO_DEBUG = getenv("UIO_DEBUG");
 
-    size_t delim = reg.find('.');
-    std::string device_name = reg.substr(0, delim);
+    size_t delim = testInfo.reg.find('.');
+    std::string device_name = testInfo.reg.substr(0, delim);
 
     int uio = alabel2uio(device_name);
 
@@ -86,7 +88,7 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_add
     auto begin = std::chrono::high_resolution_clock::now();
 
     cout << endl << "UIO Direct Mock Map Speedtest" << endl 
-        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << reg 
+        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << testInfo.reg 
             << endl << endl; 
     if(loops != 0){
       for(uint32_t i = 0; i < loops; ++i) {        
@@ -109,7 +111,8 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_add
         }
         
         if (i%100000 == 0 && i != 0) {
-          test_print(begin, i);
+          testInfo.loops = i;
+          test_print(begin, testInfo);
         }
 
       }
@@ -135,13 +138,14 @@ int SPEED_TEST::uio_direct_mock_map(string reg, uint64_t loops, uint32_t uio_add
         }
         
         if (i%100000 == 0 && i != 0) {
-          test_print(begin, i);
+          testInfo.loops = i;
+          test_print(begin, testInfo);
         }
         i++;
       }
-      loops = i;
+      testInfo.loops = i;
     }
-    test_summary(begin, loops, reg);
+    test_summary(begin, testInfo);
     return 0;
 }
 }

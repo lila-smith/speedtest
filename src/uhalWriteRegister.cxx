@@ -3,11 +3,12 @@
 #include <random>
 namespace emp {
 
-int SPEED_TEST::uhalWriteRegister(string node, uint64_t loops)
+int SPEED_TEST::uhalWriteRegister(stestInfo testInfo)
 {
   uint32_t write_mem;
   uint32_t read_mem;
 
+  const string node = testInfo.reg;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -36,7 +37,8 @@ int SPEED_TEST::uhalWriteRegister(string node, uint64_t loops)
       }
         
       if (i%100000 == 0 && i != 0) {
-        test_print(begin, i);
+        testInfo.loops = i;
+        test_print(begin, testInfo);
       }
     }
   }else{
@@ -59,15 +61,16 @@ int SPEED_TEST::uhalWriteRegister(string node, uint64_t loops)
         }
           
         if (i%100000 == 0 && i != 0) {
-          test_print(begin, i);
+          testInfo.loops = i;
+          test_print(begin, testInfo);
         }
         i++;
       }
-      loops = i;
+      testInfo.loops = i;
     }
   
    
-  test_summary(begin, loops, node);
+  test_summary(begin, testInfo);
 
   return 0;
 }

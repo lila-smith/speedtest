@@ -18,18 +18,11 @@ void sig_handler(int signum){
 int main(int argc, char* argv[])
 {
 	signal(SIGINT,sig_handler);
-	
+	TestInfo testInfo;
 	int cmd;
 	bool stop;
-	bool write_only;
 	int fpga;
 	string uio_address_str;
-	uint32_t uio_address;
-	string connections_file;
-	string emp_connections_file;
-	string node;
-	size_t block_size;
-	uint64_t loops = 0;
 
 	// Declare the supported options.
 	po::options_description desc("Allowed options");
@@ -39,13 +32,13 @@ int main(int argc, char* argv[])
 		("stop,s", po::value<bool>(&stop)->default_value(true), "set to false to let it run until SIGINT")
 		("list_commands,i", "list available commands")
 		("connections_file,a", po::value<string>(&connections_file)->default_value("/opt/address_table/connections.xml"), "full path to connections file")
-		("emp_connections_file,b", po::value<string>(&emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
+		("emp_connections_file,b", po::value<string>(&testInfo.emp_connections_file)->default_value("/opt/address_table/emp_connections.xml"), "full path to connections file")
 		("fpga,f", po::value<int>(&fpga)->default_value(1), "fpga number")
-		("block_size,k", po::value<size_t>(&block_size)->default_value(100), "block size for block read/write speedtest")
-		("loops,l", po::value<uint64_t>(&loops)->default_value(1000000), "number of loops for speedtest")
+		("block_size,k", po::value<size_t>(&testInfo.block_size)->default_value(100), "block size for block read/write speedtest")
+		("loops,l", po::value<uint64_t>(&testInfo.loops)->default_value(1000000), "number of loops for speedtest")
 		("uio_address_str,u", po::value<string>(&uio_address_str)->default_value("0x000007F0"), "uio address from top node")
-		("node,n", po::value<string>(&node)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
-		("write_only,w", po::value<bool>(&write_only)->default_value(false), "set to true to only write to node")
+		("node,n", po::value<string>(&testInfo.reg)->default_value("PL_MEM.SCRATCH.WORD_00"), "node for speedtests")
+		("write_only,w", po::value<bool>(&testInfo.write_only)->default_value(false), "set to true to only write to node")
 		;
 	
 	po::variables_map vm;
@@ -68,7 +61,7 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 7 EMP (Block Read/write) speedtest" << endl;
 		return 1;
 	}
-	uio_address = std::stoul(uio_address_str, nullptr, 16);
+	testInfo.uio_address = std::stoul(uio_address_str, nullptr, 16);
 	ApolloSM * sm = NULL;  
 	vector<std::string> arg;
 	arg.push_back(connections_file);
@@ -85,13 +78,13 @@ int main(int argc, char* argv[])
 	emp::SPEED_TEST* t = new emp::SPEED_TEST();
 	t->SM = sm;
 	
-	std::string DeviceId = "F1_IPBUS";
+	testInfo.DeviceId = "F1_IPBUS";
 	if(fpga == 2){
-		DeviceId = "F2_IPBUS";
+		testInfo.DeviceId = "F2_IPBUS";
 	}
 
 	if(!stop){
-		loops = 0;
+		testInfo.loops = 0;
 	}
 
 	//Create file for logging with type of test and date
@@ -103,31 +96,31 @@ int main(int argc, char* argv[])
 	switch(cmd) {
 	case 1:
 		GlobalVars::logFileName = "uhalWriteNode" + date + ".log";
-		t->uhalWriteNode(node,loops);
+		t->uhalWriteNode(testInfo);
 		break;
 	case 2:
 		GlobalVars::logFileName = "uhalWriteRegister" + date + ".log";
-		t->uhalWriteRegister(node,loops);
+		t->uhalWriteRegister(testInfo);
 		break;
 	case 3:
 		GlobalVars::logFileName = "uio_direct" + date + ".log";
-		t->uio_direct(node,loops,uio_address);
+		t->uio_direct(testInfo);
 		break;
 	case 4:
 		GlobalVars::logFileName = "uio_direct_mock_map" + date + ".log";
-		t->uio_direct_mock_map(node,loops,uio_address);
+		t->uio_direct_mock_map(testInfo);
 		break;
 	case 5:
 		GlobalVars::logFileName = "uio_direct_sigbus" + date + ".log";
-		t->uio_direct_sigbus(node,loops,uio_address);
+		t->uio_direct_sigbus(testInfo);
 		break;
 	case 6:
 		GlobalVars::logFileName = "empSpeedTest" + date + ".log";
-		t->empSpeedTest(node,loops, emp_connections_file, DeviceId);
+		t->empSpeedTest(testInfo);
 		break;
 	case 7:
 		GlobalVars::logFileName = "empSpeedTestBlock" + date + ".log";
-		t->empSpeedTestBlock(node,loops,emp_connections_file, block_size, DeviceId);
+		t->empSpeedTestBlock(testInfo);
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;
