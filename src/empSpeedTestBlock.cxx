@@ -38,16 +38,16 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
       for(uint64_t i = 0; i < loops; ++i) {
         std::vector<uint32_t> write_mem;
       
-        for(size_t j=0; j!= block_size; ++j){
+        for(size_t j=0; j!= testInfo.block_size; ++j){
           write_mem.push_back(distrib(gen));
         }
       
       lNode.writeBlock(write_mem);
       if(i<1 || testInfo.write_only == false){
-        read_mem = lNode.readBlock(block_size);
+        read_mem = lNode.readBlock(testInfo.block_size);
       }
       lHW.dispatch();
-      for (size_t j=0; j < block_size; ++j)
+      for (size_t j=0; j < testInfo.block_size; ++j)
         if (write_mem[j] != read_mem[j]) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
         << ", read_mem = " << read_mem[j] << endl << endl;
@@ -71,18 +71,18 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
     while(GlobalVars::running){
       std::vector<uint32_t> write_mem;
 
-      for(size_t j=0; j!= block_size; ++j){
+      for(size_t j=0; j!= testInfo.block_size; ++j){
           write_mem.push_back(distrib(gen));
         }
       
       lNode.writeBlock(write_mem);
       if(i<1 || testInfo.write_only == false){
-        read_mem = lNode.readBlock(block_size);
+        read_mem = lNode.readBlock(testInfo.block_size);
       }
       lHW.dispatch();
 
       if (i < 1 || testInfo.write_only == false) {
-        for (size_t j=0; j < block_size; ++j)
+        for (size_t j=0; j < testInfo.block_size; ++j)
           if (write_mem[j] != read_mem[j]) {
             cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] << ", read_mem = " << read_mem[j] << endl << endl;
             return -1;
