@@ -67,9 +67,9 @@ int SPEED_TEST::uhalWriteRegister(TestInfo testInfo)
         }
         i++;
       }
-      testInfo.loops = i;
-    }
-  
+       loops = i;
+  }
+  testInfo.loops = loops;
    
   test_summary(begin, testInfo);
 

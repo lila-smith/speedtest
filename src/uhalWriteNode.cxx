@@ -68,8 +68,9 @@ int SPEED_TEST::uhalWriteNode(TestInfo testInfo)
       }
       i++;
     }
-    testInfo.loops = i;
+    loops = i;
   }
+  testInfo.loops = loops;
   test_summary(begin, testInfo);
 
   return 0;

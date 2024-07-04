@@ -144,8 +144,9 @@ int SPEED_TEST::uio_direct_sigbus(TestInfo testInfo)
         }
         i++;
       }
-      testInfo.loops = i;
-    }
+      loops = i;
+  }
+    testInfo.loops = loops;
     mock_uio->RemoveSignalHandler();
     test_summary(begin, testInfo);
 
