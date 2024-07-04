@@ -36,13 +36,16 @@ int SPEED_TEST::empSpeedTest(TestInfo testInfo)
       
       write_mem = distrib(gen);
       lNode.write(write_mem);
-      read_mem = lNode.read();
+       if(i<10 || testInfo.write_only == false)
+        read_mem = lNode.read();
       lHW.dispatch();
 
-      if (write_mem != read_mem.value()) {
-        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-      << ", read_mem = " << read_mem << endl << endl;
-        return -1;
+      if(i<10 || testInfo.write_only == false){
+        if (write_mem != read_mem.value()) {
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+        << ", read_mem = " << read_mem << endl << endl;
+          return -1;
+        }
       }
       if (i < 10) {
         cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << std::hex << read_mem.value() << endl;
@@ -61,14 +64,16 @@ int SPEED_TEST::empSpeedTest(TestInfo testInfo)
 
       write_mem = distrib(gen);
       lNode.write(write_mem);
-      //lHW.dispatch();
-      read_mem = lNode.read();
+      if(i<10 || testInfo.write_only == false)
+        read_mem = lNode.read();
       lHW.dispatch();
 
-      if (write_mem != read_mem.value()) {
-        cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-      << ", read_mem = " << read_mem << endl << endl;
-        return -1;
+      if(i<10 || testInfo.write_only == false){
+        if (write_mem != read_mem.value()) {
+          cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
+        << ", read_mem = " << read_mem << endl << endl;
+          return -1;
+        }
       }
 
       if (i < 10) {
