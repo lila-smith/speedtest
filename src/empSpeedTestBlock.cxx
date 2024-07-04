@@ -66,7 +66,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
       }
         
       if (i%intervals == 0 && i != 0) {
-        
+        testInfo.loops = i;
         test_print_b(begin, testInfo);
       }
 
@@ -110,7 +110,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
     loops = i;
   }
   testInfo.loops = loops;
-  
+
   test_summary_b(begin, testInfo);
   return 0;
 }
