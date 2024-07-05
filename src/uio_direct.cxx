@@ -70,12 +70,17 @@ int SPEED_TEST::uio_direct(TestInfo testInfo)
           
         write_mem = distrib(gen);
         ptr[address] = write_mem;
-        read_mem = ptr[address];
+        if(i<10 || testInfo.write_only == false){
+            read_mem = ptr[address];
+        }
+
+        if(i<10 || testInfo.write_only == false){
             
         if (write_mem != read_mem) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
               << ", read_mem = " << read_mem << endl << endl;
           return -1;
+        }
         }
         
         if (i < 10) {
