@@ -32,7 +32,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
 
   uint32_t depth = lNode.getSize();
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
-  bool incremental = (lMode == uhal::defs::INCREMENTAL) 
+  bool incremental = (lMode == uhal::defs::INCREMENTAL); 
 
   cout << endl << "Depth of Block RAM: " << depth << " 32 bit words" << endl << endl;
  
@@ -46,12 +46,12 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         }
       
       lNode.writeBlock(write_mem);
-      if(i<1 || testInfo.write_only == false && incremental){
+      if((i<1 || testInfo.write_only == false) && incremental){
         read_mem = lNode.readBlock(block_size);
       }
       lHW.dispatch();
       
-      if(i<1 || testInfo.write_only == false && incremental) {
+      if((i<1 || testInfo.write_only == false) && incremental) {
         for (size_t j=0; j < block_size; ++j) {
           if (write_mem[j] != read_mem[j]) {
             cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
@@ -84,12 +84,12 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         }
       
       lNode.writeBlock(write_mem);
-      if(i<1 || testInfo.write_only == false && incremental){
+      if((i<1 || testInfo.write_only == false) && incremental){
         read_mem = lNode.readBlock(block_size);
       }
       lHW.dispatch();
 
-      if (i < 1 || testInfo.write_only == false && incremental) {
+      if ((i < 1 || testInfo.write_only == false) && incremental) {
         for (size_t j=0; j < block_size; ++j)
           if (write_mem[j] != read_mem[j]) {
             cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] << ", read_mem = " << read_mem[j] << endl << endl;
