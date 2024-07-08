@@ -33,8 +33,10 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
   uint32_t depth = lNode.getSize();
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
   bool incremental = (lMode == uhal::defs::INCREMENTAL); 
+  std::string ModeStr = (incremental) ? "INCREMENTAL" : "NON_INCREMENTAL";
 
-  cout << endl << "Depth of Block RAM: " << depth << " 32 bit words" << endl << endl;
+  cout << endl << "Depth of Block RAM: " << depth << " 32 bit words" << endl;
+  cout << "Mode:  " << ModeStr << endl << endl;
  
   if(loops != 0){
       uint64_t intervals = loops / 10;
