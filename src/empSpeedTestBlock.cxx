@@ -71,6 +71,8 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         for (size_t j=0; j < 10; ++j) {
           cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
+          for (uhal::ValVector<uint32_t>::const_iterator lIt = read_mem.begin(); lIt != read_mem.end(); lIt++)
+            std::cout << "  0x" << std::hex << *lIt << std::endl;
       }
         
       if (i%intervals == 0 && i != 0) {
