@@ -48,12 +48,14 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         }
       
       lNode.writeBlock(write_mem);
-      if((i<1 || testInfo.write_only == false) && incremental){
+      if((i<1 || testInfo.write_only == false)){
+        if(!incremental)
+          lHW.dispatch();
         read_mem = lNode.readBlock(block_size);
       }
       lHW.dispatch();
       
-      if((i<1 || testInfo.write_only == false) && incremental) {
+      if((i<1 || testInfo.write_only == false)) {
         for (size_t j=0; j < block_size; ++j) {
           if (write_mem[j] != read_mem[j]) {
             cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] 
@@ -63,7 +65,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         }
       }
 
-      if (i < 1 && incremental) {
+      if (i < 1) {
         for (size_t j=0; j < 10; ++j) {
           cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
@@ -86,12 +88,14 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         }
       
       lNode.writeBlock(write_mem);
-      if((i<1 || testInfo.write_only == false) && incremental){
+      if((i<1 || testInfo.write_only == false)){
+        if(!incremental)
+          lHW.dispatch();
         read_mem = lNode.readBlock(block_size);
       }
       lHW.dispatch();
 
-      if ((i < 1 || testInfo.write_only == false) && incremental) {
+      if ((i < 1 || testInfo.write_only == false)) {
         for (size_t j=0; j < block_size; ++j)
           if (write_mem[j] != read_mem[j]) {
             cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem[j] << ", read_mem = " << read_mem[j] << endl << endl;
@@ -99,7 +103,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
           }
         }
 
-      if (i < 1 && incremental) {
+      if (i < 1) {
         for (size_t j=0; j < 10; ++j) {
           cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
