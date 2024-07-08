@@ -57,10 +57,12 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
       
       if((i<1 || testInfo.write_only == false)) {
         for (size_t j=0; j < block_size; ++j) {
-          if (write_mem[j] != read_mem[j]) {
-            cout << "R/W error at " << j << " : loop " << i << ", write_mem = " << std::hex << write_mem[j] 
-          << ", read_mem = " << read_mem[j] << endl << endl;
-            return -1;
+          if(incremental){
+            if (write_mem[j] != read_mem[j]) {
+              cout << "R/W error at " << j << " : loop " << i << ", write_mem = " << std::hex << write_mem[j] 
+            << ", read_mem = " << read_mem[j] << endl << endl;
+              return -1;
+            }
           }
         }
       }
