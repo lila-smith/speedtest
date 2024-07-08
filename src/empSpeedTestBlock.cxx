@@ -63,7 +63,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
         }
       }
 
-      if (i < 1) {
+      if (i < 1 && incremental) {
         for (size_t j=0; j < 10; ++j) {
           cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
@@ -99,7 +99,7 @@ int SPEED_TEST::empSpeedTestBlock(TestInfo testInfo)
           }
         }
 
-      if (i < 1) {
+      if (i < 1 && incremental) {
         for (size_t j=0; j < 10; ++j) {
           cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
         }
