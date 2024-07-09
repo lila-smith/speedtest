@@ -30,6 +30,8 @@ struct TestInfo {
   std::string DeviceId;
 }; 
 
+ enum Mode {INCREMENTAL,NON_INCREMENTAL,PORT,UNKNOWN};
+
 namespace GlobalVars {
     extern bool running;
     extern string logFileName;
