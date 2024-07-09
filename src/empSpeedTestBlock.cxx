@@ -87,7 +87,7 @@ int SPEED_TEST::empSpeedTestBlock()
   return 0;
 }
 
-int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, uhal::HwInterface lHW, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals, std::vector<uint32_t>& write_mem)
+int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, uhal::HwInterface& lHW, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals, std::vector<uint32_t>& write_mem)
 {
   uhal::ValVector< uint32_t > read_mem;
 
