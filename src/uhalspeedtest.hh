@@ -30,6 +30,10 @@ struct TestInfo {
   bool write_only;
   std::string emp_connections_file;
   std::string DeviceId;
+  std::random_device rd;  //Will be used to obtain a seed for the random number engine
+  std::mt19937 gen;
+  std::uniform_int_distribution<unsigned int> distrib;
+  uhal::HwInterface lHW;
 }; 
 
  enum Mode {INCREMENTAL,NON_INCREMENTAL,PORT,UNKNOWN};
@@ -96,9 +100,7 @@ class SPEED_TEST
 
   private:
   
-  std::random_device rd;  //Will be used to obtain a seed for the random number engine
-  std::mt19937 gen;
-  std::uniform_int_distribution<unsigned int> distrib;
+
 };
 
 };

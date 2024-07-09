@@ -5,7 +5,8 @@ namespace emp {
 
 int SPEED_TEST::empSpeedTestBlock()
 {
-  uhal::ValVector< uint32_t > read_mem;
+  testInfo.gen(testInfo.rd()); //Standard mersenne_twister_engine seeded with rd()
+  testInfo.distrib(0, 0xFFFFFFFF);
 
   uint64_t loops = testInfo.loops;
 
@@ -15,10 +16,9 @@ int SPEED_TEST::empSpeedTestBlock()
 
   // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + testInfo.emp_connections_file);
-  uhal::HwInterface lHW = lConnectionMgr.getDevice(testInfo.DeviceId);
-  const uhal::Node& lNode = lHW.getNode(testInfo.reg);
+  testInfo.lHW = lConnectionMgr.getDevice(testInfo.DeviceId);
+  const uhal::Node& lNode =  testInfo.lHW.getNode(testInfo.reg);
 
-  uint32_t depth = lNode.getSize();
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
   std::string ModeStr = "UNKNOWN";
 
@@ -47,7 +47,7 @@ int SPEED_TEST::empSpeedTestBlock()
       break;
   }
   
-  cout << endl << "Depth of Block RAM: " << depth << " 32 bit words" << endl;
+  cout << endl << "Depth of Block RAM: " << lNode.getSize(); << " 32 bit words" << endl;
   cout << "Mode:  " << ModeStr << endl << endl;
   uint64_t intervals = loops / 10;
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
@@ -55,7 +55,7 @@ int SPEED_TEST::empSpeedTestBlock()
   if(loops != 0){
       
     for(uint64_t i = 0; i < loops; ++i) {
-      TestIteration(i, lNode, lHW, begin, intervals);
+      TestIteration(i, lNode, begin, intervals);
     }
 
   }else{
@@ -63,7 +63,7 @@ int SPEED_TEST::empSpeedTestBlock()
   // infinite loop to end by sigint
     uint64_t i = 0;
     while(GlobalVars::running){
-      TestIteration(i, lNode, lHW, begin, intervals);
+      TestIteration(i, lNode, begin, intervals);
       i++;
     }
     loops = i;
@@ -74,22 +74,22 @@ int SPEED_TEST::empSpeedTestBlock()
   return 0;
 }
 
-int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, uhal::HwInterface lHW, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
+int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
 {
     uhal::ValVector< uint32_t > read_mem;
     std::vector<uint32_t> write_mem;
   
     for(size_t j=0; j!= testInfo.block_size; ++j){
-      write_mem.push_back(distrib(gen));
+      write_mem.push_back(testInfo.distrib(testInfo.gen));
     }
   
   lNode.writeBlock(write_mem);
   if((i<1 || testInfo.write_only == false)){
     if(mode == NON_INCREMENTAL)
-      lHW.dispatch();
+      testInfo.lHW.dispatch();
     read_mem = lNode.readBlock(testInfo.block_size);
   }
-  lHW.dispatch();
+  testInfo.lHW.dispatch();
   
   if((i<1 || testInfo.write_only == false)) {
     for (size_t j=0; j < testInfo.block_size; ++j) {
