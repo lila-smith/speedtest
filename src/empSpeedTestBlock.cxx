@@ -17,7 +17,7 @@ int SPEED_TEST::empSpeedTestBlock()
 
   // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + testInfo.emp_connections_file);
-  testInfo.lHW = lConnectionMgr.getDevice(testInfo.DeviceId);
+  uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode =  testInfo.lHW.getNode(testInfo.reg);
 
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
@@ -48,7 +48,7 @@ int SPEED_TEST::empSpeedTestBlock()
       break;
   }
   
-  cout << endl << "Depth of Block RAM: " << lNode.getSize(); << " 32 bit words" << endl;
+  cout << endl << "Depth of Block RAM: " << lNode.getSize() << " 32 bit words" << endl;
   cout << "Mode:  " << ModeStr << endl << endl;
   uint64_t intervals = loops / 10;
   std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
@@ -56,9 +56,13 @@ int SPEED_TEST::empSpeedTestBlock()
   if(loops != 0){
       
     for(uint64_t i = 0; i < loops; ++i) {
+      std::vector<uint32_t> write_mem;
+  
+      for(size_t j=0; j!= testInfo.block_size; ++j){
+        write_mem.push_back(distrib(gen));
+      }
 
-
-      TestIteration(i, lNode, begin, intervals, write_mem);
+      TestIteration(i, lNode, lHw, begin, intervals, write_mem);
     }
 
   }else{
@@ -72,7 +76,7 @@ int SPEED_TEST::empSpeedTestBlock()
         write_mem.push_back(distrib(gen));
       }
 
-      TestIteration(i, lNode, begin, intervals, write_mem);
+      TestIteration(i, lNode, lHw, begin, intervals, write_mem);
       i++;
     }
     loops = i;
@@ -83,17 +87,17 @@ int SPEED_TEST::empSpeedTestBlock()
   return 0;
 }
 
-int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals, std::vector<uint32_t>& write_mem)
+int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, uhal::HwInterface lHW, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals, std::vector<uint32_t>& write_mem)
 {
   uhal::ValVector< uint32_t > read_mem;
 
   lNode.writeBlock(write_mem);
   if((i<1 || testInfo.write_only == false)){
     if(mode == NON_INCREMENTAL)
-      testInfo.lHW.dispatch();
+      lHW.dispatch();
     read_mem = lNode.readBlock(testInfo.block_size);
   }
-  testInfo.lHW.dispatch();
+  lHW.dispatch();
   
   if((i<1 || testInfo.write_only == false)) {
     for (size_t j=0; j < testInfo.block_size; ++j) {
