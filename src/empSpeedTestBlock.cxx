@@ -62,7 +62,7 @@ int SPEED_TEST::empSpeedTestBlock()
         write_mem.push_back(distrib(gen));
       }
 
-      TestIteration(i, lNode, lHw, begin, intervals, write_mem);
+      TestIteration(i, lNode, lHW, begin, intervals, write_mem);
     }
 
   }else{
@@ -76,7 +76,7 @@ int SPEED_TEST::empSpeedTestBlock()
         write_mem.push_back(distrib(gen));
       }
 
-      TestIteration(i, lNode, lHw, begin, intervals, write_mem);
+      TestIteration(i, lNode, lHW, begin, intervals, write_mem);
       i++;
     }
     loops = i;
