@@ -1,10 +1,9 @@
 #include "uhalspeedtest.hh"
-#include <chrono>
-#include <random>
+
 
 namespace emp {
 
-int SPEED_TEST::empSpeedTest(TestInfo testInfo)
+int SPEED_TEST::empSpeedTest()
 {
   uint32_t write_mem;
   uhal::ValWord<uint32_t> read_mem;

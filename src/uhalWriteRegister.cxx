@@ -1,9 +1,8 @@
 #include "uhalspeedtest.hh"
-#include <chrono>
-#include <random>
+
 namespace emp {
 
-int SPEED_TEST::uhalWriteRegister(TestInfo testInfo)
+int SPEED_TEST::uhalWriteRegister()
 {
   uint32_t write_mem;
   uint32_t read_mem;

@@ -88,6 +88,7 @@ int main(int argc, char* argv[])
 		testInfo.loops = 0;
 	}
 
+	t->testInfo = testInfo;
 	//Create file for logging with type of test and date
 	time_t now = time(0);
 	tm *ltm = localtime(&now);
@@ -97,31 +98,31 @@ int main(int argc, char* argv[])
 	switch(cmd) {
 	case 1:
 		GlobalVars::logFileName = "uhalWriteNode" + date + ".log";
-		t->uhalWriteNode(testInfo);
+		t->uhalWriteNode();
 		break;
 	case 2:
 		GlobalVars::logFileName = "uhalWriteRegister" + date + ".log";
-		t->uhalWriteRegister(testInfo);
+		t->uhalWriteRegister();
 		break;
 	case 3:
 		GlobalVars::logFileName = "uio_direct" + date + ".log";
-		t->uio_direct(testInfo);
+		t->uio_direct();
 		break;
 	case 4:
 		GlobalVars::logFileName = "uio_direct_mock_map" + date + ".log";
-		t->uio_direct_mock_map(testInfo);
+		t->uio_direct_mock_map();
 		break;
 	case 5:
 		GlobalVars::logFileName = "uio_direct_sigbus" + date + ".log";
-		t->uio_direct_sigbus(testInfo);
+		t->uio_direct_sigbus();
 		break;
 	case 6:
 		GlobalVars::logFileName = "empSpeedTest" + date + ".log";
-		t->empSpeedTest(testInfo);
+		t->empSpeedTest();
 		break;
 	case 7:
 		GlobalVars::logFileName = "empSpeedTestBlock" + date + ".log";
-		t->empSpeedTestBlock(testInfo);
+		t->empSpeedTestBlock();
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;

@@ -19,6 +19,8 @@ using std::endl;
 #include <string.h>
 #include <signal.h>
 #include <boost/filesystem.hpp>
+#include <chrono>
+#include <random>
 
 struct TestInfo {
   std::string reg;
@@ -59,31 +61,45 @@ class SPEED_TEST
  public:
   
   SPEED_TEST(){
-    //    cout << "In the constructor" << endl;
+    cout << "In the constructor" << endl;
+    
+
   };
   ApolloSM * SM;
   
   //my own test using getNode for faster sppeds
-  int uhalWriteNode(TestInfo testInfo);
+  int uhalWriteNode();
 
   //From Butler's code, should be no different
-  int uhalWriteRegister(TestInfo testInfo);
+  int uhalWriteRegister();
 
   //Fastest speeds by using UIO
-  int uio_direct(TestInfo testInfo);
+  int uio_direct();
 
   //Same as uio but performs mock map search to simulate uhalspeedtest
-  int uio_direct_mock_map(TestInfo testInfo);
+  int uio_direct_mock_map();
 
   //Same as uio but sets up BUS_ERROR_PROTECTION
-  int uio_direct_sigbus(TestInfo testInfo);
+  int uio_direct_sigbus();
 
   //using emp to write through IPBUS to the CM
-  int empSpeedTest(TestInfo testInfo);
+  int empSpeedTest();
 
   //using emp to write through IPBUS to the CM with Block Read/Write
-  int empSpeedTestBlock(TestInfo testInfo);
+  int empSpeedTestBlock();
+
+  int TestIteration(uint64_t i, uhal::Node& lNode, std::mt19937& gen, std::uniform_int_distribution<unsigned int>& distrib, size_t block_size, Mode mode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals);
+
+  TestInfo testInfo;
+
+  private:
+  
+  std::random_device rd;  //Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+  std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
+
 };
+
 };
 
 

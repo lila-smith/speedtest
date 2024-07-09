@@ -13,7 +13,7 @@
 
 namespace emp {
 
-int SPEED_TEST::uio_direct(TestInfo testInfo)
+int SPEED_TEST::uio_direct()
 {
      uint32_t write_mem;
     uint32_t read_mem;

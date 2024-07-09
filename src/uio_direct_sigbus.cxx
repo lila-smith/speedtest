@@ -41,7 +41,7 @@ void uhal_mock::UIO::RemoveSignalHandler(){
     sigaction(SIGBUS,&saBusError_old,NULL); //restore the signal handler from before creation for SIGBUS
 }
 
-int SPEED_TEST::uio_direct_sigbus(TestInfo testInfo)
+int SPEED_TEST::uio_direct_sigbus()
 {
     uint32_t write_mem;
     uint32_t read_mem;
