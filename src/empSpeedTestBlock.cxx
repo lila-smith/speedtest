@@ -55,7 +55,7 @@ int SPEED_TEST::empSpeedTestBlock()
   if(loops != 0){
       
     for(uint64_t i = 0; i < loops; ++i) {
-      TestIteration(i, lNode, begin, intervals);
+      TestIteration(i, lNode, lHW, begin, intervals);
     }
 
   }else{
@@ -63,7 +63,7 @@ int SPEED_TEST::empSpeedTestBlock()
   // infinite loop to end by sigint
     uint64_t i = 0;
     while(GlobalVars::running){
-      TestIteration(i, lNode, begin, intervals);
+      TestIteration(i, lNode, lHW, begin, intervals);
       i++;
     }
     loops = i;
@@ -74,7 +74,7 @@ int SPEED_TEST::empSpeedTestBlock()
   return 0;
 }
 
-int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
+int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, uhal::HwInterface lHW, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
 {
     uhal::ValVector< uint32_t > read_mem;
     std::vector<uint32_t> write_mem;
