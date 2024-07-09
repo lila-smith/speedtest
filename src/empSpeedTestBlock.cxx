@@ -8,8 +8,6 @@ int SPEED_TEST::empSpeedTestBlock()
   uhal::ValVector< uint32_t > read_mem;
 
   uint64_t loops = testInfo.loops;
-  const size_t block_size = testInfo.block_size;
-
 
   cout << endl << "empSpeedTestBlock" << endl 
        << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << testInfo.reg 
@@ -76,7 +74,7 @@ int SPEED_TEST::empSpeedTestBlock()
   return 0;
 }
 
-int SPEED_TEST::TestIteration(uint64_t i, uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
+int SPEED_TEST::TestIteration(uint64_t i, const uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
 {
     uhal::ValVector< uint32_t > read_mem;
     std::vector<uint32_t> write_mem;
