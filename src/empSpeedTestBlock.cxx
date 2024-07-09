@@ -17,7 +17,7 @@ int SPEED_TEST::empSpeedTestBlock()
 
   // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + testInfo.emp_connections_file);
-  uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
+  uhal::HwInterface lHW = lConnectionMgr.getDevice(testInfo.lDeviceId);
   const uhal::Node& lNode =  testInfo.lHW.getNode(testInfo.reg);
 
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
