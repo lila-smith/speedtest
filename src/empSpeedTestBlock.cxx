@@ -5,8 +5,9 @@ namespace emp {
 
 int SPEED_TEST::empSpeedTestBlock()
 {
-  testInfo.gen(testInfo.rd()); //Standard mersenne_twister_engine seeded with rd()
-  testInfo.distrib(0, 0xFFFFFFFF);
+  std::random_device rd;  //Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+  std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
 
   uint64_t loops = testInfo.loops;
 
