@@ -29,11 +29,7 @@ struct TestInfo {
   uint32_t uio_address;
   bool write_only;
   std::string emp_connections_file;
-  std::string DeviceId;
-  std::random_device rd;  //Will be used to obtain a seed for the random number engine
-  std::mt19937 gen;
-  std::uniform_int_distribution<unsigned int> distrib;
-  uhal::HwInterface lHW;
+  std::string DeviceId; 
 }; 
 
  enum Mode {INCREMENTAL,NON_INCREMENTAL,PORT,UNKNOWN};
@@ -65,6 +61,7 @@ class SPEED_TEST
  public:
   
   SPEED_TEST(){
+
   };
   ApolloSM * SM;
   
@@ -89,11 +86,11 @@ class SPEED_TEST
   //using emp to write through IPBUS to the CM with Block Read/Write
   int empSpeedTestBlock();
 
-  int TestIteration(uint64_t i, const uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals);
+  int TestIteration(uint64_t i, const uhal::Node& lNode, uhal::HwInterface lHW, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals, std::vector<uint32_t>& write_mem);
 
   TestInfo testInfo;
 
-  Mode mode;
+  Mode mode; 
 
 };
 
