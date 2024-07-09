@@ -17,8 +17,8 @@ int SPEED_TEST::empSpeedTestBlock()
 
   // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + testInfo.emp_connections_file);
-  uhal::HwInterface lHW = lConnectionMgr.getDevice(testInfo.lDeviceId);
-  const uhal::Node& lNode =  testInfo.lHW.getNode(testInfo.reg);
+  uhal::HwInterface lHW = lConnectionMgr.getDevice(testInfo.DeviceId);
+  const uhal::Node& lNode =  lHW.getNode(testInfo.reg);
 
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
   std::string ModeStr = "UNKNOWN";
