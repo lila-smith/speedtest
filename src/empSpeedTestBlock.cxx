@@ -12,7 +12,7 @@ int SPEED_TEST::empSpeedTestBlock()
 
 
   cout << endl << "empSpeedTestBlock" << endl 
-       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
+       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << testInfo.reg 
 	    << endl;
 
   // https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
@@ -22,7 +22,6 @@ int SPEED_TEST::empSpeedTestBlock()
 
   uint32_t depth = lNode.getSize();
   uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
-  Mode mode = UNKNOWN;
   std::string ModeStr = "UNKNOWN";
 
   switch (lMode)
@@ -58,7 +57,7 @@ int SPEED_TEST::empSpeedTestBlock()
   if(loops != 0){
       
     for(uint64_t i = 0; i < loops; ++i) {
-      TestIteration(testInfo, i, lNode, gen, distrib, block_size, mode, begin, intervals);
+      TestIteration(testInfo, i, lNode, block_size, begin, intervals);
     }
 
   }else{
@@ -66,7 +65,7 @@ int SPEED_TEST::empSpeedTestBlock()
   // infinite loop to end by sigint
     uint64_t i = 0;
     while(GlobalVars::running){
-      TestIteration(i, lNode, gen, distrib, block_size, mode, begin, intervals);
+      TestIteration(i, lNode, block_size, begin, intervals);
       i++;
     }
     loops = i;
@@ -77,7 +76,7 @@ int SPEED_TEST::empSpeedTestBlock()
   return 0;
 }
 
-void SPEED_TEST::TestIteration(uint64_t i, uhal::Node& lNode, Mode mode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
+void SPEED_TEST::TestIteration(uint64_t i, uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals)
 {
     uhal::ValVector< uint32_t > read_mem;
     std::vector<uint32_t> write_mem;

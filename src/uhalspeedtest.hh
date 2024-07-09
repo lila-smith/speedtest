@@ -62,7 +62,9 @@ class SPEED_TEST
   
   SPEED_TEST(){
     cout << "In the constructor" << endl;
-    
+    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
+
 
   };
   ApolloSM * SM;
@@ -88,16 +90,16 @@ class SPEED_TEST
   //using emp to write through IPBUS to the CM with Block Read/Write
   int empSpeedTestBlock();
 
-  int TestIteration(uint64_t i, uhal::Node& lNode, std::mt19937& gen, std::uniform_int_distribution<unsigned int>& distrib, size_t block_size, Mode mode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals);
+  int TestIteration(uint64_t i, uhal::Node& lNode, std::chrono::time_point<std::chrono::high_resolution_clock> begin, uint64_t intervals);
 
   TestInfo testInfo;
+
+  Mode mode;
 
   private:
   
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
-  std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-  std::uniform_int_distribution<unsigned int> distrib(0, 0xFFFFFFFF);
-
+  
 };
 
 };
