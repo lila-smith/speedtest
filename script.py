@@ -33,7 +33,7 @@ def main():
                         break  # Assuming there's only one such line, exit the loop after finding it
 
                 loop_numbers = generate_loop_numbers(int(max_block_size))
-
+                print (loop_numbers)
                 for block_size in block_sizes:
 
                     command = f"./test_stand -c 7 -n payload.block_ram{bram}.MEM --block_size {block_size} -l {loop_numbers[block_size]} -f {fpga} -w true > log/output_f{fpga}_bram{bram}_{block_size}.txt"
