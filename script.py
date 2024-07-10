@@ -10,12 +10,12 @@ def generate_loop_numbers(max_key):
         loop_numbers[2**i] = 2**(23-i)
     return loop_numbers
 fgpas = [1, 2]  # List of different number of FPGAs
-bram = [1,2]  # List of different BRAMs
+brams = [1,2]  # List of different BRAMs
 
 
 def main():
     for fpga in fgpas:
-        for bram in bram:
+        for bram in brams:
             with open(f'log/F{fpga}_bram{bram}.log','w') as f:
                 f.write(f"Block_Size, Speed, loops, Transfer Size\n")
                 command = f"./test_stand -c 7 -n payload.block_ram{bram}.MEM --block_size 4 -l 1000 -f {fpga} -w true > log/output_f{fpga}_bram{bram}.txt"
