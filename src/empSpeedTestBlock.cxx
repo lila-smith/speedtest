@@ -66,7 +66,8 @@ int SPEED_TEST::empSpeedTestBlock()
     }
 
   }else{
-    intervals = 100000;
+    // interval every 1 GB
+    intervals = (1073741824) / (testInfo.block_size*4) ;
   // infinite loop to end by sigint
     uint64_t i = 0;
     while(GlobalVars::running){
