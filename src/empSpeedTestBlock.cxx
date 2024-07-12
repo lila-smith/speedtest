@@ -111,7 +111,7 @@ int SPEED_TEST::TestIteration(uint64_t& i, const uhal::Node& lNode, uhal::HwInte
     }
   }
 
-  if (i < 1) {
+  if (i < 1 && testInfo.loops != 0) {
     for (size_t j=0; j < 10; ++j) {
       cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
     }
