@@ -29,6 +29,9 @@ Syntax: ./test_stand -c cmd
    cmd = 2 run AXI C2C read/write test
    cmd = 3 UIO Direct speedtest
 ```
+## Sweep
+Run `nohup python3 script.py &` to sweep the different BRAMS with different block sizes
+
 ## Expected Output
 
 ```
