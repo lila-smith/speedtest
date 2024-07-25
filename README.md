@@ -32,6 +32,10 @@ Syntax: ./test_stand -c cmd
 ## Sweep
 Run `nohup python3 script.py &` to sweep the different BRAMS with different block sizes
 
+## Bit Error Test
+
+`./test_stand -c 7 -n payload.block_ram1.MEM --block_size 262144 -s false > error_test.log &`
+
 ## Expected Output
 
 ```
