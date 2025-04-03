@@ -113,11 +113,16 @@ int SPEED_TEST::TestIteration(uint64_t& i, const uhal::Node& lNode, uhal::HwInte
   }
 
   if (i < 1 && testInfo.loops != 0) {
+    int k = 0;
     for (size_t j=0; j < 10; ++j) {
       cout << "write_mem = " << std::hex << write_mem[j] << ", read_mem = " << std::hex << read_mem[j] << endl;
     }
-      for (uhal::ValVector<uint32_t>::const_iterator lIt = read_mem.begin(); lIt != read_mem.end(); lIt++)
+      for (uhal::ValVector<uint32_t>::const_iterator lIt = read_mem.begin(); lIt != read_mem.end(); lIt++){
         std::cout << "  0x" << std::hex << *lIt << std::endl;
+        if (k > 100)
+          break;
+        k++;
+      }
   }
     
   if (i%intervals == 0 && i != 0) {
