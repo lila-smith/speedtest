@@ -20,7 +20,7 @@ int SPEED_TEST::empSpeedTestBlock()
   uhal::HwInterface lHW = lConnectionMgr.getDevice(testInfo.DeviceId);
   const uhal::Node& lNode =  lHW.getNode(testInfo.reg);
 
-  uhal::defs::BlockReadWriteMode lMode = lNode.getMode();
+  uhal::defs::BlockReadWriteMode lMode = lNode.getMode(); // Reading in the mode, this is set in the CM firmware
   std::string ModeStr = "UNKNOWN";
 
   switch (lMode)

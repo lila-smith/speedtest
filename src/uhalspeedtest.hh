@@ -71,6 +71,9 @@ class SPEED_TEST
   //From Butler's code, should be no different
   int uhalWriteRegister();
 
+  //Block read/write to SM Fabric
+  int uhalWriteBlock();
+
   //Fastest speeds by using UIO
   int uio_direct();
 
