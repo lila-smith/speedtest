@@ -119,7 +119,7 @@ int SPEED_TEST::TestIteration(uint64_t& i, const uhal::Node& lNode, uhal::HwInte
     }
       for (uhal::ValVector<uint32_t>::const_iterator lIt = read_mem.begin(); lIt != read_mem.end(); lIt++){
         std::cout << "  0x" << std::hex << *lIt << std::endl;
-        if (k > 100)
+        if (k > 10)
           break;
         k++;
       }
