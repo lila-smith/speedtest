@@ -23,8 +23,8 @@ Unload the previous firmware if loaded and load in the new firmware. Load the la
 
 ```
 uio_send.py list-devices
-uio_send.py unload-tar -u 4e2a41c3
-uio_send.py unload-tar -u e6381c46
+uio_send.py unload-tar -u {uidF1}
+uio_send.py unload-tar -u {uidF2}
 uio_send.py program-fpga -f {F1_tarball}.tgz
 uio_send.py program-fpga -f {F1_tarball}.tgz
 ```
