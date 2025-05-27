@@ -120,12 +120,14 @@ int main(int argc, char* argv[])
 		GlobalVars::logFileName = "empSpeedTest" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00")
 			testInfo.reg = "payload.block_ram1.MEM";
+			t->testInfo = testInfo;
 		t->empSpeedTest();
 		break;
 	case 7:
 		GlobalVars::logFileName = "empSpeedTestBlock" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00")
 			testInfo.reg = "payload.block_ram1.MEM";
+			t->testInfo = testInfo;
 		t->empSpeedTestBlock();
 		break;
 	default:
