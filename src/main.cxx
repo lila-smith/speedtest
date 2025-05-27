@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
 	if (vm.count("list_commands")) {
 		cout << "Syntax: ./test_stand -c cmd" << endl;    
 		cout << "   cmd = 1 uhal (getNode) speedtest" << endl;
-		cout << "   cmd = 2 run AXI C2C (getRegister) speedtest" << endl;
+		cout << "   cmd = 2 uhal (getRegister) speedtest" << endl;
 		cout << "   cmd = 3 UIO Direct speedtest" << endl; 
 		cout << "   cmd = 4 UIO Direct mock map speedtest" << endl;
 		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;

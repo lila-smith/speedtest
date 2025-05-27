@@ -31,6 +31,17 @@ uio_send.py program-fpga -f {F1_tarball}.tgz
 
 ## Running
 
+### Allowed Commands
+
+Syntax: ./test_stand -c cmd
+   cmd = 1 uhal (getNode) speedtest
+   cmd = 2 uhal (getRegister) speedtest"
+   cmd = 3 UIO Direct speedtest
+   cmd = 4 UIO Direct mock map speedtest
+   cmd = 5 UIO Direct bus error speedtest
+   cmd = 6 EMP (Single Read/write) speedtest
+   cmd = 7 EMP (Block Read/write) speedtest
+
 Example command
 
 Run the test stand with the following command:
