@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;
 		cout << "   cmd = 6 EMP (Single Read/write) speedtest" << endl;
 		cout << "   cmd = 7 EMP (Block Read/write) speedtest" << endl;
+		cout << "   cmd = 8 CDMA (?? Read/write) speedtest" << endl;
 		return 1;
 	}
 	testInfo.uio_address = std::stoul(uio_address_str, nullptr, 16);
@@ -125,6 +126,13 @@ int main(int argc, char* argv[])
 		break;
 	case 7:
 		GlobalVars::logFileName = "empSpeedTestBlock" + date + ".log";
+		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00")
+			testInfo.reg = "payload.block_ram1.MEM";
+			t->testInfo = testInfo;
+		t->empSpeedTestBlock();
+		break;
+	case 7:
+		GlobalVars::logFileName = "cdmaSpeedTest" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00")
 			testInfo.reg = "payload.block_ram1.MEM";
 			t->testInfo = testInfo;
