@@ -1,11 +1,11 @@
 #include "uhalspeedtest.hh"
 
 
-namespace cdma {
+namespace emp {
 
 int SPEED_TEST::cdmaSpeedTest()
 {
-  uint32_t write_mem;
+  // uint32_t write_mem;
   uhal::ValWord<uint32_t> read_mem;
 
   std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -18,18 +18,17 @@ int SPEED_TEST::cdmaSpeedTest()
   const std::string lDeviceId = testInfo.DeviceId;
   const std::string lRegisterName = testInfo.reg;
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
+  // std::chrono::time_point<std::chrono::high_resolution_clock> begin = std::chrono::high_resolution_clock::now();
 
-  cout << endl << "empSpeedTest" << endl 
-       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName 
-	    << ", Device ID: " lDeviceId << << endl << endl;
+  cout << endl << "cdmaSpeedTest" << endl 
+       << std::dec << loops << " loops doing write-read of incrementing 32-bit words to " << lRegisterName << ", Device ID: "  << lDeviceId << endl << endl;
 
 	// https://ipbus.web.cern.ch/doc/user/html/software/uhalQuickTutorial.html
   uhal::ConnectionManager lConnectionMgr("file://" + lConnectionFilePath);
   uhal::HwInterface lHW = lConnectionMgr.getDevice(lDeviceId);
   const uhal::Node& lNode = lHW.getNode(lRegisterName);
 
-  cout << endl << "mAddr: " << lNode.mAddr << ", mUid: " << lNode.mUid << endl << endl;
+  cout << endl << "mAddr: " << lNode.getAddress() << ", mUid: " << lNode.getId() << endl << endl;
   // if(loops != 0){
   //     for(uint64_t i = 0; i < loops; ++i) {
 
