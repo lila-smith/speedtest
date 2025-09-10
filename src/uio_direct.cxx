@@ -70,6 +70,7 @@ int SPEED_TEST::uio_direct()
           
         write_mem = distrib(gen);
         ptr[address] = write_mem;
+
         if(i<10 || testInfo.write_only == false){
             read_mem = ptr[address];
         }
@@ -84,7 +85,7 @@ int SPEED_TEST::uio_direct()
         }
         
         if (i < 10) {
-          cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << endl;
+          cout << "write_mem = " << std::hex << write_mem << ", read_mem = " << read_mem << ", address = " << address << endl;
         }
         
         if (i%100000 == 0 && i != 0) {

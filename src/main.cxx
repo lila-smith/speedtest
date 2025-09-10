@@ -60,7 +60,8 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;
 		cout << "   cmd = 6 EMP (Single Read/write) speedtest" << endl;
 		cout << "   cmd = 7 EMP (Block Read/write) speedtest" << endl;
-		cout << "   cmd = 8 CDMA (?? Read/write) speedtest" << endl;
+		cout << "   cmd = 8 C2C (mmap) speedtest" << endl;
+		cout << "   cmd = 9 C2C (mmap memcpy?) speedtest" << endl;
 		return 1;
 	}
 	testInfo.uio_address = std::stoul(uio_address_str, nullptr, 16);
@@ -134,12 +135,20 @@ int main(int argc, char* argv[])
 		t->empSpeedTestBlock();
 		break;
 	case 8:
-		GlobalVars::logFileName = "cdmaSpeedTest" + date + ".log";
+		GlobalVars::logFileName = "c2cSpeedTest" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00") {
-			testInfo.reg = "payload.block_ram1.MEM";
+			testInfo.reg = "F1_IPBUS.payload";
 			t->testInfo = testInfo;
 		}
-		t->cdmaSpeedTest();
+		t->c2cSpeedTest();
+		break;
+	case 9:
+		GlobalVars::logFileName = "psDMASpeedTest" + date + ".log";
+		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00") {
+			testInfo.reg = "F1_IPBUS.payload";
+			t->testInfo = testInfo;
+		}
+		t->psDMASpeedTest();
 		break;
 	default:
 		cout << "Invalid command = " << cmd << ", try again" << endl;
