@@ -18,7 +18,7 @@ extern "C" {
 }
 #include "cdmacdev.h"
 namespace emp {
-#define BUFFER_SIZE 2048
+#define BUFFER_SIZE 0x8010
 #define BUS_ERROR_PROTECTION(ACCESS) \
   if(SIGBUS == sigsetjmp(env,1)){						\
     uhal_mock::exception::UIOBusError * e = new uhal_mock::exception::UIOBusError();\
@@ -189,7 +189,7 @@ int SPEED_TEST::psDMASpeedTest()
         }
         
         if (i%100000 == 0 && i != 0) {
-            testInfo.loops = i;
+            testInfo.loops = i*(buffer_size/4);
             test_print(begin, testInfo);
         }
         

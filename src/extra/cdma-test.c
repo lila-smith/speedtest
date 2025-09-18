@@ -10,7 +10,7 @@
 #include "cdmacdev.h"
 #include "bram_service.h"
 // gcc cdma-test.c bram_service.c plmem_service.c -o cdma-test
-#define BUFFER_SIZE 2048
+#define BUFFER_SIZE 0x8010
 #define BRAM_BASE_ADDR 0xB0000000 // 0xA0003000
 #define BRAM_SIZE 0x1000
 
