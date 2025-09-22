@@ -29,11 +29,14 @@
 #include <linux/fs.h>
 #include <linux/platform_device.h>
 #include <linux/uaccess.h>
-
+#include <linux/ioctl.h>
 #include <linux/of_address.h>
 #include <linux/of_device.h>
 #include <linux/of_platform.h>
 #include <linux/of_dma.h>
+#include <linux/version.h>
+#include <linux/unistd.h>
+#include <linux/time.h>
 
 #include "cdmacdev.h"
 
@@ -89,8 +92,14 @@ struct cdmacdev_channel {
 
 };
 
-static struct cdmacdev_channel cdmachannel;
+struct dma_proxy {
+	int channel_count;
+	struct cdmacdev_channel *channels;
+	char **names;
+};
 
+static int total_count;
+static struct class *local_class_p = NULL;
 
 static int cdmacdev_alloc_buffer( struct cdmacdev_channel * pchan,
     struct cdmacdev_buffer * pbuf ) {
@@ -317,9 +326,8 @@ static int cdmacdev_close_channel( struct cdmacdev_channel * pchan ) {
 }
 static ssize_t cdmacdev_read( struct file * p_file, char __user * p_buf,
     size_t size, loff_t * pos ) {
-
-    struct cdmacdev_channel * pchan;
     int st;
+    struct cdmacdev_channel * pchan;
     size_t tsize;
 
     pchan = ( struct cdmacdev_channel * ) p_file -> private_data;
@@ -528,7 +536,6 @@ static long cdmacdev_ioctl( struct file * p_file, unsigned int cmd,
 static int cdmacdev_mmap( struct file * p_file, struct vm_area_struct * vma ) {
 
     struct cdmacdev_channel * pchan;
-    int st;
 
     pchan = ( struct cdmacdev_channel * ) p_file -> private_data;
 
@@ -556,30 +563,53 @@ static struct file_operations cdmacdev_fops = {
 static int cdmacdev_create_cdev( struct cdmacdev_channel * pchan, char * name ) {
 
     int st;
+    char device_name[32] = "cdmacdev";
+
 
     st = alloc_chrdev_region( & pchan -> m_devnode, 0, 1, "cdmacdev" );
     if( st ) {
         dev_err( pchan -> p_device, "Failed to allocate cdev region\n" );
         return st;
     }
-
+    printk(KERN_INFO "cdev: Initializing cdev\n");
     cdev_init( & pchan -> m_cdev, & cdmacdev_fops );
 
     pchan -> m_cdev.owner = THIS_MODULE;
-
+    printk(KERN_INFO "cdev: Adding cdev\n");
     st = cdev_add( & pchan -> m_cdev, pchan -> m_devnode, 1 );
     if( st ) {
         dev_err( pchan -> p_device, "Failed to add a character device\n" );
         goto error_1;
     }
 
-    pchan -> p_class = class_create( THIS_MODULE, DRIVER_NAME );
-    if( IS_ERR( pchan -> p_device -> class ) ) {
-        dev_err( pchan -> p_device, "Failed to create class\n" );
-        st = -EINVAL;
-        goto error_2;
-    }
+    /* Only one class in sysfs is to be created for multiple channels,
+	 * create the device in sysfs which will allow the device node
+	 * in /dev to be created
+	 */
+	if (!local_class_p) {
+        
+        printk(KERN_INFO "cdev: Creating class\n");
+        local_class_p = class_create(
+    #if LINUX_VERSION_CODE <= KERNEL_VERSION(6, 3, 13)
+                                 THIS_MODULE,
+    #endif
+                                 DRIVER_NAME
+                                 );
+		if (IS_ERR_OR_NULL(local_class_p)) {
+			dev_err(pchan->p_device, "unable to create class\n");
+            if(!local_class_p) {
+                return -ENOMEM;
+            } else {
+                return ERR_PTR(local_class_p);
+            }
+			goto error_2;
+		}
+	}
+    pchan->p_class = local_class_p;
 
+
+    printk(KERN_INFO "cdev: Creating device\n");
+    strcat(device_name, name);
     pchan -> p_classdev = device_create( pchan -> p_class, NULL,
         pchan -> m_devnode, NULL, name );
     if( IS_ERR( pchan -> p_classdev ) ) {
@@ -604,18 +634,79 @@ error_1:
 
 static int cdmacdev_probe(struct platform_device *pdev)
 {
-    int st;
+    int rc, i;
+    struct dma_proxy *lp;
+    struct device *dev = &pdev->dev;
+    printk(KERN_INFO "dma_proxy module initialized\n");
     
-    dev_info( & pdev -> dev, "probe called\n" );
-    cdmachannel.p_device = & pdev -> dev;
+    lp = (struct dma_proxy *) devm_kmalloc(&pdev->dev, sizeof(struct dma_proxy), GFP_KERNEL);
+	if (IS_ERR_OR_NULL(lp)) {
+		dev_err(dev, "Cound not allocate proxy device\n");
+        if(!lp) {
+            return -ENOMEM;
+        } else {
+            return PTR_ERR(lp);
+        }
+	}
+	dev_set_drvdata(dev, lp);
 
-    st = cdmacdev_create_cdev( & cdmachannel, CHRDEV_NAME );
-    if( st ) return st;
+    /* Figure out how many channels there are from the device tree based
+	 * on the number of strings in the dma-names property
+	 */
+	lp->channel_count = device_property_read_string_array(&pdev->dev,
+						 "dma-names", NULL, 0);
+	if (lp->channel_count <= 0)
+		return 0;
 
-    st = cdmacdev_create_channel( pdev, & cdmachannel, DMA_NAME );
-    if( st ) return st;
+	printk(KERN_INFO "CDMA Device Tree Channel Count: %d\r\n", lp->channel_count);
+    
+    /* Allocate the memory for channel names and then get the names
+    * from the device tree
+	 */
+	lp->names = devm_kmalloc_array(&pdev->dev, lp->channel_count, 
+			sizeof(char *), GFP_KERNEL);
+	if (IS_ERR_OR_NULL(lp->names)) {
+		dev_err(dev, "Cound not allocate names\n");
+        if(!lp->names) {
+            return -ENOMEM;
+        } else {
+            return PTR_ERR(lp->names);
+        }
+    }
+    
+	rc = device_property_read_string_array(&pdev->dev, "dma-names", 
+					(const char **)lp->names, lp->channel_count);
+	if (rc < 0)
+		return rc;
+	
+	/* Allocate the memory for the channels since the number is known.
+	 */
+	lp->channels = devm_kmalloc(&pdev->dev,
+			sizeof(struct cdmacdev_channel) * lp->channel_count, GFP_KERNEL);
+	if (IS_ERR_OR_NULL(lp->channels)) {
+        if(!lp->channels) {
+            return -ENOMEM;
+        } else {
+            return PTR_ERR(lp->channels);
+        }
+    }
 
-    pr_info( "cdmacdev channel successfully created\n" );
+	/* Create the channels in the proxy. The direction does not matter
+	 * as the DMA channel has it inside it and uses it, other than this will not work 
+	 * for cyclic mode.
+	 */
+	for (i = 0; i < lp->channel_count; i++) {
+		printk(KERN_INFO "Creating cdev for channel %s\r\n", lp->names[i]);
+		rc = cdmacdev_create_cdev( &lp->channels[i], lp->names[i]);
+        printk(KERN_INFO "Creating pdev for channel %s\r\n", lp->names[i]);
+        rc = cdmacdev_create_channel( pdev, &lp->channels[i], lp->names[i]); 
+
+		if (rc) 
+			return rc;
+		total_count++;
+	}
+
+    pr_info( "cdmacdev channel(s) successfully created\n" );
     
 	return 0;
 }
@@ -634,9 +725,16 @@ static int cdmacdev_destroy_cdev( struct cdmacdev_channel * pchan ) {
 
 static int cdmacdev_remove(struct platform_device *pdev)
 {
+    int i;
+    struct device *dev = &pdev->dev;
+    struct dma_proxy *lp = dev_get_drvdata(dev);
     dev_info( & pdev -> dev, "remove called\n" );
-    cdmacdev_close_channel( & cdmachannel );
-    cdmacdev_destroy_cdev( & cdmachannel );
+    for (i = 0; i < lp->channel_count; i++) {
+		printk(KERN_INFO "Removing channel %s\r\n", lp->names[i]);
+		cdmacdev_close_channel(&lp->channels[i]);
+        cdmacdev_destroy_cdev(&lp->channels[i]);
+	}
+    
     return 0;
 }
 
