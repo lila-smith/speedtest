@@ -696,6 +696,7 @@ static int cdmacdev_probe(struct platform_device *pdev)
 	 * for cyclic mode.
 	 */
 	for (i = 0; i < lp->channel_count; i++) {
+        lp->channels[i].p_device = & pdev -> dev;
 		printk(KERN_INFO "Creating cdev for channel %s\r\n", lp->names[i]);
 		rc = cdmacdev_create_cdev( &lp->channels[i], lp->names[i]);
         printk(KERN_INFO "Creating pdev for channel %s\r\n", lp->names[i]);
