@@ -51,8 +51,8 @@ MODULE_DESCRIPTION
 #define CHRDEV_NAME "cdmach"
 #define DMA_NAME "cdmach0"
 //#define BUFFER_SIZE 0x1000
-#define BUFFER_SIZE 0x8010
-#define BRAM_BASE_ADDR 0xB0010000 // 0xA0003000
+#define BUFFER_SIZE 4096
+#define BRAM_BASE_ADDR 0xB0000000 // 0xA0003000
 #define BRAM_SIZE 0x1000 // 0x1000
 #define BRAM_MAX_ADDR ( BRAM_BASE_ADDR + BRAM_SIZE )
 // #define DRAM_BASE_ADDR 0x70000000
@@ -407,6 +407,35 @@ static ssize_t cdmacdev_write( struct file * p_file, const char __user * p_buf,
 
 }
 
+static loff_t cdmacdev_llseek(struct file *p_file, loff_t off, int whence)
+{
+    struct cdmacdev_channel * pchan;
+	loff_t newpos = 0;
+    pchan = ( struct cdmacdev_channel * ) p_file -> private_data;
+
+	switch (whence) {
+	case 0: /* SEEK_SET */
+		newpos = off;
+		break;
+	case 1: /* SEEK_CUR */
+		newpos = p_file->f_pos + off;
+		break;
+	case 2: /* SEEK_END, @TODO should work from end of address space */
+		newpos = UINT_MAX + off;
+		break;
+	default: /* can't happen */
+		return -EINVAL;
+	}
+	if (newpos < 0)
+		return -EINVAL;
+	p_file->f_pos = newpos;
+
+	pr_debug("cdmacdev-llseek: pos=%lld\n", (signed long long)newpos);
+
+	return newpos;
+}
+
+
 static long cdmacdev_ioctl( struct file * p_file, unsigned int cmd,
 	unsigned long arg ) {
 
@@ -558,6 +587,7 @@ static struct file_operations cdmacdev_fops = {
     .read = cdmacdev_read,
     .write = cdmacdev_write,
     .mmap = cdmacdev_mmap,
+    .llseek = cdmacdev_llseek,
 };
 
 static int cdmacdev_create_cdev( struct cdmacdev_channel * pchan, char * name ) {

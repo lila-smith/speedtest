@@ -27,7 +27,6 @@ namespace emp {
     ACCESS;					\
   }
 static int cdma_fd;
-static unsigned char * dest_ptr;
 // sigjmp_buf static env;
 // void static signal_handler(int sig){
 //   if(SIGBUS == sig){
@@ -116,8 +115,7 @@ int SPEED_TEST::psDMASpeedTest()
     printf("addr of UIO Memory: 0x%x\n",uio_addr);
 
     // Initialize destination pointer
-    dest_ptr = ( unsigned char * ) bram_init(uio_addr, uio_size);
-    cdma_fd = open( "/dev/cdmach", O_RDWR );
+    cdma_fd = open( "/dev/cdmach0", O_RDWR );
     if( cdma_fd < 0 ) {
         printf("Failed to open /dev/cdmach\n" );
         return -1;
