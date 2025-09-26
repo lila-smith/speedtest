@@ -26,7 +26,7 @@ namespace emp {
   }else{ \
     ACCESS;					\
   }
-static int cdma_fd;
+static int cdma_fd[2];
 // sigjmp_buf static env;
 // void static signal_handler(int sig){
 //   if(SIGBUS == sig){
@@ -56,6 +56,7 @@ int SPEED_TEST::psDMASpeedTest()
     unsigned char srcbuf[ buffer_size ];
 	unsigned char dstbuf[ buffer_size ];
     unsigned char * srcp, * dstp;
+    
     FILE * size_uio;
     FILE * size_addr;
     uint64_t loops = testInfo.loops;
@@ -85,6 +86,7 @@ int SPEED_TEST::psDMASpeedTest()
     char UIOFilename[] = "/dev/uioXXXXXXXXXXXX";
     char UIOSizePath[] = "/sys/class/uio/uioXXXXXXXXXXXX/maps/map0/size";
     char UIOAddrPath[] = "/sys/class/uio/uioXXXXXXXXXXXX/maps/map0/addr";
+    char deviceFileName[] = "/dev/cdmachX";
     snprintf(UIOFilename,strlen(UIOFilename),
         "/dev/uio%d",uio);
     snprintf(UIOSizePath,strlen(UIOSizePath),
@@ -114,36 +116,41 @@ int SPEED_TEST::psDMASpeedTest()
     fscanf(size_addr,"0x%16X",&uio_addr);
     printf("addr of UIO Memory: 0x%x\n",uio_addr);
 
-    // Initialize destination pointer
-    cdma_fd = open( "/dev/cdmach0", O_RDWR );
-    if( cdma_fd < 0 ) {
-        printf("Failed to open /dev/cdmach\n" );
-        return -1;
-    }
-    status = ioctl( cdma_fd, CDMACDEV_IOC_SET_DEV_ADDR, uio_addr );
-    if( status < 0 ) {
-    	printf("ioctl IOC_SET_DEV_ADDR failed\n");
-    }
+    for(uint32_t i = 0; i < 2; ++i) {
+        snprintf(deviceFileName, sizeof(deviceFileName),
+            "/dev/cdmach%d", i);
+        // Initialize destination pointer
+        cdma_fd[i] = open( deviceFileName, O_RDWR );
+        if( cdma_fd[i] < 0 ) {
+            printf("Failed to open /dev/cdmach\n" );
+            return -1;
+        }
+        status = ioctl( cdma_fd[i], CDMACDEV_IOC_SET_DEV_ADDR, uio_addr );
+        if( status < 0 ) {
+            printf("ioctl IOC_SET_DEV_ADDR failed\n");
+        }
 
-    status = ioctl( cdma_fd, CDMACDEV_IOC_GET_DEV_ADDR, & devaddr );
-    if( status < 0 ) {
-    	printf("ioctl IOC_GET_DEV_ADDR failed\n");
-    } else {
-    	printf("ioctl IOC_GET_DEV_ADDR returned = 0x%x\n", devaddr );
-    }
+        status = ioctl( cdma_fd[i], CDMACDEV_IOC_GET_DEV_ADDR, & devaddr );
+        if( status < 0 ) {
+            printf("ioctl IOC_GET_DEV_ADDR failed\n");
+        } else {
+            printf("ioctl IOC_GET_DEV_ADDR returned = 0x%x\n", devaddr );
+        }
 
-    status = ioctl( cdma_fd, CDMACDEV_IOC_SET_CPU_ADDR, 0x0 );
-    if( status < 0 ) {
-    	printf("ioctl IOC_SET_CPU_ADDR failed\n");
-    }
+        status = ioctl( cdma_fd[i], CDMACDEV_IOC_SET_CPU_ADDR, 0x0 );
+        if( status < 0 ) {
+            printf("ioctl IOC_SET_CPU_ADDR failed\n");
+        }
 
-    status = ioctl( cdma_fd, CDMACDEV_IOC_GET_CPU_ADDR, & cpuaddr );
-    if( status < 0 ) {
-    	printf("ioctl IOC_GET_CPU_ADDR failed\n");
-    } else {
-    	printf("ioctl IOC_GET_CPU_ADDR returned = 0x%x\n", cpuaddr );
+        status = ioctl( cdma_fd[i], CDMACDEV_IOC_GET_CPU_ADDR, & cpuaddr );
+        if( status < 0 ) {
+            printf("ioctl IOC_GET_CPU_ADDR failed\n");
+        } else {
+            printf("ioctl IOC_GET_CPU_ADDR returned = 0x%x\n", cpuaddr );
+        }
+        // uint32_t * ptr = (uint32_t *) mmap(NULL, uio_size, PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
     }
-    // uint32_t * ptr = (uint32_t *) mmap(NULL, uio_size, PROT_READ|PROT_WRITE, MAP_SHARED, fdUIO,0x0);
+    
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -167,8 +174,8 @@ int SPEED_TEST::psDMASpeedTest()
             * srcp ++ = ( unsigned char ) ( distrib(gen) & 0xff );
             * dstp ++ = '\0';
 	    }
-        status = write( cdma_fd, srcbuf, buffer_size );
-        status = read( cdma_fd, dstbuf, buffer_size );
+        status = write( cdma_fd[0], srcbuf, buffer_size );
+        status = read( cdma_fd[0], dstbuf, buffer_size );
         
 
         
@@ -198,7 +205,8 @@ int SPEED_TEST::psDMASpeedTest()
     // if (munmap(ptr, uio_size) == -1) {
 	//     perror("Error un-mmapping the file");
     // }
-    close(cdma_fd);
+    close(cdma_fd[0]);
+    close(cdma_fd[1]);
     bram_exit( );
     return 0;
 }
