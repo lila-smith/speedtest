@@ -5,7 +5,7 @@ The other speedtest uses UIO direct to test read and write/read.
 ## Build/Installation
 To build the teststand, use:
 ```
-git clone git@github.com:ablaizot/speedtest.git
+git clone git@github.com:lila-smith/speedtest.git
 make
 ```
 
