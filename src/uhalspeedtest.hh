@@ -89,6 +89,12 @@ class SPEED_TEST
   //using emp to write through IPBUS to the CM with Block Read/Write
   int empSpeedTestBlock();
 
+  //using uio to write through to CM
+  int c2cSpeedTest();
+
+  //using mmaped uio memcpy to write through to CM
+  int psDMASpeedTest();
+
   int TestIteration(uint64_t& i, const uhal::Node& lNode, uhal::HwInterface& lHW, std::chrono::time_point<std::chrono::high_resolution_clock>& begin, uint64_t& intervals, std::vector<uint32_t>& write_mem);
 
   TestInfo testInfo;

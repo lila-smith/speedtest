@@ -105,7 +105,7 @@ int SPEED_TEST::uio_direct_sigbus()
             
         if (write_mem != read_mem) {
           cout << "R/W error: loop " << i << ", write_mem = " << std::hex << write_mem 
-              << ", read_mem = " << read_mem << endl << endl;
+              << ", read_mem = " << read_mem << ", address = " << address << endl << endl;
           return -1;
         }
         

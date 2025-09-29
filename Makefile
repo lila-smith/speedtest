@@ -15,10 +15,13 @@ OBJPATH=obj
 VPATH = $(SRCPATH)
 
 CXXFILES := $(notdir $(wildcard $(SRCPATH)/*.cxx))
-OBJFILES := $(CXXFILES:.cxx=.o)
+CFILES := $(notdir $(wildcard $(SRCPATH)/*.c))
+CFILES := $(filter-out cdmacdev.c,$(CFILES))
+OBJFILES := $(CXXFILES:.cxx=.o) $(CFILES:.c=.o)
 OBJFILES := $(addprefix $(OBJPATH)/,$(OBJFILES))
 
 CXX?=g++
+CC?=gcc
 
 INCLUDE_PATH += \
 							-I$(BUTOOL_PATH)/include 
@@ -115,8 +118,13 @@ clean:
 obj: 
 	mkdir obj
 
+$(OBJPATH)/%.o : %.c obj
+	${CC} -g -c $< -o $@
+	
 $(OBJPATH)/%.o : %.cxx uhalspeedtest.hh obj 
 	${CXX} ${CXX_FLAGS} ${UHAL_CXX_FLAGHS} -c $< -o $@
+
+
 
 #-include $(LIBRARY_OBJECT_FILES:.o=.d)
 
