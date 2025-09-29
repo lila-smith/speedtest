@@ -8,10 +8,6 @@ To build the teststand, use:
 git clone git@github.com:ablaizot/speedtest.git
 make
 ```
-The other speedtest compiles using 
-```
-g++ -std=c++11 -Wall -rdynamic -lboost_system -lboost_filesystem speedtest.cxx -o speedtest
-```
 
 ## Command Module Tests
 
