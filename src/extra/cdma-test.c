@@ -8,14 +8,12 @@
 #include <sys/time.h>
 #include <time.h>
 #include "cdmacdev.h"
-#include "bram_service.h"
 // gcc cdma-test.c bram_service.c plmem_service.c -o cdma-test
 #define BUFFER_SIZE 0x8010
 #define BRAM_BASE_ADDR 0xB0000000 // 0xA0003000
 #define BRAM_SIZE 0x1000
 
 static int cdma_fd;
-static unsigned char * bram_ptr;
 
 static uint64_t get_posix_clock_time_usec ()
 {
@@ -27,29 +25,6 @@ static uint64_t get_posix_clock_time_usec ()
         return 0;
 }
 
-int test1( ) {
-
-	uint64_t start_time, end_time, time_diff;
-	unsigned char buf[ BUFFER_SIZE ];
-	unsigned char * p;
-	int i;
-	int ntransfer;
-
-	printf("Test #1: transfer speed to BRAM by program control\n");
-
-	p = buf;
-	for( i = 0; i < BUFFER_SIZE; i ++ ) * p ++ = ( unsigned char )( i & 0xff );
-
-    start_time = get_posix_clock_time_usec();
-	ntransfer = bram_write( buf, 0, BUFFER_SIZE );
-    end_time = get_posix_clock_time_usec();
-    time_diff = end_time - start_time;
-
-	printf("Transferred %d bytes by program control to BRAM: elapsed = %u microseconds\n", ntransfer, time_diff);
-
-	return 0;
-
-}
 
 
 int test2( int ntransfer, int direction ) {
@@ -166,7 +141,8 @@ int test3( ) {
 
 int test4( int ntransfer ) {
 
-	unsigned char * p_psmem;
+	void* mMmapPtr;
+    // void* mMmapIOPtr;
 	int st;
 	unsigned char * p;
 	int i;
@@ -275,7 +251,6 @@ int main()
         printf("Initialized BRAM service\n");
     }
 
-    test1( );
 
     cdma_fd = open( "/dev/cdmach", O_RDWR );
     if( cdma_fd < 0 ) {
@@ -307,12 +282,11 @@ int main()
     	printf("ioctl IOC_GET_CPU_ADDR returned = 0x%x\n", cpuaddr );
     }
 
-    test2( 2048, CDMACDEV_DIR_MEM_TO_DEV );
+    test2( BUFFER_SIZE, CDMACDEV_DIR_MEM_TO_DEV );
     test3();
-    test4( 2048 );
+    test4( BUFFER_SIZE );
 
     close( cdma_fd );
-    bram_exit( );
 
     return 0;
 

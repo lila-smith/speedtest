@@ -4,7 +4,6 @@
 #include <ApolloSM/ApolloSM.hh>
 #include <ApolloSM/ApolloSM_Exceptions.hh>
 #include "uhal/uhal.hpp"
-#include "bram_service.h"
 
 #include <vector>
 using std::vector;

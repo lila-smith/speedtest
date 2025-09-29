@@ -60,8 +60,7 @@ int main(int argc, char* argv[])
 		cout << "   cmd = 5 UIO Direct bus error speedtest" << endl;
 		cout << "   cmd = 6 EMP (Single Read/write) speedtest" << endl;
 		cout << "   cmd = 7 EMP (Block Read/write) speedtest" << endl;
-		cout << "   cmd = 8 C2C (mmap) speedtest" << endl;
-		cout << "   cmd = 9 C2C (mmap memcpy?) speedtest" << endl;
+		cout << "   cmd = 8 DMA (no IPbus, Direct) speedtest" << endl;
 		return 1;
 	}
 	testInfo.uio_address = std::stoul(uio_address_str, nullptr, 16);
@@ -121,7 +120,7 @@ int main(int argc, char* argv[])
 	case 6:
 		GlobalVars::logFileName = "empSpeedTest" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00") {
-			testInfo.reg = "payload.block_ram1.MEM";
+			testInfo.reg = "payload.block_ram2.MEM";
 			t->testInfo = testInfo;
 		}
 		t->empSpeedTest();
@@ -129,20 +128,12 @@ int main(int argc, char* argv[])
 	case 7:
 		GlobalVars::logFileName = "empSpeedTestBlock" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00") {
-			testInfo.reg = "payload.block_ram1.MEM";
+			testInfo.reg = "payload.block_ram2.MEM";
 			t->testInfo = testInfo;
 		}
 		t->empSpeedTestBlock();
 		break;
 	case 8:
-		GlobalVars::logFileName = "c2cSpeedTest" + date + ".log";
-		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00") {
-			testInfo.reg = "F1_IPBUS.payload";
-			t->testInfo = testInfo;
-		}
-		t->c2cSpeedTest();
-		break;
-	case 9:
 		GlobalVars::logFileName = "psDMASpeedTest" + date + ".log";
 		if(testInfo.reg == "PL_MEM.SCRATCH.WORD_00") {
 			testInfo.reg = "F1_IPBUS.payload";

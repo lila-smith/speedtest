@@ -47,18 +47,11 @@ MODULE_AUTHOR
 MODULE_DESCRIPTION
     ("cdmacdev - character device driver for CDMA");
 
+// Adapted from Prof. Hiroshi Sakamoto's original driver
+// https://www.icepp.s.u-tokyo.ac.jp/~sakamoto/research/atlas/tgcelex/vivado/CDMA/index.html
+
 #define DRIVER_NAME "cdmacdev"
-#define CHRDEV_NAME "cdmach"
-#define DMA_NAME "cdmach0"
-//#define BUFFER_SIZE 0x1000
-#define BUFFER_SIZE 4096
-#define BRAM_BASE_ADDR 0xB0000000 // 0xA0003000
-#define BRAM_SIZE 0x1000 // 0x1000
-#define BRAM_MAX_ADDR ( BRAM_BASE_ADDR + BRAM_SIZE )
-// #define DRAM_BASE_ADDR 0x70000000
-// #define DRAM_SIZE 0x10000000
-// #define DRAM_MAX_ADDR ( DRAM_BASE_ADDR + DRAM_SIZE )
-#define CPU_MAX_ADDR 0x10000000
+#define DEFAULT_BUFFER_SIZE 4096
 
 struct cdmacdev_buffer {
 
@@ -68,8 +61,7 @@ struct cdmacdev_buffer {
     enum cdmacdev_buftype {
         CDMACDEV_BUF_NONE = 0,
         CDMACDEV_BUF_CPU = 1,
-        CDMACDEV_BUF_DRAM = 2,
-        CDMACDEV_BUF_BRAM = 3
+        CDMACDEV_BUF_DEV = 2
         } m_buftype;
 };
 
@@ -92,8 +84,10 @@ struct cdmacdev_channel {
 
 };
 
+// Contains information about all channels
 struct dma_proxy {
 	int channel_count;
+    int buffer_size;
 	struct cdmacdev_channel *channels;
 	char **names;
 };
@@ -113,7 +107,7 @@ static int cdmacdev_alloc_buffer( struct cdmacdev_channel * pchan,
             return -ENOMEM;
         }
         break;
-    case CDMACDEV_BUF_BRAM:
+    case CDMACDEV_BUF_DEV:
         pbuf -> p_bufvmem = ioremap( pbuf -> m_bufphys, pbuf -> m_bufsize );
         break;
     default:
@@ -142,7 +136,7 @@ static int cdmacdev_free_buffer( struct cdmacdev_channel * pchan,
         dmam_free_coherent( pchan -> p_device, pbuf -> m_bufsize,
             pbuf -> p_bufvmem, pbuf -> m_bufphys );
         break;
-    case CDMACDEV_BUF_BRAM:
+    case CDMACDEV_BUF_DEV:
         iounmap( pbuf -> p_bufvmem );
         break;
     default:
@@ -289,7 +283,7 @@ static int cdmacdev_transfer( struct cdmacdev_channel * pchan ) {
 }
 
 static int cdmacdev_create_channel( struct platform_device * pdev,
-    struct cdmacdev_channel * pchan, char * name ) {
+    struct cdmacdev_channel * pchan, char * name, int ch_buffer_size ) {
 
     pchan -> p_dmachan = dma_request_slave_channel(
         & pdev -> dev, name );
@@ -299,11 +293,11 @@ static int cdmacdev_create_channel( struct platform_device * pdev,
         return -EINVAL;
     }
 
-    pchan -> m_cpubuf.m_bufsize = BUFFER_SIZE;
+    pchan -> m_cpubuf.m_bufsize = ch_buffer_size;
     pchan -> m_cpubuf.m_buftype = CDMACDEV_BUF_NONE;
-    pchan -> m_devbuf.m_bufsize = BUFFER_SIZE;
+    pchan -> m_devbuf.m_bufsize = ch_buffer_size;
     pchan -> m_devbuf.m_buftype = CDMACDEV_BUF_NONE;
-    pchan -> m_datasize = BUFFER_SIZE;
+    pchan -> m_datasize = ch_buffer_size;
     pchan -> p_dmadev = pchan -> p_dmachan -> device;
 
     if( ! dma_has_cap( DMA_MEMCPY, pchan -> p_dmadev -> cap_mask ) ) {
@@ -332,9 +326,9 @@ static ssize_t cdmacdev_read( struct file * p_file, char __user * p_buf,
 
     pchan = ( struct cdmacdev_channel * ) p_file -> private_data;
 
-    if( pchan -> m_devbuf.m_buftype != CDMACDEV_BUF_BRAM ) {
+    if( pchan -> m_devbuf.m_buftype != CDMACDEV_BUF_DEV ) {
         cdmacdev_free_buffer( pchan, & pchan -> m_devbuf );
-        pchan -> m_devbuf.m_buftype = CDMACDEV_BUF_BRAM;
+        pchan -> m_devbuf.m_buftype = CDMACDEV_BUF_DEV;
         st = cdmacdev_alloc_buffer( pchan, & pchan -> m_devbuf );
         if( st < 0 ) return st;
     }
@@ -374,9 +368,9 @@ static ssize_t cdmacdev_write( struct file * p_file, const char __user * p_buf,
 
     pchan = ( struct cdmacdev_channel * ) p_file -> private_data;
 
-    if( pchan -> m_devbuf.m_buftype != CDMACDEV_BUF_BRAM ) {
+    if( pchan -> m_devbuf.m_buftype != CDMACDEV_BUF_DEV ) {
         cdmacdev_free_buffer( pchan, & pchan -> m_devbuf );
-        pchan -> m_devbuf.m_buftype = CDMACDEV_BUF_BRAM;
+        pchan -> m_devbuf.m_buftype = CDMACDEV_BUF_DEV;
         st = cdmacdev_alloc_buffer( pchan, & pchan -> m_devbuf );
         if( st < 0 ) return st;
     }
@@ -460,7 +454,7 @@ static long cdmacdev_ioctl( struct file * p_file, unsigned int cmd,
             }
         }
 
-        pbuf -> m_buftype = CDMACDEV_BUF_BRAM;
+        pbuf -> m_buftype = CDMACDEV_BUF_DEV;
         pbuf -> m_bufphys = arg;
 
         st = cdmacdev_alloc_buffer( pchan, pbuf );
@@ -665,6 +659,7 @@ error_1:
 static int cdmacdev_probe(struct platform_device *pdev)
 {
     int rc, i;
+    uint32_t bufsize[1];
     struct dma_proxy *lp;
     struct device *dev = &pdev->dev;
     printk(KERN_INFO "dma_proxy module initialized\n");
@@ -687,8 +682,15 @@ static int cdmacdev_probe(struct platform_device *pdev)
 						 "dma-names", NULL, 0);
 	if (lp->channel_count <= 0)
 		return 0;
-
-	printk(KERN_INFO "CDMA Device Tree Channel Count: %d\r\n", lp->channel_count);
+    
+    // Assign buffer size from device tree if available
+	rc = device_property_read_u32_array(&pdev->dev,
+						 "buffer-size", bufsize, sizeof(int));
+	if (rc <= 0)
+		lp->buffer_size = DEFAULT_BUFFER_SIZE;
+    else
+        lp->buffer_size = bufsize[0];
+	printk(KERN_INFO "CDMA Buffer Size: %d\r\n", lp->buffer_size);
     
     /* Allocate the memory for channel names and then get the names
     * from the device tree
@@ -730,7 +732,7 @@ static int cdmacdev_probe(struct platform_device *pdev)
 		printk(KERN_INFO "Creating cdev for channel %s\r\n", lp->names[i]);
 		rc = cdmacdev_create_cdev( &lp->channels[i], lp->names[i]);
         printk(KERN_INFO "Creating pdev for channel %s\r\n", lp->names[i]);
-        rc = cdmacdev_create_channel( pdev, &lp->channels[i], lp->names[i]); 
+        rc = cdmacdev_create_channel( pdev, &lp->channels[i], lp->names[i], lp->buffer_size); 
 
 		if (rc) 
 			return rc;

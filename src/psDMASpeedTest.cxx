@@ -13,9 +13,6 @@
 #include <setjmp.h>
 #include <sys/ioctl.h>
 #include "uhalspeedtest.hh"
-extern "C" {
-    #include "bram_service.h"
-}
 #include "cdmacdev.h"
 namespace emp {
 #define BUFFER_SIZE 0x8010
@@ -115,7 +112,8 @@ int SPEED_TEST::psDMASpeedTest()
 
     fscanf(size_addr,"0x%16X",&uio_addr);
     printf("addr of UIO Memory: 0x%x\n",uio_addr);
-
+    
+    // Initialize both DMA channels
     for(uint32_t i = 0; i < 2; ++i) {
         snprintf(deviceFileName, sizeof(deviceFileName),
             "/dev/cdmach%d", i);
@@ -207,7 +205,6 @@ int SPEED_TEST::psDMASpeedTest()
     // }
     close(cdma_fd[0]);
     close(cdma_fd[1]);
-    bram_exit( );
     return 0;
 }
 }
