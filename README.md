@@ -1,3 +1,6 @@
+# ARCHIVED: Moved to BU EDF Gitlab
+Repository can be found [here](https://gitlab.com/apollo-lhc/software/speedtest.git).
+
 # Apollo SM write/read speed tests
 Speed testing the apollo service module by reading and writing to scratch.
 The teststand test SM speed using getNode, readRegister, and UIO direct respectively.
